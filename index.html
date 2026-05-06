@@ -987,52 +987,81 @@ footer {
 <section class="anchor">
   <div class="container">
     <span class="label-tag reveal">The numbers that change everything</span>
-    <h2 class="heading reveal" style="font-size:clamp(24px,3.5vw,40px)">What Does Your Business<br>Already Spend Every Month?<span class="prompt">_</span></h2>
-    <p class="body reveal" style="margin-top:12px;max-width:580px;margin-bottom:44px">For a team of 20 people, here's what common monthly costs look like — and where cybersecurity fits in.</p>
+    <h2 class="heading reveal" style="font-size:clamp(24px,3.5vw,40px)">Your Team's Premium Coffee<br>Costs More Than Protecting<br>Your Entire Business<span class="prompt">_</span></h2>
+    <p class="body reveal" style="margin-top:14px;max-width:600px;margin-bottom:48px">For a team of 20 people, here's what you're already spending every month — and what you're probably not spending nearly enough on.</p>
 
-    <div class="anchor-grid reveal">
-      <div class="anchor-card">
-        <div class="anchor-icon">&#9749;</div>
-        <div class="anchor-label">Office coffee for 20 people</div>
-        <div class="anchor-amount">~$200<span class="anchor-per">/mo</span></div>
-        <div class="anchor-desc">Beans, pods, creamer, cups. The daily ritual that keeps your team moving.</div>
-        <div class="anchor-src">Source: Office Coffee Deals / 360Connect, 2024 · ~$10/employee/mo</div>
-      </div>
-      <div class="anchor-card">
-        <div class="anchor-icon">&#128241;</div>
-        <div class="anchor-label">Business cell phones · 20 lines</div>
-        <div class="anchor-amount">~$800<span class="anchor-per">/mo</span></div>
-        <div class="anchor-desc">20 business lines on a standard carrier plan — calls, data, devices.</div>
-        <div class="anchor-src">Source: AT&amp;T / T-Mobile Business, 2024 · ~$40/line/mo</div>
-      </div>
-      <div class="anchor-card">
-        <div class="anchor-icon">&#128187;</div>
-        <div class="anchor-label">Part-time IT technician</div>
-        <div class="anchor-amount">~$3K<span class="anchor-per">/mo</span></div>
-        <div class="anchor-desc">A part-time tech who shows up when things break — reactive, not proactive.</div>
-        <div class="anchor-src">Source: BLS / Indeed Salary Data 2024 · ~$36K/yr part-time</div>
-      </div>
-      <div class="anchor-card featured" style="padding-top:44px">
-        <div class="anchor-icon">&#128737;</div>
-        <div class="anchor-label">Full IT &amp; cyber protection · 20 users</div>
-        <div class="anchor-amount blue">$297<span class="anchor-per">/mo</span></div>
-        <div class="anchor-desc">Managed network, firewall, 24/7 monitoring, IT support &amp; monthly health reports — all included.</div>
-        <div class="anchor-src">Teletex START Plan — Central Florida · No setup fees</div>
+    <!-- Interactive calculator -->
+    <div class="reveal" style="background:var(--bg-card);border:1px solid var(--border);border-radius:4px;padding:24px 28px;margin-bottom:2px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c-amber);margin-bottom:14px">&#127381; Adjust your team size to see real costs</div>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button onclick="adjustTeam(-5)" style="width:36px;height:36px;border-radius:4px;background:var(--bg-card-2);border:1px solid var(--border-strong);color:var(--text-primary);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace">−</button>
+          <div style="text-align:center">
+            <div id="team-size" style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:var(--vivid-sky);line-height:1">20</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase">employees</div>
+          </div>
+          <button onclick="adjustTeam(5)" style="width:36px;height:36px;border-radius:4px;background:var(--bg-card-2);border:1px solid var(--border-strong);color:var(--text-primary);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace">+</button>
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-width:400px">Slide to match your team size and see how premium capsule coffee compares to Teletex protection.</div>
       </div>
     </div>
 
-    <!-- Key insight callout -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:36px 0" class="reveal">
-      <div style="background:rgba(255,102,0,0.06);padding:24px 28px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c-orange);margin-bottom:10px">Without protection</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:var(--c-orange);letter-spacing:-0.03em;margin-bottom:6px">$120,000+</div>
-        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">Average cost of a single cyber breach for a small business — legal fees, recovery, lost clients, downtime.</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px">Source: Verizon DBIR, 2024</div>
+    <div class="anchor-grid reveal" id="anchor-grid-cards" style="margin-top:2px">
+
+      <!-- Card 1: Premium capsule coffee -->
+      <div class="anchor-card" style="border-top:3px solid var(--c-orange)">
+        <div class="anchor-icon">&#9749;</div>
+        <div class="anchor-label">Premium capsule coffee · <span id="lbl-team">20</span> people</div>
+        <div class="anchor-amount" style="color:var(--c-orange)" id="calc-coffee">~$640<span class="anchor-per">/mo</span></div>
+        <div class="anchor-desc" id="desc-coffee">20 people × 2 capsules/day × $0.80/capsule × 20 workdays. Premium single-serve pods — the ones everyone actually drinks in 2024.</div>
+        <div class="anchor-src">Source: National Coffee Association 2024 · $0.50–$0.80/capsule avg · Office Coffee Deals</div>
       </div>
-      <div style="background:rgba(14,165,233,0.06);padding:24px 28px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--vivid-sky);margin-bottom:10px">With Teletex START</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:var(--vivid-sky);letter-spacing:-0.03em;margin-bottom:6px">$297/mo</div>
-        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">That's <strong style="color:var(--text-primary)">33 years of Teletex</strong> for the cost of one bad day. Full protection, starting today.</div>
+
+      <!-- Card 2: Business phones -->
+      <div class="anchor-card">
+        <div class="anchor-icon">&#128241;</div>
+        <div class="anchor-label">Business cell phones · <span id="lbl-team2">20</span> lines</div>
+        <div class="anchor-amount" id="calc-phones">~$800<span class="anchor-per">/mo</span></div>
+        <div class="anchor-desc" id="desc-phones">20 lines on a standard business carrier plan — calls, data, hotspot, device insurance.</div>
+        <div class="anchor-src">Source: AT&amp;T / T-Mobile Business Plans 2024 · ~$40/line/mo</div>
+      </div>
+
+      <!-- Card 3: Teletex FEATURED -->
+      <div class="anchor-card featured" style="padding-top:44px;border-top:3px solid var(--vivid-sky)">
+        <div class="anchor-icon">&#128737;</div>
+        <div class="anchor-label">Full IT &amp; cybersecurity · <span id="lbl-team3">20</span> users</div>
+        <div class="anchor-amount blue">$297<span class="anchor-per">/mo</span></div>
+        <div class="anchor-desc">Managed network, security firewall, 24/7 monitoring, IT support &amp; monthly health report. Everything included. No surprises.</div>
+        <div class="anchor-src">Teletex START Plan · Central Florida · No setup fees · No contracts</div>
+      </div>
+
+    </div>
+
+    <!-- The knockout punch comparison -->
+    <div class="reveal" style="background:rgba(255,102,0,0.05);border:1px solid rgba(255,102,0,0.2);border-radius:4px;padding:20px 28px;margin-top:2px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <div style="font-size:22px">&#128161;</div>
+      <div style="flex:1;min-width:240px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px">
+          Your team's premium coffee costs <span style="color:var(--c-orange)" id="coffee-ratio">2.2×</span> more than your full IT protection.
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">
+          <span id="coffee-vs-text">$640/mo in coffee capsules</span> vs. <strong style="color:var(--vivid-sky)">$297/mo in full network security &amp; managed IT.</strong> One protects your team's morning routine. The other protects everything your business is built on.
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk vs protection split -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:20px" class="reveal">
+      <div style="background:rgba(255,102,0,0.06);padding:24px 28px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c-orange);margin-bottom:10px">Cost of one cyber attack</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:var(--c-orange);letter-spacing:-0.03em;margin-bottom:6px">$120,000+</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">Legal fees, data recovery, downtime, lost clients, reputation damage. Most small businesses never recover.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--c-amber);margin-top:8px;font-weight:600">Source: Verizon DBIR, 2024</div>
+      </div>
+      <div style="background:rgba(60,210,240,0.05);padding:24px 28px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--vivid-sky);margin-bottom:10px">Teletex START · per year</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800;color:var(--vivid-sky);letter-spacing:-0.03em;margin-bottom:6px">$3,564</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">That's <strong style="color:var(--text-primary)">33 years of Teletex</strong> for the cost of one bad day. Full protection — starting today.</div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px">No contracts · No setup fees · Cancel anytime</div>
       </div>
     </div>
@@ -2023,6 +2052,65 @@ footer {
 </footer>
 
 <script>
+// ═══════════════════════════════════════════════════════════════
+// ANCHOR CALCULATOR — team size slider
+// ═══════════════════════════════════════════════════════════════
+let teamSize = 20;
+const MIN_TEAM = 5;
+const MAX_TEAM = 100;
+const TEAM_STEP = 5;
+
+function adjustTeam(delta) {
+  teamSize = Math.max(MIN_TEAM, Math.min(MAX_TEAM, teamSize + delta));
+  updateCalculator();
+}
+
+function updateCalculator() {
+  // Premium capsule coffee: team × 2 cups/day × $0.75/capsule × 20 workdays
+  const coffeeCost = Math.round(teamSize * 2 * 0.75 * 20 / 10) * 10;
+  // Business phones: ~$40/line
+  const phonesCost = teamSize * 40;
+  // Teletex: fixed $297 START plan
+  const teletexCost = 297;
+  // Ratio
+  const ratio = (coffeeCost / teletexCost).toFixed(1);
+
+  // Update team size display
+  ['team-size','lbl-team','lbl-team2','lbl-team3'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = teamSize;
+  });
+
+  // Update coffee card
+  const coffeeEl = document.getElementById('calc-coffee');
+  if(coffeeEl) coffeeEl.innerHTML = `~$${coffeeCost.toLocaleString()}<span class="anchor-per">/mo</span>`;
+
+  const coffeeDesc = document.getElementById('desc-coffee');
+  if(coffeeDesc) coffeeDesc.textContent = `${teamSize} people × 2 capsules/day × $0.75/capsule × 20 workdays. Premium single-serve pods — the ones your team actually drinks.`;
+
+  // Update phones card
+  const phonesEl = document.getElementById('calc-phones');
+  if(phonesEl) phonesEl.innerHTML = `~$${phonesCost.toLocaleString()}<span class="anchor-per">/mo</span>`;
+
+  const phonesDesc = document.getElementById('desc-phones');
+  if(phonesDesc) phonesDesc.textContent = `${teamSize} business lines on a standard carrier plan — calls, data, hotspot, device insurance.`;
+
+  // Update ratio callout
+  const ratioEl = document.getElementById('coffee-ratio');
+  if(ratioEl) ratioEl.textContent = ratio + '×';
+
+  const coffeeVsEl = document.getElementById('coffee-vs-text');
+  if(coffeeVsEl) coffeeVsEl.textContent = `$${coffeeCost.toLocaleString()}/mo in premium coffee capsules`;
+
+  // Animate grid cards with a subtle pulse
+  const grid = document.getElementById('anchor-grid-cards');
+  if(grid) {
+    grid.style.opacity = '0.6';
+    grid.style.transition = 'opacity .15s';
+    setTimeout(() => { grid.style.opacity = '1'; }, 150);
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // COMPARISON TABLE DATA — feature, explanation for non-IT people
 // ═══════════════════════════════════════════════════════════════
