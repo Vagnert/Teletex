@@ -334,7 +334,7 @@ nav.scrolled {
 .anchor { padding: 88px 0; background: var(--eerie-black); }
 .anchor-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1px;
   background: var(--border);
   border: 1px solid var(--border);
@@ -768,6 +768,72 @@ footer {
   [style*="grid-template-columns:1fr 1fr"] > [style*="height:300px"],
   [style*="grid-template-columns:1fr 1fr"] > [style*="height:320px"] { height: 200px !important; order: -1; }
 }
+
+/* ── PLAN CAROUSEL (mobile) ──────────────────────────────────── */
+.plan-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border-strong); border: none; cursor: pointer;
+  transition: background .2s, transform .2s; padding: 0;
+}
+.plan-dot.active { background: var(--vivid-sky); transform: scale(1.3); }
+
+/* Mobile card — only one visible at a time */
+@media (max-width: 860px) {
+  #plan-nav   { display: flex !important; }
+  #plan-arrows { display: flex !important; }
+  #plan-track {
+    display: block !important;
+    background: none !important;
+    border: none !important;
+    position: relative;
+    overflow: hidden;
+    min-height: 460px;
+  }
+  .plan-card {
+    display: none !important;
+    position: absolute !important;
+    top: 0; left: 0; right: 0;
+    border-radius: 4px !important;
+    border: 1px solid var(--border) !important;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .plan-card.card-active {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+  .plan-card.popular {
+    border-top: 2px solid var(--c-pink) !important;
+  }
+}
+
+/* ── CATEGORY FILTER BUTTONS ─────────────────────────────────── */
+.cat-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 7px 14px; border-radius: 3px;
+  background: var(--bg-card); border: 1px solid var(--border-strong);
+  color: var(--text-dim); cursor: pointer;
+  transition: all .18s;
+}
+.cat-btn:hover { border-color: var(--vivid-sky); color: var(--vivid-sky); }
+.cat-btn.active { background: var(--medium-blue); border-color: var(--medium-blue); color: #fff; }
+
+/* ── COMPARISON TABLE ROWS ───────────────────────────────────── */
+.cmp-row { cursor: pointer; transition: background .15s; }
+.cmp-row:hover { background: rgba(60,210,240,0.04) !important; }
+.cmp-row.cat-hidden { display: none; }
+.cmp-explain {
+  display: none;
+  padding: 0 16px 14px;
+  animation: slideDown .25s ease;
+}
+.cmp-explain.open { display: table-row; }
+@keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
 /* ── STICKY BOTTOM CTA BAR ───────────────────────────────────── */
 .sticky-cta {
   position: fixed;
@@ -921,36 +987,56 @@ footer {
 <section class="anchor">
   <div class="container">
     <span class="label-tag reveal">The numbers that change everything</span>
-    <h2 class="heading reveal" style="font-size:clamp(24px,3.5vw,40px)">Think About What You<br>Already Spend Every Month<span class="prompt">_</span></h2>
+    <h2 class="heading reveal" style="font-size:clamp(24px,3.5vw,40px)">What Does Your Business<br>Already Spend Every Month?<span class="prompt">_</span></h2>
+    <p class="body reveal" style="margin-top:12px;max-width:580px;margin-bottom:44px">For a team of 20 people, here's what common monthly costs look like — and where cybersecurity fits in.</p>
 
     <div class="anchor-grid reveal">
       <div class="anchor-card">
         <div class="anchor-icon">&#9749;</div>
-        <div class="anchor-label">Office coffee for your team</div>
-        <div class="anchor-amount">~$150<span class="anchor-per">/mo</span></div>
-        <div class="anchor-desc">For a 15-person team — beans, pods, creamer, cups.</div>
-        <div class="anchor-src">Source: Office Coffee Deals / 360Connect, 2024</div>
+        <div class="anchor-label">Office coffee for 20 people</div>
+        <div class="anchor-amount">~$200<span class="anchor-per">/mo</span></div>
+        <div class="anchor-desc">Beans, pods, creamer, cups. The daily ritual that keeps your team moving.</div>
+        <div class="anchor-src">Source: Office Coffee Deals / 360Connect, 2024 · ~$10/employee/mo</div>
       </div>
       <div class="anchor-card">
         <div class="anchor-icon">&#128241;</div>
-        <div class="anchor-label">Business cell phone plan</div>
-        <div class="anchor-amount">~$400<span class="anchor-per">/mo</span></div>
-        <div class="anchor-desc">10 business lines on a standard carrier plan.</div>
-        <div class="anchor-src">Source: AT&amp;T / T-Mobile Business, 2024</div>
+        <div class="anchor-label">Business cell phones · 20 lines</div>
+        <div class="anchor-amount">~$800<span class="anchor-per">/mo</span></div>
+        <div class="anchor-desc">20 business lines on a standard carrier plan — calls, data, devices.</div>
+        <div class="anchor-src">Source: AT&amp;T / T-Mobile Business, 2024 · ~$40/line/mo</div>
+      </div>
+      <div class="anchor-card">
+        <div class="anchor-icon">&#128187;</div>
+        <div class="anchor-label">Part-time IT technician</div>
+        <div class="anchor-amount">~$3K<span class="anchor-per">/mo</span></div>
+        <div class="anchor-desc">A part-time tech who shows up when things break — reactive, not proactive.</div>
+        <div class="anchor-src">Source: BLS / Indeed Salary Data 2024 · ~$36K/yr part-time</div>
       </div>
       <div class="anchor-card featured" style="padding-top:44px">
         <div class="anchor-icon">&#128737;</div>
-        <div class="anchor-label">Full IT &amp; cyber protection</div>
+        <div class="anchor-label">Full IT &amp; cyber protection · 20 users</div>
         <div class="anchor-amount blue">$297<span class="anchor-per">/mo</span></div>
-        <div class="anchor-desc">Managed network, security firewall, remote IT support, monthly reports.</div>
-        <div class="anchor-src">Teletex START Plan — Central Florida</div>
+        <div class="anchor-desc">Managed network, firewall, 24/7 monitoring, IT support &amp; monthly health reports — all included.</div>
+        <div class="anchor-src">Teletex START Plan — Central Florida · No setup fees</div>
       </div>
     </div>
 
-    <div class="anchor-callout reveal">
-      <p>One cyber attack costs a small business $120,000+ on average.<br>That's 33 years of Teletex protection — for the price of one bad day.</p>
-      <span class="src">Source: Verizon Data Breach Investigations Report, 2024</span>
+    <!-- Key insight callout -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:36px 0" class="reveal">
+      <div style="background:rgba(255,102,0,0.06);padding:24px 28px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c-orange);margin-bottom:10px">Without protection</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:var(--c-orange);letter-spacing:-0.03em;margin-bottom:6px">$120,000+</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">Average cost of a single cyber breach for a small business — legal fees, recovery, lost clients, downtime.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px">Source: Verizon DBIR, 2024</div>
+      </div>
+      <div style="background:rgba(14,165,233,0.06);padding:24px 28px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--vivid-sky);margin-bottom:10px">With Teletex START</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:var(--vivid-sky);letter-spacing:-0.03em;margin-bottom:6px">$297/mo</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">That's <strong style="color:var(--text-primary)">33 years of Teletex</strong> for the cost of one bad day. Full protection, starting today.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px">No contracts · No setup fees · Cancel anytime</div>
+      </div>
     </div>
+
   </div>
 </section>
 <div class="section-divider"></div>
@@ -1111,138 +1197,113 @@ footer {
     <h2 class="heading reveal" style="font-size:clamp(22px,3vw,38px)">Choose the Level Your<br>Business Actually Needs<span class="prompt">_</span></h2>
     <p class="body reveal" style="margin-top:12px;max-width:520px">Start with what you need today. Add more as you grow. No rip-and-replace, no lock-in.</p>
 
-    <div class="plans-grid reveal">
-
-      <div class="plan-card">
-        <div class="plan-name">START</div>
-        <div class="plan-price"><span class="amt">$297</span><span class="per">/mo</span></div>
-        <div class="plan-desc">Your business network, professionally managed and secured. No more guessing.</div>
-        <ul class="plan-feats">
-          <li>Managed business network — wired &amp; Wi-Fi</li>
-          <li>Security firewall — stops threats before they enter</li>
-          <li>Remote IT support — fast resolution</li>
-          <li>Monthly health report in plain English</li>
-        </ul>
-        <div class="plan-best" style="color:var(--c-amber)">Best for: 1–20 employees</div>
-        <a href="#assessment" class="plan-cta">GET STARTED</a>
+    <!-- DYNAMIC PLAN CARDS -->
+    <div class="reveal" style="margin-top:40px">
+      <div id="plan-nav" style="display:none;justify-content:center;gap:8px;margin-bottom:20px"></div>
+      <div id="plan-track" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden">
+        <div class="plan-card" data-idx="0">
+          <div class="plan-name">START</div>
+          <div class="plan-price"><span class="amt">$297</span><span class="per">/mo</span></div>
+          <div class="plan-desc">Your business network, professionally managed and secured. No more guessing.</div>
+          <ul class="plan-feats"><li>Managed business network — wired &amp; Wi-Fi</li><li>Security firewall — stops threats before they enter</li><li>Remote IT support — fast resolution</li><li>Monthly health report in plain English</li></ul>
+          <div class="plan-best" style="color:var(--c-amber)">Best for: 1–20 employees</div>
+          <a href="#assessment" class="plan-cta">GET STARTED</a>
+        </div>
+        <div class="plan-card" data-idx="1">
+          <div class="plan-name">CONTROL</div>
+          <div class="plan-price"><span class="amt">$397</span><span class="per">/mo</span></div>
+          <div class="plan-desc">Everything in START, plus internet backup so one outage doesn't stop your business.</div>
+          <ul class="plan-feats"><li>Everything in START</li><li>Automatic internet failover — stay online if your provider goes down</li><li>Advanced firewall and content filtering</li><li>Guest Wi-Fi isolated from your business data</li></ul>
+          <div class="plan-best" style="color:var(--c-amber)">Best for: 20–40 employees</div>
+          <a href="#assessment" class="plan-cta">GET STARTED</a>
+        </div>
+        <div class="plan-card popular" data-idx="2">
+          <div class="pop-badge">⭐ MOST POPULAR</div>
+          <div class="plan-name">INSIGHT</div>
+          <div class="plan-price"><span class="amt">$797</span><span class="per">/mo</span></div>
+          <div class="plan-desc">See everything happening inside your network before problems affect your team.</div>
+          <ul class="plan-feats"><li>Everything in CONTROL</li><li>Real-time network monitoring — we see issues before you do</li><li>Performance alerts — slow systems caught early</li><li>Monthly executive report in plain English</li><li>Proactive support — we call you</li></ul>
+          <div class="plan-best" style="color:var(--c-amber)">Best for: 40–60 employees</div>
+          <a href="#assessment" class="plan-cta">GET STARTED</a>
+        </div>
+        <div class="plan-card" data-idx="3">
+          <div class="plan-name">DEFEND</div>
+          <div class="plan-price"><span class="amt">$1,197</span><span class="per">/mo</span></div>
+          <div class="plan-desc">Monitor what attackers see about your business from the outside — before they use it.</div>
+          <ul class="plan-feats"><li>Everything in CONTROL</li><li>Dark web monitoring — alerts if your passwords are breached</li><li>Phishing detection targeting your business</li><li>Fake website alerts — fraudulent sites impersonating your brand</li><li>Brand protection monitoring 24/7</li></ul>
+          <div class="plan-best" style="color:var(--c-amber)">Best for: 60–100 employees</div>
+          <a href="#assessment" class="plan-cta">GET STARTED</a>
+        </div>
+        <div class="plan-card" data-idx="4">
+          <div class="plan-name">ELITE</div>
+          <div class="plan-price custom"><span class="amt">Custom</span></div>
+          <div class="plan-desc">Complete, fully managed protection inside and outside. Zero blind spots.</div>
+          <ul class="plan-feats"><li>Everything in INSIGHT + DEFEND</li><li>24/7 security operations team</li><li>Incident response — we act, not just alert</li><li>Compliance-ready reporting</li><li>Dedicated account manager</li></ul>
+          <div class="plan-best" style="color:var(--c-amber)">Best for: 100+ employees</div>
+          <a href="#assessment" class="plan-cta">SCHEDULE CONSULTATION</a>
+        </div>
       </div>
-
-      <div class="plan-card">
-        <div class="plan-name">CONTROL</div>
-        <div class="plan-price"><span class="amt">$397</span><span class="per">/mo</span></div>
-        <div class="plan-desc">Everything in START, plus internet backup so one outage doesn't stop your business.</div>
-        <ul class="plan-feats">
-          <li>Everything in START</li>
-          <li>Automatic internet failover — stay online if your provider goes down</li>
-          <li>Advanced firewall and content filtering</li>
-          <li>Guest Wi-Fi isolated from your business data</li>
-        </ul>
-        <div class="plan-best" style="color:var(--c-amber)">Best for: 20–40 employees</div>
-        <a href="#assessment" class="plan-cta">GET STARTED</a>
-      </div>
-
-      <div class="plan-card popular">
-        <div class="pop-badge">&#11088; MOST POPULAR</div>
-        <div class="plan-name">INSIGHT</div>
-        <div class="plan-price"><span class="amt">$797</span><span class="per">/mo</span></div>
-        <div class="plan-desc">See everything happening inside your network before problems affect your team.</div>
-        <ul class="plan-feats">
-          <li>Everything in CONTROL</li>
-          <li>Real-time network monitoring — we see issues before you do</li>
-          <li>Performance alerts — slow systems caught early</li>
-          <li>Monthly executive report in plain English</li>
-          <li>Proactive support — we call you</li>
-        </ul>
-        <div class="plan-best" style="color:var(--c-amber)">Best for: 40–60 employees</div>
-        <a href="#assessment" class="plan-cta">GET STARTED</a>
-      </div>
-
-      <div class="plan-card">
-        <div class="plan-name">DEFEND</div>
-        <div class="plan-price"><span class="amt">$1,197</span><span class="per">/mo</span></div>
-        <div class="plan-desc">Monitor what attackers see about your business from the outside — before they use it.</div>
-        <ul class="plan-feats">
-          <li>Everything in CONTROL</li>
-          <li>Dark web monitoring — alerts if your passwords are breached</li>
-          <li>Phishing detection targeting your business</li>
-          <li>Fake website alerts — fraudulent sites impersonating your brand</li>
-          <li>Brand protection monitoring 24/7</li>
-        </ul>
-        <div class="plan-best" style="color:var(--c-amber)">Best for: 60–100 employees</div>
-        <a href="#assessment" class="plan-cta">GET STARTED</a>
-      </div>
-
-      <div class="plan-card">
-        <div class="plan-name">ELITE</div>
-        <div class="plan-price custom"><span class="amt">Custom</span></div>
-        <div class="plan-desc">Complete, fully managed protection inside and outside. Zero blind spots.</div>
-        <ul class="plan-feats">
-          <li>Everything in INSIGHT + DEFEND</li>
-          <li>24/7 security operations team</li>
-          <li>Incident response — we act, not just alert</li>
-          <li>Compliance-ready reporting</li>
-          <li>Dedicated account manager</li>
-        </ul>
-        <div class="plan-best" style="color:var(--c-amber)">Best for: 100+ employees</div>
-        <a href="#assessment" class="plan-cta">SCHEDULE CONSULTATION</a>
-      </div>
-
-    </div>
-
-    <p class="reveal" style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text-dim);text-align:center">Not sure which plan fits? Our free assessment tells you exactly what you need — no upsell, no pressure.</p>
-
-    <!-- ── COMPARISON TABLE ── -->
-    <div class="reveal" style="margin-top:56px">
-      <span class="label-tag">Plan comparison · What each bundle actually delivers</span>
-      <h3 class="heading" style="font-size:clamp(18px,2.5vw,28px);margin-bottom:8px">Everything Side by Side<span class="prompt">_</span></h3>
-      <p class="body" style="margin-bottom:32px;max-width:520px">Every business is different. This table makes it easy to see exactly what's included at each level — so you can choose with confidence.</p>
-
-      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-      <table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:14px;min-width:700px">
-        <thead>
-          <tr>
-            <th style="text-align:left;padding:14px 16px;background:#0d0d0d;border:1px solid var(--border);color:var(--text-dim);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;width:30%">Feature</th>
-            <th style="text-align:center;padding:14px 10px;background:#0d0d0d;border:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700">START<br><span style="color:var(--vivid-sky);font-size:13px">$297</span></th>
-            <th style="text-align:center;padding:14px 10px;background:#0d0d0d;border:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700">CONTROL<br><span style="color:var(--vivid-sky);font-size:13px">$397</span></th>
-            <th style="text-align:center;padding:14px 10px;background:rgba(0,0,208,0.12);border:1px solid rgba(0,0,208,0.3);color:var(--vivid-sky);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700">INSIGHT ⭐<br><span style="color:var(--vivid-sky);font-size:13px">$797</span></th>
-            <th style="text-align:center;padding:14px 10px;background:#0d0d0d;border:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700">DEFEND<br><span style="color:var(--vivid-sky);font-size:13px">$1,197</span></th>
-            <th style="text-align:center;padding:14px 10px;background:#0d0d0d;border:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700">ELITE 🏆<br><span style="color:var(--vivid-sky);font-size:13px">Custom</span></th>
-          </tr>
-        </thead>
-        <tbody id="compare-body"></tbody>
-      </table>
-      </div>
-
-      <div style="display:flex;gap:20px;margin-top:16px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dim)"><span style="color:#22C55E;font-size:16px">✓</span> Included</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dim)"><span style="color:#EF4444;font-size:16px">—</span> Not included</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dim)"><span style="color:var(--vivid-sky);font-size:15px">+</span> Available as add-on</div>
+      <div id="plan-arrows" style="display:none;justify-content:space-between;align-items:center;margin-top:16px">
+        <button onclick="goToCard(currentCard-1)" id="prev-btn" style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-muted);padding:10px 18px;border-radius:4px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px">← Prev</button>
+        <span id="card-counter" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">1 / 5</span>
+        <button onclick="goToCard(currentCard+1)" id="next-btn" style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-muted);padding:10px 18px;border-radius:4px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px">Next →</button>
       </div>
     </div>
 
-    <!-- Contact person block -->
+    <p class="reveal" style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text-dim);text-align:center;margin-top:20px">Not sure which plan fits? Our free assessment tells you exactly what you need — no upsell, no pressure.</p>
+
+    <!-- Vagner card -->
     <div class="reveal" style="margin-top:48px;background:rgba(60,210,240,0.05);border:1px solid rgba(60,210,240,0.15);border-radius:4px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px">
       <div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--vivid-sky);margin-bottom:10px">Talk to a human · Central Florida</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--vivid-sky);margin-bottom:10px">Talk to a human · Central Florida</div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;color:var(--text-primary);margin-bottom:2px">Vagner Trindade</div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-dim);margin-bottom:4px">Business Development Representative · Teletex US Inc.</div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-dim);margin-bottom:14px">7061 Grand National Dr, Suite 136 · Orlando, FL 32819</div>
         <div style="display:flex;gap:20px;flex-wrap:wrap">
-          <a href="tel:+14078229530" style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--text-primary);text-decoration:none">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.22 2.84 2 2 0 012.22.66h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            +1 (407) 822-9530
-          </a>
-          <a href="mailto:sales@teletex-us.com" style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--vivid-sky);text-decoration:none">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
-            sales@teletex-us.com
-          </a>
+          <a href="tel:+14078229530" style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--text-primary);text-decoration:none"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.22 2.84 2 2 0 012.22.66h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>+1 (407) 822-9530</a>
+          <a href="mailto:sales@teletex-us.com" style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--vivid-sky);text-decoration:none"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>sales@teletex-us.com</a>
         </div>
       </div>
       <a href="#assessment" class="btn-primary">Get My Free Assessment →</a>
     </div>
 
-  </div>
-</section>
+    <!-- DYNAMIC COMPARISON TABLE -->
+    <div class="reveal" style="margin-top:64px">
+      <span class="label-tag">Plan comparison · What each bundle actually delivers</span>
+      <h3 class="heading" style="font-size:clamp(18px,2.5vw,28px);margin-bottom:8px">Everything Side by Side<span class="prompt">_</span></h3>
+      <p class="body" style="margin-bottom:24px;max-width:600px">Click any row to see a plain-English explanation of what that feature actually means for your business — no IT jargon.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px" id="cat-filters">
+        <button onclick="filterCat('ALL')" class="cat-btn active" data-cat="ALL">All</button>
+        <button onclick="filterCat('NETWORK')" class="cat-btn" data-cat="NETWORK">Network</button>
+        <button onclick="filterCat('MANAGED SERVICES')" class="cat-btn" data-cat="MANAGED SERVICES">Managed Services</button>
+        <button onclick="filterCat('INTERNAL VISIBILITY')" class="cat-btn" data-cat="INTERNAL VISIBILITY">Visibility</button>
+        <button onclick="filterCat('CYBERSECURITY')" class="cat-btn" data-cat="CYBERSECURITY">Cybersecurity</button>
+        <button onclick="filterCat('EXTERNAL THREATS')" class="cat-btn" data-cat="EXTERNAL THREATS">External Threats</button>
+        <button onclick="filterCat('SOC / RESPONSE')" class="cat-btn" data-cat="SOC / RESPONSE">SOC / Response</button>
+        <button onclick="filterCat('ADD-ONS AVAILABLE')" class="cat-btn" data-cat="ADD-ONS AVAILABLE">Add-Ons</button>
+      </div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:4px;border:1px solid var(--border)">
+        <table id="cmp-table" style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12px;min-width:660px">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:14px 16px;background:#080808;border-bottom:1px solid var(--border);color:var(--text-dim);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;width:36%">Feature <span style="color:var(--c-amber);font-size:9px">▾ click for explanation</span></th>
+              <th style="text-align:center;padding:14px 8px;background:#080808;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase">START<br><span style="color:var(--vivid-sky)">$297</span></th>
+              <th style="text-align:center;padding:14px 8px;background:#080808;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase">CONTROL<br><span style="color:var(--vivid-sky)">$397</span></th>
+              <th style="text-align:center;padding:14px 8px;background:rgba(0,0,208,0.15);border-bottom:1px solid rgba(0,0,208,0.3);color:var(--vivid-sky);font-size:10px;letter-spacing:.08em;text-transform:uppercase">INSIGHT ⭐<br><span style="color:var(--vivid-sky)">$797</span></th>
+              <th style="text-align:center;padding:14px 8px;background:#080808;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase">DEFEND<br><span style="color:var(--vivid-sky)">$1,197</span></th>
+              <th style="text-align:center;padding:14px 8px;background:#080808;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase">ELITE<br><span style="color:var(--vivid-sky)">Custom</span></th>
+            </tr>
+          </thead>
+          <tbody id="compare-body"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:20px;margin-top:14px;flex-wrap:wrap;font-size:12px">
+        <span style="display:flex;align-items:center;gap:6px;color:var(--text-dim)"><span style="color:#22C55E;font-size:16px">✓</span> Included</span>
+        <span style="display:flex;align-items:center;gap:6px;color:var(--text-dim)"><span style="color:#3a3a3a;font-size:14px">—</span> Not included</span>
+        <span style="display:flex;align-items:center;gap:6px;color:var(--text-dim)"><span style="color:var(--vivid-sky);font-size:14px">+</span> Add-on available</span>
+      </div>
+    </div>
+
 <div class="section-divider"></div>
 
 <!-- ─── REALITY CHECK (PDF p.1) ─────────────────────────────── -->
@@ -1962,110 +2023,383 @@ footer {
 </footer>
 
 <script>
-// ── COMPARISON TABLE ───────────────────────────────────────────
-(function(){
-const rows = [
-  ["NETWORK","Managed wired & Wi-Fi network",           "✓","✓","✓","✓","✓"],
-  ["NETWORK","Security firewall",                        "✓","✓","✓","✓","✓"],
-  ["NETWORK","Guest Wi-Fi — isolated from business",    "—","✓","✓","✓","✓"],
-  ["NETWORK","Automatic internet failover",             "—","✓","✓","✓","✓"],
-  ["NETWORK","SD-WAN / multi-link optimization",        "—","✓","✓","✓","✓"],
-  ["NETWORK","Remote VPN access",                       "—","✓","✓","✓","✓"],
-  ["MANAGED SERVICES","Remote IT support",              "✓","✓","✓","✓","✓"],
-  ["MANAGED SERVICES","Proactive network management",   "✓","✓","✓","✓","✓"],
-  ["MANAGED SERVICES","Monthly health report",          "✓","✓","✓","✓","✓"],
-  ["MANAGED SERVICES","24×7 NOC monitoring",            "—","—","✓","—","✓"],
-  ["MANAGED SERVICES","Dedicated account manager",      "—","—","—","—","✓"],
-  ["INTERNAL VISIBILITY","Real-time network monitoring","—","—","✓","—","✓"],
-  ["INTERNAL VISIBILITY","Performance alerts",          "—","—","✓","—","✓"],
-  ["INTERNAL VISIBILITY","Anomaly detection",           "—","—","✓","—","✓"],
-  ["INTERNAL VISIBILITY","Monthly executive report",    "—","—","✓","—","✓"],
-  ["CYBERSECURITY","Advanced content filtering",        "—","✓","✓","✓","✓"],
-  ["CYBERSECURITY","Threat prevention / edge protection","—","✓","✓","✓","✓"],
-  ["CYBERSECURITY","Endpoint protection (EDR)",         "+","+","+","+","✓"],
-  ["CYBERSECURITY","Email security",                    "+","+","+","+","✓"],
-  ["EXTERNAL THREATS","Dark web credential monitoring", "—","—","—","✓","✓"],
-  ["EXTERNAL THREATS","Phishing campaign detection",    "—","—","—","✓","✓"],
-  ["EXTERNAL THREATS","Fake domain / brand monitoring", "—","—","—","✓","✓"],
-  ["EXTERNAL THREATS","Digital identity protection",    "—","—","—","✓","✓"],
-  ["SOC / RESPONSE","SOC 24×7 operations",              "—","—","—","—","✓"],
-  ["SOC / RESPONSE","Active incident response",         "—","—","—","—","✓"],
-  ["SOC / RESPONSE","Threat intelligence correlation",  "—","—","—","—","✓"],
-  ["SOC / RESPONSE","Compliance-ready reporting",       "—","—","—","—","✓"],
-  ["ADD-ONS AVAILABLE","Backup & recovery",             "+","+","+","+","+"],
-  ["ADD-ONS AVAILABLE","Microsoft 365 / Google Workspace","+","+","+","+","+"],
-  ["ADD-ONS AVAILABLE","Security awareness training",   "+","+","+","+","+"],
-  ["ADD-ONS AVAILABLE","On-site support",               "+","+","+","+","+"],
-  ["ADD-ONS AVAILABLE","Compliance readiness (HIPAA/SOC2)","+","+","+","+","+"],
-];
-const cs=["background:#0f0f0f;border:1px solid rgba(255,255,255,0.07)","background:#0f0f0f;border:1px solid rgba(255,255,255,0.07)","background:rgba(0,0,208,0.08);border:1px solid rgba(0,0,208,0.25)","background:#0f0f0f;border:1px solid rgba(255,255,255,0.07)","background:#0f0f0f;border:1px solid rgba(255,255,255,0.07)"];
-const vc=v=>v==="✓"?"#22C55E":v==="+"?"#3CD2F0":"#2d2d2d";
-const vw=v=>v==="✓"?"700":"400";
-const vfs=v=>v==="✓"?"17px":"13px";
-let html="",lastCat="";
-rows.forEach(([cat,feat,...vals])=>{
-  if(cat!==lastCat){lastCat=cat;html+=`<tr><td colspan="6" style="padding:9px 16px 5px;background:#080808;border:1px solid rgba(255,255,255,0.07);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3CD2F0">${cat}</td></tr>`;}
-  html+=`<tr><td style="padding:9px 16px;border:1px solid rgba(255,255,255,0.07);background:#0c0c0c;color:#B3B3B3;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.4">${feat}</td>`;
-  vals.forEach((v,i)=>{html+=`<td style="text-align:center;padding:9px 6px;${cs[i]};color:${vc(v)};font-size:${vfs(v)};font-weight:${vw(v)}">${v}</td>`;});
-  html+=`</tr>`;
-});
-const tb=document.getElementById('compare-body');
-if(tb)tb.innerHTML=html;
-})();
+// ═══════════════════════════════════════════════════════════════
+// COMPARISON TABLE DATA — feature, explanation for non-IT people
+// ═══════════════════════════════════════════════════════════════
+const tableData = [
+  // [category, feature, plain-english explanation, START, CONTROL, INSIGHT, DEFEND, ELITE]
+  ["NETWORK","Managed wired & Wi-Fi network",
+   "We handle all the cables, routers and wireless access points in your office. Your internet stays fast, organized and stable — without you needing to think about it.",
+   "✓","✓","✓","✓","✓"],
+  ["NETWORK","Security firewall",
+   "Think of it as a bouncer at the door of your network. It checks every piece of data trying to enter and blocks anything suspicious — before it ever reaches your computers.",
+   "✓","✓","✓","✓","✓"],
+  ["NETWORK","Guest Wi-Fi — isolated from business data",
+   "When clients or visitors use your Wi-Fi, they get internet access but cannot see your files, printers or internal systems. Keeps your business data safe from outsiders.",
+   "—","✓","✓","✓","✓"],
+  ["NETWORK","Automatic internet failover",
+   "If your internet provider goes down, a backup connection kicks in automatically within seconds. Your team keeps working, payments keep processing — no one even notices.",
+   "—","✓","✓","✓","✓"],
+  ["NETWORK","SD-WAN / multi-link optimization",
+   "A smart system that uses multiple internet connections at once and always routes your traffic through the fastest, most reliable path — like a GPS that avoids traffic jams.",
+   "—","✓","✓","✓","✓"],
+  ["NETWORK","Remote VPN access",
+   "Employees working from home or traveling can connect securely to your office network, as if they were sitting at their desk. Encrypted, safe and easy to use.",
+   "—","✓","✓","✓","✓"],
 
-// ── FAQ ────────────────────────────────────────────────────────
-(function(){
-const faqs=[
-  ["Do I need to buy new equipment?","Not necessarily. We assess your current setup first. In many cases, we can manage and improve what you already have. If new equipment is needed, we'll tell you exactly why — and what it costs — before anything happens."],
-  ["Can you support multiple locations?","Yes. Multi-site management is one of our core strengths. We deploy consistent security policies, unified monitoring, and centralized visibility across every location — from one partner, one invoice."],
-  ["What happens if my internet goes down?","With our CONTROL plan and above, you get automatic internet failover — a backup connection that kicks in instantly when your primary provider fails. Your team keeps working. Your customers keep reaching you."],
-  ["Do you provide monitoring? Who watches my network?","Yes. Depending on your plan, we provide continuous network monitoring, performance alerting, and proactive support. We identify and resolve issues before your team ever notices them."],
-  ["Can you work with my current internet provider?","Absolutely. We work with any ISP. We manage the infrastructure on your side — the routers, firewalls, switches, and Wi-Fi — regardless of who provides your internet connection."],
-  ["Do I need an internal IT team to work with Teletex?","No. That's the point. Teletex is your IT team. We handle everything — monitoring, management, support, and security — so you don't need to hire, train, or manage internal IT staff."],
-  ["Is this fully managed? What does that mean?","Fully managed means we own the outcome. We monitor, maintain, update, and support your infrastructure proactively — not just when something breaks. You pay one predictable monthly fee. We handle everything else."],
-  ["How long does it take to get started?","We start with a free assessment — typically 15 minutes. From there, most deployments are completed within days, not months. We work around your schedule to minimize disruption."],
+  ["MANAGED SERVICES","Remote IT support",
+   "When something breaks or a computer acts up, our team fixes it remotely — usually within minutes. No need to wait for a technician to drive to your location.",
+   "✓","✓","✓","✓","✓"],
+  ["MANAGED SERVICES","Proactive network management",
+   "Instead of waiting for things to break, we constantly check your systems for signs of trouble and fix small issues before they become expensive problems.",
+   "✓","✓","✓","✓","✓"],
+  ["MANAGED SERVICES","Monthly health report",
+   "Every month you receive a simple, plain-English summary of what happened on your network — no tech jargon, just clear facts about the health of your IT environment.",
+   "✓","✓","✓","✓","✓"],
+  ["MANAGED SERVICES","24×7 NOC monitoring",
+   "A dedicated team watches your network around the clock, 365 days a year. If anything unusual happens at 3am on a Sunday, we catch it — not you.",
+   "—","—","✓","—","✓"],
+  ["MANAGED SERVICES","Dedicated account manager",
+   "One person who knows your business, your team and your history. You call them directly — no ticket queues, no starting from scratch every time.",
+   "—","—","—","—","✓"],
+
+  ["INTERNAL VISIBILITY","Real-time network monitoring",
+   "We watch everything moving through your network live. Slow computers, unusual activity, overloaded connections — we see them the moment they appear, not after they cause damage.",
+   "—","—","✓","—","✓"],
+  ["INTERNAL VISIBILITY","Performance alerts",
+   "If any part of your network starts slowing down or acting abnormally, we get an automatic alert and investigate immediately — before your team even notices a problem.",
+   "—","—","✓","—","✓"],
+  ["INTERNAL VISIBILITY","Anomaly detection",
+   "Our system learns what 'normal' looks like for your business. When something unusual happens — like data being sent at odd hours — it flags it for our team to review.",
+   "—","—","✓","—","✓"],
+  ["INTERNAL VISIBILITY","Monthly executive report",
+   "A business-level summary written for owners and managers — not IT people. Shows what was protected, what was fixed and what improved, all in clear language.",
+   "—","—","✓","—","✓"],
+
+  ["CYBERSECURITY","Advanced content filtering",
+   "Blocks dangerous, inappropriate or time-wasting websites from loading on your network. Protects your team from accidentally visiting sites that could infect your systems.",
+   "—","✓","✓","✓","✓"],
+  ["CYBERSECURITY","Threat prevention / edge protection",
+   "A layer of protection at the entrance of your network that stops known attack patterns, malware downloads and suspicious traffic before they even get inside.",
+   "—","✓","✓","✓","✓"],
+  ["CYBERSECURITY","Endpoint protection (EDR)",
+   "Advanced antivirus for every computer and laptop in your business. Unlike basic antivirus, it watches for behavior — catching new threats that standard tools miss.",
+   "+","+","+","+","✓"],
+  ["CYBERSECURITY","Email security",
+   "Scans every incoming email for phishing links, dangerous attachments and impersonation attempts before they reach your team's inbox. Stops the #1 way hackers get in.",
+   "+","+","+","+","✓"],
+
+  ["EXTERNAL THREATS","Dark web credential monitoring",
+   "We continuously scan criminal forums and dark web markets. If your company's passwords or employee credentials appear in a known breach, we alert you immediately — before attackers use them.",
+   "—","—","—","✓","✓"],
+  ["EXTERNAL THREATS","Phishing campaign detection",
+   "We monitor for emails and websites designed to trick your employees or clients into giving up passwords or money. The #1 attack method against small businesses.",
+   "—","—","—","✓","✓"],
+  ["EXTERNAL THREATS","Fake domain / website detection",
+   "Criminals sometimes create websites that look exactly like yours to deceive your clients. We detect these fake sites and alert you so you can take them down fast.",
+   "—","—","—","✓","✓"],
+  ["EXTERNAL THREATS","Brand & digital identity protection",
+   "We monitor the internet for unauthorized use of your company name, logo or identity — protecting your reputation and your clients from being deceived by imposters.",
+   "—","—","—","✓","✓"],
+
+  ["SOC / RESPONSE","SOC 24×7 operations",
+   "A full Security Operations Center — a dedicated team of cybersecurity experts watching your environment around the clock, correlating threat data and hunting for intrusions.",
+   "—","—","—","—","✓"],
+  ["SOC / RESPONSE","Active incident response",
+   "When a real attack happens, we don't just send you an alert — we act. Our team immediately contains the threat, isolates affected systems and stops the damage from spreading.",
+   "—","—","—","—","✓"],
+  ["SOC / RESPONSE","Threat intelligence correlation",
+   "We match what's happening inside your network with global threat intelligence data. This lets us detect attacks that have never been seen before — not just known ones.",
+   "—","—","—","—","✓"],
+  ["SOC / RESPONSE","Compliance-ready reporting",
+   "Detailed documentation of your security posture for auditors, regulators and insurers. Critical for businesses in healthcare (HIPAA), finance or legal — where compliance is mandatory.",
+   "—","—","—","—","✓"],
+
+  ["ADD-ONS AVAILABLE","Backup & recovery",
+   "Automatic daily backups of your critical data, tested regularly. If ransomware hits or hardware fails, your files can be restored quickly — often within hours.",
+   "+","+","+","+","+"],
+  ["ADD-ONS AVAILABLE","Microsoft 365 / Google Workspace",
+   "Full management of your cloud email and productivity apps — security settings, user accounts, permissions and ongoing support so your team always has what they need.",
+   "+","+","+","+","+"],
+  ["ADD-ONS AVAILABLE","Security awareness training",
+   "Interactive training that teaches your team to recognize phishing emails, suspicious links and social engineering attempts. The human firewall is your last line of defense.",
+   "+","+","+","+","+"],
+  ["ADD-ONS AVAILABLE","On-site support",
+   "When a problem requires physical hands — installing equipment, replacing hardware or setting up a new office — our team comes to your location.",
+   "+","+","+","+","+"],
+  ["ADD-ONS AVAILABLE","Compliance readiness (HIPAA/SOC2)",
+   "Structured help to meet regulatory requirements for your industry. We document your security controls, identify gaps and help you satisfy auditors — without the legal headache.",
+   "+","+","+","+","+"],
 ];
-const el=document.getElementById('faq-list');
-if(!el)return;
-let html='';
-faqs.forEach(([q,a],i)=>{
-  html+=`<div style="background:var(--bg-card);padding:0">
-    <button onclick="this.parentElement.classList.toggle('open')" style="width:100%;text-align:left;background:none;border:none;padding:22px 28px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px">
-      <span style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.4">${String(i+1).padStart(2,'0')} &nbsp; ${q}</span>
-      <span class="faq-icon" style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--vivid-sky);flex-shrink:0;transition:transform .2s">+</span>
-    </button>
-    <div class="faq-body" style="max-height:0;overflow:hidden;transition:max-height .3s ease">
-      <div style="padding:0 28px 22px;font-size:15px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border)">${a}</div>
-    </div>
-  </div>`;
-});
-el.innerHTML=html;
-document.querySelectorAll('#faq-list > div').forEach(d=>{
-  const btn=d.querySelector('button');
-  const body=d.querySelector('.faq-body');
-  const icon=d.querySelector('.faq-icon');
-  btn.addEventListener('click',()=>{
-    const open=d.classList.contains('open');
-    body.style.maxHeight=open?'0':body.scrollHeight+'px';
-    icon.style.transform=open?'':'rotate(45deg)';
-    icon.textContent=open?'+':'×';
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD COMPARISON TABLE
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  const colBg = [
+    "background:#0f0f0f",
+    "background:#0f0f0f",
+    "background:rgba(0,0,208,0.08)",
+    "background:#0f0f0f",
+    "background:#0f0f0f",
+  ];
+  const vc = v => v==="✓" ? "#22C55E" : v==="+" ? "#3CD2F0" : "#2d2d2d";
+  const vw = v => v==="✓" ? "700" : "400";
+
+  let html = "";
+  let lastCat = "";
+  let rowIdx = 0;
+
+  tableData.forEach(([cat, feat, explain, ...vals]) => {
+    if(cat !== lastCat) {
+      lastCat = cat;
+      html += `<tr class="cat-header" data-cat="${cat}">
+        <td colspan="6" style="padding:9px 16px 5px;background:#050505;border-top:1px solid rgba(255,255,255,0.07);border-bottom:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3CD2F0">${cat}</td>
+      </tr>`;
+    }
+
+    const rid = `r${rowIdx}`;
+    const eid = `e${rowIdx}`;
+    rowIdx++;
+
+    html += `<tr class="cmp-row" data-cat="${cat}" data-rid="${rid}" onclick="toggleExplain('${eid}','${rid}')">
+      <td style="padding:10px 16px;border-top:1px solid rgba(255,255,255,0.05);background:#0c0c0c;color:#C8C8C8;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.4">
+        <span style="display:flex;align-items:center;gap:8px">
+          <span class="row-toggle" id="${rid}-icon" style="color:var(--c-amber);font-size:13px;flex-shrink:0;transition:transform .2s">▾</span>
+          ${feat}
+        </span>
+      </td>`;
+
+    vals.forEach((v,i) => {
+      html += `<td style="text-align:center;padding:10px 6px;border-top:1px solid rgba(255,255,255,0.05);${colBg[i]};color:${vc(v)};font-size:${v==="✓"?"17px":"13px"};font-weight:${vw(v)}">${v}</td>`;
+    });
+    html += `</tr>`;
+
+    // Explanation row — hidden by default
+    html += `<tr class="cmp-explain" id="${eid}" data-cat="${cat}" style="display:none">
+      <td colspan="6" style="padding:0 16px 16px 44px;background:#080808;border-bottom:1px solid rgba(60,210,240,0.1)">
+        <div style="border-left:2px solid var(--c-amber);padding:10px 16px;background:var(--c-amber-dim);border-radius:0 4px 4px 0">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c-amber);margin-bottom:6px">What this means for your business</div>
+          <div style="font-size:13px;color:#D0D0D0;line-height:1.7">${explain}</div>
+        </div>
+      </td>
+    </tr>`;
   });
-});
+
+  const tb = document.getElementById('compare-body');
+  if(tb) tb.innerHTML = html;
 })();
 
+// Toggle explanation row
+function toggleExplain(eid, rid) {
+  const exp = document.getElementById(eid);
+  const icon = document.getElementById(rid + '-icon');
+  if(!exp) return;
+  const isOpen = exp.style.display !== 'none';
+  exp.style.display = isOpen ? 'none' : 'table-row';
+  if(icon) icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// Category filter
+let activeCat = 'ALL';
+function filterCat(cat) {
+  activeCat = cat;
+  // update button states
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  // show/hide rows
+  document.querySelectorAll('#compare-body tr').forEach(row => {
+    const rc = row.dataset.cat;
+    if(!rc) return;
+    if(cat === 'ALL' || rc === cat) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MOBILE PLAN CARD CAROUSEL
+// ═══════════════════════════════════════════════════════════════
+let currentCard = 0;
+const TOTAL_CARDS = 5;
+const NAMES = ['START','CONTROL','INSIGHT ⭐','DEFEND','ELITE'];
+
+function initCarousel() {
+  const nav = document.getElementById('plan-nav');
+  const arrows = document.getElementById('plan-arrows');
+  const track = document.getElementById('plan-track');
+  if(!nav || !track) return;
+
+  const isMobile = window.innerWidth <= 860;
+
+  if(isMobile) {
+    nav.style.display = 'flex';
+    arrows.style.display = 'flex';
+
+    // Build nav dots
+    nav.innerHTML = '';
+    for(let i=0;i<TOTAL_CARDS;i++){
+      nav.innerHTML += `<button onclick="goToCard(${i})" class="plan-dot ${i===0?'active':''}" title="${NAMES[i]}"></button>`;
+    }
+
+    // Make sure all cards exist as block elements for layout
+    const cards = track.querySelectorAll('.plan-card');
+    cards.forEach((c,i) => {
+      c.classList.toggle('card-active', i === 0);
+    });
+
+    updateArrows();
+  } else {
+    // Desktop: reset to grid
+    nav.style.display = 'none';
+    arrows.style.display = 'none';
+    track.querySelectorAll('.plan-card').forEach(c => {
+      c.classList.remove('card-active');
+      c.style.position = '';
+    });
+  }
+}
+
+function goToCard(idx) {
+  if(idx < 0 || idx >= TOTAL_CARDS) return;
+
+  const track = document.getElementById('plan-track');
+  const cards = track.querySelectorAll('.plan-card');
+
+  // Slide direction
+  const dir = idx > currentCard ? 1 : -1;
+
+  // Animate out current
+  const current = track.querySelector('.card-active');
+  if(current) {
+    current.style.transition = 'opacity .2s ease, transform .2s ease';
+    current.style.opacity = '0';
+    current.style.transform = `translateX(${-dir * 40}px)`;
+    setTimeout(() => {
+      current.classList.remove('card-active');
+      current.style.transition = '';
+      current.style.opacity = '';
+      current.style.transform = '';
+    }, 200);
+  }
+
+  // Animate in next
+  setTimeout(() => {
+    cards[idx].style.transform = `translateX(${dir * 40}px)`;
+    cards[idx].style.opacity = '0';
+    cards[idx].classList.add('card-active');
+    requestAnimationFrame(() => {
+      cards[idx].style.transition = 'opacity .25s ease, transform .25s ease';
+      cards[idx].style.opacity = '1';
+      cards[idx].style.transform = 'translateX(0)';
+    });
+  }, 180);
+
+  currentCard = idx;
+  updateNavDots();
+  updateArrows();
+  updateCounter();
+}
+
+function updateNavDots() {
+  document.querySelectorAll('.plan-dot').forEach((d,i) => {
+    d.classList.toggle('active', i === currentCard);
+  });
+}
+
+function updateArrows() {
+  const prev = document.getElementById('prev-btn');
+  const next = document.getElementById('next-btn');
+  if(prev) prev.style.opacity = currentCard === 0 ? '0.3' : '1';
+  if(next) next.style.opacity = currentCard === TOTAL_CARDS-1 ? '0.3' : '1';
+}
+
+function updateCounter() {
+  const counter = document.getElementById('card-counter');
+  if(counter) counter.textContent = `${NAMES[currentCard]} · ${currentCard+1} of ${TOTAL_CARDS}`;
+}
+
+// Touch/swipe support for carousel
+(function(){
+  let startX = 0;
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('plan-track');
+    if(!track) return;
+    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 50) goToCard(dx < 0 ? currentCard+1 : currentCard-1);
+    }, {passive:true});
+  });
+})();
+
+// Init on load and resize
+window.addEventListener('DOMContentLoaded', () => {
+  initCarousel();
+  // Set initial counter text
+  const counter = document.getElementById('card-counter');
+  if(counter) counter.textContent = `${NAMES[0]} · 1 of ${TOTAL_CARDS}`;
+});
+window.addEventListener('resize', initCarousel);
+
+// ═══════════════════════════════════════════════════════════════
+// FAQ ACCORDION
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  const faqs=[
+    ["Do I need to buy new equipment?","Not necessarily. We assess your current setup first. In many cases, we can manage and improve what you already have. If new equipment is needed, we'll tell you exactly why — and what it costs — before anything happens."],
+    ["Can you support multiple locations?","Yes. Multi-site management is one of our core strengths. We deploy consistent security policies, unified monitoring, and centralized visibility across every location — from one partner, one invoice."],
+    ["What happens if my internet goes down?","With our CONTROL plan and above, you get automatic internet failover — a backup connection that kicks in instantly when your primary provider fails. Your team keeps working. Your customers keep reaching you."],
+    ["Do you provide monitoring? Who watches my network?","Yes. Depending on your plan, we provide continuous network monitoring, performance alerting, and proactive support. We identify and resolve issues before your team ever notices them."],
+    ["Can you work with my current internet provider?","Absolutely. We work with any ISP. We manage the infrastructure on your side — the routers, firewalls, switches, and Wi-Fi — regardless of who provides your internet connection."],
+    ["Do I need an internal IT team to work with Teletex?","No. That's the point. Teletex is your IT team. We handle everything — monitoring, management, support, and security — so you don't need to hire, train, or manage internal IT staff."],
+    ["Is this fully managed? What does that mean?","Fully managed means we own the outcome. We monitor, maintain, update, and support your infrastructure proactively — not just when something breaks. You pay one predictable monthly fee. We handle everything else."],
+    ["How long does it take to get started?","We start with a free assessment — typically 15 minutes. From there, most deployments are completed within days, not months. We work around your schedule to minimize disruption."],
+  ];
+  const el=document.getElementById('faq-list');
+  if(!el)return;
+  let html='';
+  faqs.forEach(([q,a],i)=>{
+    html+=`<div style="background:var(--bg-card);padding:0;border-bottom:1px solid var(--border)">
+      <button onclick="this.parentElement.classList.toggle('faq-open')" style="width:100%;text-align:left;background:none;border:none;padding:22px 28px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--text-primary);line-height:1.4"><span style="color:var(--c-violet)">${String(i+1).padStart(2,'0')}</span>&nbsp;&nbsp;${q}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--vivid-sky);flex-shrink:0;transition:transform .2s">+</span>
+      </button>
+      <div style="max-height:0;overflow:hidden;transition:max-height .3s ease">
+        <div style="padding:0 28px 22px;font-size:14px;color:#C8C8C8;line-height:1.75;border-top:1px solid var(--border)">${a}</div>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
+  document.querySelectorAll('#faq-list > div').forEach(d=>{
+    const btn=d.querySelector('button');
+    const body=d.querySelector('div > div');
+    const icon=d.querySelector('button span:last-child');
+    btn.addEventListener('click',()=>{
+      const open=d.classList.contains('faq-open');
+      if(body) body.style.maxHeight=open?'0':body.scrollHeight+'px';
+      if(icon){ icon.style.transform=open?'':'rotate(45deg)'; icon.textContent=open?'+':'×'; }
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// STICKY CTA + NAV SCROLL + REVEAL
+// ═══════════════════════════════════════════════════════════════
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', scrollY > 36);
-  // Sticky CTA bar — show after 600px scroll
   const sticky = document.getElementById('stickyCta');
-  if (sticky) sticky.classList.toggle('visible', scrollY > 600);
+  if(sticky) sticky.classList.toggle('visible', scrollY > 600);
 });
 
-// Scroll reveal
 const els = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
-    if (e.isIntersecting) {
+    if(e.isIntersecting) {
       setTimeout(() => e.target.classList.add('in'), i * 65);
       io.unobserve(e.target);
     }
