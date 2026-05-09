@@ -288,7 +288,7 @@ nav.scrolled {
   color: var(--text-primary);
   margin-bottom: 28px;
 }
-.hero-h1 .hl { color: var(--vivid-sky); }
+.hero-h1 .hl { color: var(--vivid-sky); margin-left: .08em; }
 .hero-h1 .prompt { color: var(--prompt); }
 
 .hero-sub {
@@ -882,6 +882,14 @@ footer {
 .lang-btn:hover,.lang-btn.active{border-color:var(--vivid-sky);color:#fff;background:rgba(60,210,240,.12)}
 .lang-btn span{font-size:15px;margin-right:4px}
 @media(max-width:768px){.lang-switcher{gap:4px;margin-left:auto}.lang-btn{font-size:0;padding:7px}.lang-btn span{font-size:16px;margin-right:0}}
+
+/* ── SPACING SAFEGUARDS FOR MULTILINGUAL TEXT ─────────────── */
+.faq-num{display:inline-block;margin-right:10px;color:var(--c-violet);font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:0}
+.faq-question-text{display:inline;white-space:normal}
+.faq-item.faq-open .faq-toggle{border-bottom:1px solid var(--border)}
+.faq-toggle span:first-child{min-width:0}
+.faq-panel{will-change:max-height}
+.hero-h1 .hl{display:inline-block}
 
 </style>
 </head>
@@ -2099,21 +2107,39 @@ function updateCalculator() {
   if(coffeeEl) coffeeEl.innerHTML = `~$${coffeeCost.toLocaleString()}<span class="anchor-per">/mo</span>`;
 
   const coffeeDesc = document.getElementById('desc-coffee');
-  if(coffeeDesc) coffeeDesc.textContent = `${teamSize} people × 2 capsules/day × $0.75/capsule × 20 workdays. Premium single-serve pods — the ones your team actually drinks.`;
+  if(coffeeDesc) {
+    const lang = localStorage.getItem('teletex_lang') || 'en';
+    coffeeDesc.textContent = lang === 'pt'
+      ? `${teamSize} pessoas × 2 cápsulas/dia × $0.75/cápsula × 20 dias úteis. Cápsulas premium individuais — as que sua equipe realmente toma.`
+      : (lang === 'es'
+        ? `${teamSize} personas × 2 cápsulas/día × $0.75/cápsula × 20 días hábiles. Cápsulas premium individuales — las que tu equipo realmente toma.`
+        : `${teamSize} people × 2 capsules/day × $0.75/capsule × 20 workdays. Premium single-serve pods — the ones your team actually drinks.`);
+  }
 
   // Update phones card
   const phonesEl = document.getElementById('calc-phones');
   if(phonesEl) phonesEl.innerHTML = `~$${phonesCost.toLocaleString()}<span class="anchor-per">/mo</span>`;
 
   const phonesDesc = document.getElementById('desc-phones');
-  if(phonesDesc) phonesDesc.textContent = `${teamSize} business lines on a standard carrier plan — calls, data, hotspot, device insurance.`;
+  if(phonesDesc) {
+    const lang = localStorage.getItem('teletex_lang') || 'en';
+    phonesDesc.textContent = lang === 'pt'
+      ? `${teamSize} linhas corporativas em um plano padrão de operadora — chamadas, dados, hotspot e seguro do aparelho.`
+      : (lang === 'es'
+        ? `${teamSize} líneas corporativas en un plan estándar de operador — llamadas, datos, hotspot y seguro del dispositivo.`
+        : `${teamSize} business lines on a standard carrier plan — calls, data, hotspot, device insurance.`);
+  }
 
   // Update ratio callout
   const ratioEl = document.getElementById('coffee-ratio');
   if(ratioEl) ratioEl.textContent = ratio + '×';
 
   const coffeeVsEl = document.getElementById('coffee-vs-text');
-  if(coffeeVsEl) coffeeVsEl.textContent = `$${coffeeCost.toLocaleString()}/mo in premium coffee capsules`;
+  if(coffeeVsEl) {
+    const lang = localStorage.getItem('teletex_lang') || 'en';
+    const prefix = lang === 'pt' ? 'mês em cápsulas de café premium' : (lang === 'es' ? 'mes en cápsulas de café premium' : 'mo in premium coffee capsules');
+    coffeeVsEl.textContent = `$${coffeeCost.toLocaleString()}/` + prefix;
+  }
 
   // Animate grid cards with a subtle pulse
   const grid = document.getElementById('anchor-grid-cards');
@@ -2464,26 +2490,27 @@ window.addEventListener('resize', initCarousel);
   if(!el)return;
   let html='';
   faqs.forEach(([q,a],i)=>{
-    html+=`<div style="background:var(--bg-card);padding:0;border-bottom:1px solid var(--border)">
-      <button onclick="this.parentElement.classList.toggle('faq-open')" style="width:100%;text-align:left;background:none;border:none;padding:22px 28px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--text-primary);line-height:1.4"><span style="color:var(--c-violet)">${String(i+1).padStart(2,'0')}</span>&nbsp;&nbsp;${q}</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--vivid-sky);flex-shrink:0;transition:transform .2s">+</span>
+    html+=`<div class="faq-item" style="background:var(--bg-card);padding:0;border-bottom:1px solid var(--border)">
+      <button type="button" class="faq-toggle" aria-expanded="false" style="width:100%;text-align:left;background:none;border:none;padding:22px 28px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--text-primary);line-height:1.4;display:flex;align-items:baseline;gap:10px;min-width:0"><span class="faq-num">${String(i+1).padStart(2,'0')}</span><span class="faq-question-text">${q}</span></span>
+        <span class="faq-icon" style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--vivid-sky);flex-shrink:0;transition:transform .15s ease">+</span>
       </button>
-      <div style="max-height:0;overflow:hidden;transition:max-height .3s ease">
+      <div class="faq-panel" style="max-height:0;overflow:hidden;transition:max-height .18s ease">
         <div style="padding:0 28px 22px;font-size:14px;color:#C8C8C8;line-height:1.75;border-top:1px solid var(--border)">${a}</div>
       </div>
     </div>`;
   });
   el.innerHTML=html;
-  document.querySelectorAll('#faq-list > div').forEach(d=>{
-    const btn=d.querySelector('button');
-    const body=d.querySelector('div > div');
-    const icon=d.querySelector('button span:last-child');
+  document.querySelectorAll('#faq-list .faq-item').forEach(d=>{
+    const btn=d.querySelector('.faq-toggle');
+    const panel=d.querySelector('.faq-panel');
+    const icon=d.querySelector('.faq-icon');
     btn.addEventListener('click',()=>{
-      const open=d.classList.contains('faq-open');
-      if(body) body.style.maxHeight=open?'0':body.scrollHeight+'px';
-      if(icon){ icon.style.transform=open?'':'rotate(45deg)'; icon.textContent=open?'+':'×'; }
-    });
+      const open=d.classList.toggle('faq-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if(panel) panel.style.maxHeight = open ? panel.scrollHeight + 'px' : '0px';
+      if(icon){ icon.style.transform = open ? 'rotate(45deg)' : 'rotate(0deg)'; icon.textContent = open ? '×' : '+'; }
+    }, {passive:true});
   });
 })();
 
@@ -3043,16 +3070,444 @@ els.forEach(el => io.observe(el));
   const skipTags = new Set(['SCRIPT','STYLE','NOSCRIPT','SVG']);
 
   function norm(s){ return String(s).replace(/\s+/g,' ').trim(); }
-  function translateString(s, lang){
-    if(lang === 'en') return s;
+
+  // Final Spanish completion: every Portuguese key also has a Spanish version.
+  Object.assign(T.es, {
+  "teletex US — Central Florida | Stay Online. Stay Secure. No Matter What.": "teletex US — Florida Central | Mantente Online. Mantente Seguro. Pase lo que Pase.",
+  "Slide to match your team size and see how premium capsule coffee compares to Teletex protection.": "Ajusta según el tamaño de tu equipo y mira cómo el café premium en cápsulas se compara con la protección de Teletex.",
+  "Managed network, security firewall, 24/7 monitoring, IT support & monthly health report. Everything included. No surprises.": "Red administrada, firewall de seguridad, monitoreo 24/7, soporte de TI e informe mensual de salud. Todo incluido. Sin sorpresas.",
+  "Teletex START Plan · Central Florida · No setup fees · No contracts": "Plan Teletex START · Florida Central · Sin costos de implementación · Sin contratos",
+  "$640/mo in coffee capsules": "$640/mes en cápsulas de café",
+  "vs.": "vs.",
+  "$297/mo in full network security & managed IT.": "$297/mes en seguridad de red completa y TI administrada.",
+  "Risk vs protection split": "Comparación riesgo vs. protección",
+  "Legal fees, data recovery, downtime, lost clients, reputation damage. Most small businesses never recover.": "Honorarios legales, recuperación de datos, inactividad, pérdida de clientes y daño a la reputación. Muchas pequeñas empresas nunca se recuperan.",
+  "Teletex START · per year": "Teletex START · por año",
+  "That's": "Eso equivale a",
+  "33 years of Teletex": "33 años de Teletex",
+  "for the cost of one bad day. Full protection — starting today.": "por el costo de un solo mal día. Protección completa — desde hoy.",
+  "Data from the world's most authoritative cybersecurity research — confirmed incidents, real losses, real businesses like yours.": "Datos de las investigaciones de ciberseguridad más confiables del mundo — incidentes confirmados, pérdidas reales y empresas como la tuya.",
+  "Average cost of a data breach for US businesses — the highest of any country in the world. For small businesses, a single incident is often fatal.": "Costo promedio de una brecha de datos para empresas de EE. UU. — el más alto del mundo. Para pequeñas empresas, un solo incidente puede ser fatal.",
+  "of all SMB data breaches now involve ransomware — compared to just 39% at large enterprises. Small businesses are 2.3× more exposed.": "de todas las brechas de datos en SMBs ahora involucran ransomware — frente a solo 39% en grandes empresas. Las pequeñas empresas están 2,3× más expuestas.",
+  "in total cybercrime losses reported to the FBI in 2024 — a 33% jump from 2023. That's $2,000+ stolen from a US business every single minute.": "en pérdidas totales por ciberdelitos reportadas al FBI en 2024 — un aumento del 33% frente a 2023. Son más de $2,000 robados a empresas de EE. UU. cada minuto.",
+  "average time to identify and contain a breach. Most businesses don't even know they were hit for over 8 months — while attackers stay inside.": "tiempo promedio para identificar y contener una brecha. Muchas empresas ni siquiera saben que fueron atacadas durante más de 8 meses — mientras los atacantes permanecen dentro.",
+  "of breaches involve a human element — phishing, stolen passwords, or employee error. Your team is the #1 attack surface.": "de las brechas involucran un factor humano — phishing, contraseñas robadas o error de empleados. Tu equipo es la superficie de ataque número 1.",
+  "lost to Business Email Compromise (BEC) in 2024 alone. A fake email. A rushed wire transfer. Funds gone — with little chance of recovery.": "perdidos por Business Email Compromise (BEC) solo en 2024. Un correo falso. Una transferencia apresurada. Fondos perdidos — con poca posibilidad de recuperación.",
+  "of all data breaches globally now involve ransomware — a 37% jump year over year. It's no longer a question of if, but when.": "de todas las brechas de datos globales ahora involucran ransomware — un aumento del 37% interanual. Ya no es cuestión de si ocurrirá, sino cuándo.",
+  "average cost per compromised record — up 11% from prior year. A 1,000-customer data leak costs your business $173,000 in damages alone.": "costo promedio por registro comprometido — 11% más que el año anterior. Una filtración de 1,000 clientes puede costarle a tu empresa $173,000 solo en daños.",
+  "Florida ranks among the top 3 states in total cybercrime losses reported to the FBI — with businesses in Orlando, Tampa and Miami among the most targeted in the Southeast.": "Florida está entre los 3 estados con mayores pérdidas por ciberdelitos reportadas al FBI — con empresas en Orlando, Tampa y Miami entre los objetivos principales del sureste.",
+  "State · Cybercrime": "Estado · Ciberdelito",
+  "Losses 2024": "Pérdidas 2024",
+  "IT problems discovered after they've already cost you money and downtime": "Problemas de TI descubiertos después de haber causado costos e inactividad",
+  "Your internet goes down — your business stops completely, no backup plan": "Se cae tu internet — tu empresa se detiene por completo, sin plan de respaldo",
+  "No one knows what's happening on your network right now": "Nadie sabe qué está pasando en tu red ahora mismo",
+  "Paying someone to fix things only after they break": "Pagar a alguien para arreglar las cosas solo después de que se rompen",
+  "One employee clicking a bad email brings everything down": "Un empleado haciendo clic en un correo malicioso puede derribar todo",
+  "No idea if your passwords or data are already exposed online": "Sin saber si tus contraseñas o datos ya están expuestos online",
+  "Surprise IT bills with no predictable monthly cost": "Facturas inesperadas de TI, sin costo mensual predecible",
+  "Problems caught and resolved before your team ever notices them": "Problemas detectados y resueltos antes de que tu equipo los note",
+  "If your internet goes down, automatic backup kicks in — you stay online": "Si se cae tu internet, el respaldo automático entra en acción — sigues online",
+  "Full real-time visibility — nothing hidden, nothing assumed": "Visibilidad total en tiempo real — nada oculto, nada supuesto",
+  "Proactive management — we prevent, not just repair": "Gestión proactiva — prevenimos, no solo reparamos",
+  "Your team is protected even when they make human mistakes": "Tu equipo está protegido incluso cuando comete errores humanos",
+  "We monitor the internet for your exposed credentials 24/7": "Monitoreamos internet 24/7 en busca de credenciales expuestas",
+  "One flat monthly fee — no surprises, no emergency invoices": "Una tarifa mensual fija — sin sorpresas, sin facturas de emergencia",
+  "Your business network, professionally managed and secured. No more guessing.": "La red de tu empresa, administrada y protegida profesionalmente. Sin suposiciones.",
+  "Managed business network — wired & Wi-Fi": "Red empresarial administrada — cableada y Wi‑Fi",
+  "Security firewall — stops threats before they enter": "Firewall de seguridad — bloquea amenazas antes de que entren",
+  "Remote IT support — fast resolution": "Soporte remoto de TI — resolución rápida",
+  "Monthly health report in plain English": "Informe mensual de salud en lenguaje claro",
+  "Best for: 1–20 employees": "Ideal para: 1–20 empleados",
+  "Everything in START, plus internet backup so one outage doesn't stop your business.": "Todo lo de START, más respaldo de internet para que una caída no detenga tu negocio.",
+  "Everything in START": "Todo lo de START",
+  "Automatic internet failover — stay online if your provider goes down": "Failover automático de internet — sigue online si tu proveedor falla",
+  "Advanced firewall and content filtering": "Firewall avanzado y filtrado de contenido",
+  "Guest Wi-Fi isolated from your business data": "Wi‑Fi de invitados aislado de los datos de tu empresa",
+  "Best for: 20–40 employees": "Ideal para: 20–40 empleados",
+  "See everything happening inside your network before problems affect your team.": "Ve todo lo que ocurre dentro de tu red antes de que los problemas afecten a tu equipo.",
+  "Everything in CONTROL": "Todo lo de CONTROL",
+  "Real-time network monitoring — we see issues before you do": "Monitoreo de red en tiempo real — vemos los problemas antes que tú",
+  "Performance alerts — slow systems caught early": "Alertas de rendimiento — lentitud detectada a tiempo",
+  "Monthly executive report in plain English": "Informe ejecutivo mensual en lenguaje claro",
+  "Proactive support — we call you": "Soporte proactivo — nosotros te llamamos",
+  "Best for: 40–60 employees": "Ideal para: 40–60 empleados",
+  "Monitor what attackers see about your business from the outside — before they use it.": "Monitorea lo que los atacantes ven de tu empresa desde afuera — antes de que lo usen.",
+  "Dark web monitoring — alerts if your passwords are breached": "Monitoreo de dark web — alertas si tus contraseñas se filtran",
+  "Phishing detection targeting your business": "Detección de phishing dirigido a tu empresa",
+  "Fake website alerts — fraudulent sites impersonating your brand": "Alertas de sitios falsos — páginas fraudulentas que imitan tu marca",
+  "Brand protection monitoring 24/7": "Monitoreo de protección de marca 24/7",
+  "Best for: 60–100 employees": "Ideal para: 60–100 empleados",
+  "Complete, fully managed protection inside and outside. Zero blind spots.": "Protección completa y totalmente administrada por dentro y por fuera. Cero puntos ciegos.",
+  "Everything in INSIGHT + DEFEND": "Todo lo de INSIGHT + DEFEND",
+  "24/7 security operations team": "Equipo de operaciones de seguridad 24/7",
+  "Incident response — we act, not just alert": "Respuesta a incidentes — actuamos, no solo alertamos",
+  "Best for: 100+ employees": "Ideal para: 100+ empleados",
+  "Not sure which plan fits? Our free assessment tells you exactly what you need — no upsell, no pressure.": "¿No sabes qué plan encaja? Nuestra evaluación gratuita te muestra exactamente lo que necesitas — sin venta adicional, sin presión.",
+  "Talk to a human · Central Florida": "Habla con una persona · Florida Central",
+  "Business Development Representative · Teletex US Inc.": "Representante de Desarrollo de Negocios · Teletex US Inc.",
+  "Get My Free Assessment →": "Solicitar Mi Evaluación Gratuita →",
+  "Plan comparison · What each bundle actually delivers": "Comparación de planes · Lo que realmente entrega cada paquete",
+  "Everything Side by Side": "Todo Lado a Lado",
+  "Click any row to see a plain-English explanation of what that feature actually means for your business — no IT jargon.": "Haz clic en cualquier fila para ver una explicación clara de lo que esa función significa para tu empresa — sin jerga técnica.",
+  "▾ click for explanation": "▾ clic para explicación",
+  "You don't need to be a large corporation to be a target. 43% of all cyber attacks target small businesses specifically — because attackers know you're less protected.": "No necesitas ser una gran corporación para ser objetivo. El 43% de los ciberataques apunta específicamente a pequeñas empresas — porque los atacantes saben que están menos protegidas.",
+  "Unstructured or Outdated Infrastructure": "Infraestructura desorganizada u obsoleta",
+  "Aging equipment and poor network design create invisible vulnerabilities that grow more dangerous every day.": "Equipos antiguos y mal diseño de red crean vulnerabilidades invisibles que se vuelven más peligrosas cada día.",
+  "No Network Segmentation or Access Control": "Sin segmentación de red ni control de acceso",
+  "Your guest Wi-Fi and business systems sharing the same network — attackers can move freely between them.": "Tu Wi‑Fi de invitados y tus sistemas empresariales compartiendo la misma red — los atacantes pueden moverse libremente entre ellos.",
+  "No Internet Redundancy": "Sin redundancia de internet",
+  "One provider goes down and your entire operation stops cold. No backup. No warning. No revenue.": "Un proveedor falla y toda tu operación se detiene. Sin respaldo. Sin aviso. Sin ingresos.",
+  "No Internal Visibility": "Sin visibilidad interna",
+  "Performance issues, anomalies, and early-stage threats build quietly — until they become expensive emergencies.": "Problemas de rendimiento, anomalías y amenazas tempranas crecen en silencio — hasta convertirse en emergencias costosas.",
+  "No External Threat Awareness": "Sin conciencia de amenazas externas",
+  "Your passwords, your brand, your domain — exposed online right now, and you'd have no way of knowing.": "Tus contraseñas, tu marca, tu dominio — podrían estar expuestos online ahora mismo, y no tendrías forma de saberlo.",
+  "No Dedicated IT Oversight": "Sin supervisión dedicada de TI",
+  "Without structured management, every one of these risks compounds. The cost of inaction grows every single day.": "Sin gestión estructurada, cada uno de estos riesgos se acumula. El costo de no actuar crece todos los días.",
+  "You cannot protect what you cannot see — inside or outside your business.": "No puedes proteger lo que no puedes ver — dentro o fuera de tu empresa.",
+  "It's not just inconvenient. It's expensive. Here's what actually stops the moment your internet or network goes down — and what it costs your business every single minute.": "No es solo inconveniente. Es caro. Esto es lo que realmente se detiene cuando tu internet o red cae — y cuánto le cuesta a tu empresa cada minuto.",
+  "Average cost per hour of downtime · Small business": "Costo promedio por hora de inactividad · Pequeña empresa",
+  "Is your business prepared for even 30 minutes?": "¿Tu empresa está preparada incluso para 30 minutos?",
+  "Payments Stop Instantly": "Los pagos se detienen al instante",
+  "Card readers, POS systems, and payment processing go offline. You can't take a single transaction. Every minute is direct revenue loss.": "Lectores de tarjeta, POS y procesamiento de pagos quedan fuera de línea. No puedes aceptar una sola transacción. Cada minuto es pérdida directa de ingresos.",
+  "Phones Go Dead": "Los teléfonos se caen",
+  "VoIP phones, call centers, and client lines fail completely. Customers can't reach you. Deals die in silence.": "Teléfonos VoIP, call centers y líneas de clientes fallan por completo. Los clientes no pueden contactarte. Los negocios mueren en silencio.",
+  "Cloud Apps Lock Up": "Las apps en la nube se bloquean",
+  "Microsoft 365, your CRM, ERP, scheduling tools — all inaccessible. Your team sits idle. Deadlines get missed.": "Microsoft 365, tu CRM, ERP y herramientas de agenda — todo inaccesible. Tu equipo queda parado. Los plazos se pierden.",
+  "Security Goes Blind": "La seguridad queda ciega",
+  "Cameras, access control, and surveillance lose connectivity. You have no visibility into what's happening at your location.": "Cámaras, control de acceso y vigilancia pierden conectividad. No tienes visibilidad de lo que ocurre en tu ubicación.",
+  "Remote Teams Freeze": "Los equipos remotos se detienen",
+  "VPN access drops. Remote workers can't connect. Productivity across your entire distributed team hits zero — instantly.": "El acceso VPN se cae. Los trabajadores remotos no pueden conectarse. La productividad del equipo distribuido cae a cero — al instante.",
+  "Operations Grind to a Halt": "Las operaciones se paralizan",
+  "Inventory, logistics, scheduling, reporting — all down. And every hour it stays down, the damage compounds.": "Inventario, logística, programación e informes — todo fuera de línea. Y cada hora caída aumenta el daño.",
+  "See How We Keep You Online →": "Ver Cómo Te Mantenemos Online →",
+  "We're not a break-fix IT shop that shows up after something breaks. Teletex US is your managed services and cybersecurity partner — built to protect, stabilize, and scale your business with 40+ years of enterprise-grade discipline and zero IT jargon. 5,000+ clients served. 2,000+ projects delivered. 280+ professionals. One mission: keep your business running.": "No somos una empresa de TI reactiva que aparece después de que algo se rompe. Teletex US es tu socio de servicios administrados y ciberseguridad — creado para proteger, estabilizar y escalar tu empresa con más de 40 años de disciplina de nivel corporativo y cero jerga técnica. Más de 5,000 clientes atendidos. Más de 2,000 proyectos entregados. 280+ profesionales. Una misión: mantener tu negocio funcionando.",
+  "Cybersecurity-First Approach": "Enfoque de ciberseguridad primero",
+  "Every service we deliver is designed with security at its core — not bolted on as an afterthought when something goes wrong.": "Cada servicio que entregamos está diseñado con seguridad en el centro — no agregado después cuando algo sale mal.",
+  "Proactive, Not Reactive": "Proactivo, no reactivo",
+  "We monitor, alert, and resolve issues before they impact your team. We call you — you don't call us.": "Monitoreamos, alertamos y resolvemos problemas antes de que impacten a tu equipo. Nosotros te llamamos — tú no tienes que llamarnos.",
+  "Business Continuity by Design": "Continuidad del negocio por diseño",
+  "Redundancy, failover, and resilience are built into every layer of our platform — so one bad day doesn't stop your business.": "Redundancia, failover y resiliencia están integrados en cada capa de nuestra plataforma — para que un mal día no detenga tu negocio.",
+  "Full Visibility — Inside & Out": "Visibilidad total — por dentro y por fuera",
+  "Scalable Architecture": "Arquitectura escalable",
+  "Strategic IT Partnership": "Alianza estratégica de TI",
+  "Teletex takes full ownership of your network, security, and connectivity — so your team never has to think about it. Here's what's covered under every managed services plan.": "Teletex asume la responsabilidad de tu red, seguridad y conectividad — para que tu equipo no tenga que preocuparse por eso. Esto es lo que incluye cada plan de servicios administrados.",
+  "Everything above is delivered as a": "Todo lo anterior se entrega como un",
+  "fully managed monthly service": "servicio mensual totalmente administrado",
+  "— no hardware to buy, no vendors to manage, no IT team required.": "— sin hardware que comprar, sin proveedores que gestionar y sin necesidad de equipo interno de TI.",
+  "Our clients don't just get better IT — they get better business outcomes. Here's what a properly managed, protected, and monitored infrastructure actually delivers.": "Nuestros clientes no solo obtienen mejor TI — obtienen mejores resultados de negocio. Esto es lo que realmente entrega una infraestructura correctamente administrada, protegida y monitoreada.",
+  "Teletex US serves industries where downtime isn't just inconvenient — it's costly, dangerous, or legally problematic.": "Teletex US atiende industrias donde la inactividad no es solo inconveniente — es costosa, peligrosa o legalmente problemática.",
+  "Serving": "Atendiendo",
+  ", and all of Central Florida.": ", y toda la Florida Central.",
+  "Every Teletex managed services plan can be enhanced with targeted add-ons. Build the exact layer of coverage your business needs today — and add more as your operations evolve.": "Cada plan de servicios administrados de Teletex puede ampliarse con add-ons específicos. Construye la capa exacta de cobertura que tu empresa necesita hoy — y agrega más a medida que tus operaciones evolucionen.",
+  "No jargon. No runaround. Here are straight answers to the questions we get most often — before anyone even schedules a call.": "Sin jerga. Sin rodeos. Aquí tienes respuestas directas a las preguntas que recibimos con más frecuencia — incluso antes de agendar una llamada.",
+  "For nearly 40 years, Teletex has delivered mission-critical IT and cybersecurity to some of the world's most demanding organizations. The same team. The same discipline. Now available to your business in Orlando.": "Durante casi 40 años, Teletex ha entregado TI y ciberseguridad de misión crítica a algunas de las organizaciones más exigentes del mundo. El mismo equipo. La misma disciplina. Ahora disponible para tu empresa en Orlando.",
+  "We're building our Central Florida client success stories. If you're a local business owner who wants to protect your operations — and be featured as one of our first success stories in the region — get in touch.": "Estamos construyendo nuestros casos de éxito en Florida Central. Si eres propietario de un negocio local y quieres proteger tus operaciones — y aparecer como uno de nuestros primeros casos de éxito en la región — contáctanos.",
+  "Teletex is not a startup. We bring 40+ years of global IT expertise to your Central Florida business — with local presence, local team, and local accountability.": "Teletex no es una startup. Llevamos más de 40 años de experiencia global en TI a tu empresa en Florida Central — con presencia local, equipo local y responsabilidad local.",
+  "Now we bring that enterprise-grade capability to SMBs in Orlando — in a simple, predictable monthly model.": "Ahora llevamos esa capacidad de nivel corporativo a SMBs en Orlando — en un modelo mensual simple y predecible.",
+  "Most business owners are shocked by what we find. Exposed credentials. Single points of failure. Unmonitored networks. Our free assessment gives you the full picture — in plain English, in under 15 minutes, with zero pressure.": "La mayoría de los dueños de negocios se sorprenden con lo que encontramos. Credenciales expuestas. Puntos únicos de falla. Redes sin monitoreo. Nuestra evaluación gratuita te muestra el panorama completo — en lenguaje claro, en menos de 15 minutos y sin presión.",
+  "All rights reserved.": "Todos los derechos reservados.",
+  "– Craig Robinson, Research VP · Security Services · IDC · Verizon DBIR 2025 Launch": "– Craig Robinson, VP de Investigación · Servicios de Seguridad · IDC · Lanzamiento Verizon DBIR 2025",
+  "Managed help desk / N2 support": "Help desk administrado / soporte N2",
+  "Business Review / roadmap": "Revisión ejecutiva / roadmap",
+  "Internal network monitoring": "Monitoreo interno de red",
+  "Performance & anomaly monitoring": "Monitoreo de rendimiento y anomalías",
+  "External exposure monitoring": "Monitoreo de exposición externa",
+  "Phishing / brand impersonation monitoring": "Monitoreo de phishing / suplantación de marca",
+  "Security incident response guidance": "Guía de respuesta a incidentes de seguridad",
+  "SOC analyst response": "Respuesta de analista SOC",
+  "Endpoint protection / EDR": "Protección de endpoints / EDR",
+  "Email security / advanced anti-phishing": "Seguridad de email / anti-phishing avanzado",
+  "MFA / identity protection": "MFA / protección de identidad",
+  "Managed cloud backup": "Backup en la nube administrado",
+  "Compliance documentation support": "Soporte de documentación de cumplimiento",
+  "We install and manage a business-grade firewall that filters traffic, blocks basic threats, and gives your company a stronger security perimeter.": "Instalamos y administramos un firewall empresarial que filtra el tráfico, bloquea amenazas básicas y fortalece el perímetro de seguridad de tu empresa.",
+  "Your guest Wi‑Fi is separated from business systems. Visitors can get online without putting your files, computers or payment systems at risk.": "Tu Wi‑Fi de invitados queda separado de los sistemas del negocio. Los visitantes pueden conectarse sin poner en riesgo archivos, computadoras o sistemas de pago.",
+  "If your main internet provider goes down, a backup connection takes over automatically so your team can keep working.": "Si tu proveedor principal de internet falla, una conexión de respaldo toma el control automáticamente para que tu equipo siga trabajando.",
+  "We optimize multiple internet links so business apps, phones and cloud systems stay stable and use the best available connection.": "Optimizamos múltiples enlaces de internet para que apps empresariales, teléfonos y sistemas en la nube se mantengan estables usando la mejor conexión disponible.",
+  "Your team can connect securely from home, remote offices or while traveling — without exposing the business network.": "Tu equipo puede conectarse de forma segura desde casa, oficinas remotas o durante viajes — sin exponer la red del negocio.",
+  "Your team gets a professional support path for common issues, troubleshooting and escalation — instead of relying on whoever is available.": "Tu equipo obtiene una ruta profesional de soporte para problemas comunes, diagnóstico y escalación — en lugar de depender de quien esté disponible.",
+  "You receive a simple monthly summary of what happened, what was fixed, and what needs attention — in business language.": "Recibes un resumen mensual simple de lo que ocurrió, lo que se corrigió y lo que requiere atención — en lenguaje de negocio.",
+  "We help you plan the next steps for your infrastructure so IT decisions are proactive, not last-minute emergencies.": "Te ayudamos a planificar los próximos pasos de tu infraestructura para que las decisiones de TI sean proactivas, no emergencias de último minuto.",
+  "We watch the health of your network — uptime, device status, bottlenecks and issues — before they turn into outages.": "Monitoreamos la salud de tu red — disponibilidad, estado de dispositivos, cuellos de botella y problemas — antes de que se conviertan en caídas.",
+  "We detect unusual patterns, slow systems and early signs of trouble inside your environment so problems are caught earlier.": "Detectamos patrones inusuales, sistemas lentos y señales tempranas de problemas dentro de tu entorno para actuar antes.",
+  "We monitor what is exposed about your company online — domains, credentials, leaked data and digital risks outside your office.": "Monitoreamos lo que está expuesto sobre tu empresa online — dominios, credenciales, datos filtrados y riesgos digitales fuera de tu oficina.",
+  "We look for employee credentials and business data appearing in dark web sources so you can react before attackers use them.": "Buscamos credenciales de empleados y datos de la empresa en fuentes de la dark web para que puedas reaccionar antes de que los atacantes los usen.",
+  "We monitor for fake domains, phishing pages and brand impersonation attempts that could target your customers or staff.": "Monitoreamos dominios falsos, páginas de phishing e intentos de suplantación de marca que podrían afectar a tus clientes o equipo.",
+  "You get structured guidance when something suspicious happens — what to isolate, what to check, and how to respond safely.": "Recibes orientación estructurada cuando ocurre algo sospechoso — qué aislar, qué revisar y cómo responder de forma segura.",
+  "A security analyst can review alerts and help coordinate response for higher-risk events that require expert attention.": "Un analista de seguridad puede revisar alertas y ayudar a coordinar la respuesta en eventos de mayor riesgo que requieren atención experta.",
+  "Adds stronger protection on laptops, desktops and servers — detecting malware, suspicious behavior and advanced attacks.": "Agrega protección más fuerte en laptops, desktops y servidores — detectando malware, comportamiento sospechoso y ataques avanzados.",
+  "Improves protection against phishing, malicious attachments and fake emails before they reach your employees.": "Mejora la protección contra phishing, adjuntos maliciosos y correos falsos antes de que lleguen a tus empleados.",
+  "Adds stronger login protection so stolen passwords alone are not enough to access your systems.": "Agrega protección de acceso para que contraseñas robadas por sí solas no sean suficientes para entrar a tus sistemas.",
+  "Protects critical business files and systems with managed cloud backup options for recovery after mistakes or attacks.": "Protege archivos y sistemas críticos con opciones de backup en la nube administrado para recuperación después de errores o ataques.",
+  "Helps organize the reports, evidence and security documentation needed for audits, insurance or regulated industries.": "Ayuda a organizar informes, evidencias y documentación de seguridad necesaria para auditorías, seguros o industrias reguladas.",
+  "Absolutely. We work with any ISP. We manage the infrastructure on your side — the routers, firewalls, switches, and Wi-Fi — regardless of who provides your internet connection.": "Claro. Trabajamos con cualquier proveedor de internet. Administramos la infraestructura de tu lado — routers, firewalls, switches y Wi‑Fi — sin importar quién provee la conexión.",
+  "No. That's the point. Teletex is your IT team. We handle everything — monitoring, management, support, and security — so you don't need to hire, train, or manage internal IT staff.": "No. Ese es el punto. Teletex es tu equipo de TI. Nos encargamos de todo — monitoreo, gestión, soporte y seguridad — para que no tengas que contratar, entrenar o administrar personal interno de TI.",
+  "Fully managed means we own the outcome. We monitor, maintain, update, and support your infrastructure proactively — not just when something breaks. You pay one predictable monthly fee. We handle everything else.": "Totalmente administrado significa que asumimos la responsabilidad del resultado. Monitoreamos, mantenemos, actualizamos y damos soporte a tu infraestructura de forma proactiva — no solo cuando algo se rompe. Pagas una mensualidad predecible y nosotros nos encargamos del resto.",
+  "We start with a free assessment — typically 15 minutes. From there, most deployments are completed within days, not months. We work around your schedule to minimize disruption.": "Comenzamos con una evaluación gratuita — normalmente 15 minutos. A partir de ahí, la mayoría de las implementaciones se completa en días, no meses. Trabajamos según tu agenda para minimizar interrupciones.",
+  "Managed SOC & NOC 24×7 — zero security incidents since deployment": "SOC & NOC administrados 24×7 — cero incidentes de seguridad desde la implementación",
+  "System blocks hundreds of attack attempts continuously": "El sistema bloquea cientos de intentos de ataque continuamente",
+  "Significant reduction in operational costs": "Reducción significativa de costos operativos",
+  "Aviation · Mission-critical 3-year partnership": "Aviación · Alianza crítica de 3 años",
+  "Airport Operations · Brazil · Critical Infrastructure": "Operaciones aeroportuarias · Brasil · Infraestructura crítica",
+  "17-person dedicated team — L1 to L3 — supporting critical airport operations": "Equipo dedicado de 17 personas — L1 a L3 — apoyando operaciones críticas aeroportuarias",
+  "Full data security stack deployed across airport infrastructure": "Stack completo de seguridad de datos implementado en la infraestructura aeroportuaria",
+  "Healthcare · 1,200+ beds largest in region": "Salud · 1,200+ camas, el mayor de la región",
+  "Largest Hospital Complex · North-Northeast Brazil": "Mayor complejo hospitalario · Norte-Nordeste de Brasil",
+  "Full digital security posture transformation across hospital systems": "Transformación completa de la postura de seguridad digital en sistemas hospitalarios",
+  "Patient data protection in one of Brazil's most critical health environments": "Protección de datos de pacientes en uno de los entornos de salud más críticos de Brasil",
+  "Continuous monitoring and incident": "Monitoreo continuo y respuesta a incidentes",
+  "We realized we needed to give more protection to our IT infrastructure through continuous work. What motivated us to work with Teletex was the quality of services and the strong expertise in networks and security. Since the solution was implemented, not a single incident has been recorded.": "Nos dimos cuenta de que necesitábamos dar más protección a nuestra infraestructura de TI mediante un trabajo continuo. Lo que nos motivó a trabajar con Teletex fue la calidad de los servicios y la sólida experiencia en redes y seguridad. Desde que se implementó la solución, no se ha registrado ni un solo incidente.",
+  "Zurich Airport partnered with Teletex for IT support, service desk, and advanced data security solutions. Airport operations are among the most demanding environments in the world — zero tolerance for downtime, zero tolerance for security gaps. Teletex delivers both.": "Zurich Airport se asoció con Teletex para soporte de TI, service desk y soluciones avanzadas de seguridad de datos. Las operaciones aeroportuarias están entre los entornos más exigentes del mundo — tolerancia cero a la inactividad y cero tolerancia a brechas de seguridad. Teletex entrega ambas cosas.",
+  "The largest hospital complex in the North-Northeast region of Brazil strengthened its entire digital security posture in partnership with Teletex — protecting patient data, critical systems, and operational continuity across a complex, high-stakes environment.": "El mayor complejo hospitalario de la región Norte-Nordeste de Brasil fortaleció toda su postura de seguridad digital en alianza con Teletex — protegiendo datos de pacientes, sistemas críticos y continuidad operativa en un entorno complejo y de alta responsabilidad."
+});
+
+
+// Add-ons section — exact structured translations (prevents broken word-by-word replacements)
+Object.assign(T.pt, {
+  "Add-ons": "Serviços Adicionais",
+  "Expand Protection.": "Amplie a Proteção.",
+  "Increase Control. Scale as You Grow_": "Aumente o Controle. Escale Conforme Cresce_",
+  "Every Teletex managed services plan can be enhanced with targeted add-ons. Build the exact layer of coverage your business needs today — and add more as your operations evolve.": "Cada plano de serviços gerenciados da Teletex pode ser ampliado com serviços adicionais específicos. Monte a camada exata de cobertura que sua empresa precisa hoje — e adicione mais conforme suas operações evoluem.",
+  "🔄 Transform IT": "🔄 Transformação de TI",
+  "Cloud migration, collaboration modernization, network redesign, and advanced security architecture.": "Migração para nuvem, modernização da colaboração, redesign de rede e arquitetura avançada de segurança.",
+  "💻 Endpoint Protection": "💻 Proteção de Endpoints",
+  "Managed security coverage for every device connecting to your network — laptops, desktops, and mobile.": "Cobertura de segurança gerenciada para todos os dispositivos conectados à sua rede — notebooks, desktops e dispositivos móveis.",
+  "💾 Backup & Disaster Recovery": "💾 Backup e Recuperação de Desastres",
+  "Automated, tested, and reliable backups — so your data is always recoverable when you need it most.": "Backups automatizados, testados e confiáveis — para que seus dados estejam sempre recuperáveis quando você mais precisar.",
+  "✉️ Email Security": "✉️ Segurança de E-mail",
+  "Block phishing, spam, and malicious attachments before they ever reach your team's inbox.": "Bloqueio de phishing, spam e anexos maliciosos antes que cheguem à caixa de entrada da sua equipe.",
+  "🔑 Identity & Access Management": "🔑 Gerenciamento de Identidade e Acesso",
+  "Control who accesses what — with the right permissions, at the right time, every time.": "Controle quem acessa o quê — com as permissões corretas, no momento certo, sempre.",
+  "☁️ Microsoft 365 / Google Workspace": "☁️ Microsoft 365 / Google Workspace",
+  "Full management of your cloud productivity suite — configuration, security settings, and ongoing support.": "Gerenciamento completo da sua suíte de produtividade em nuvem — configuração, ajustes de segurança e suporte contínuo.",
+  "🎧 Helpdesk Support": "🎧 Suporte Help Desk",
+  "Fast, knowledgeable IT support for your team — available when problems arise.": "Suporte técnico rápido e especializado para sua equipe — disponível quando surgirem problemas.",
+  "🏢 On-Site Support": "🏢 Suporte Presencial",
+  "Hands-on technical assistance at your location for issues that require a physical presence.": "Assistência técnica presencial na sua empresa para problemas que exigem atendimento no local.",
+  "⚡ VIP SLA": "⚡ SLA VIP",
+  "Priority response times and dedicated service levels for businesses where every minute of downtime counts.": "Tempos de resposta prioritários e níveis de serviço dedicados para empresas onde cada minuto de indisponibilidade conta.",
+  "📋 Compliance Readiness": "📋 Preparação para Compliance",
+  "Structured support for HIPAA, SOC 2, and other regulatory frameworks — critical for medical, legal, and financial businesses.": "Suporte estruturado para HIPAA, SOC 2 e outros frameworks regulatórios — essencial para empresas médicas, jurídicas e financeiras.",
+  "🎓 Security Awareness Training": "🎓 Treinamento de Conscientização em Segurança",
+  "Educate your team to recognize phishing, social engineering, and unsafe behaviors before they cause harm.": "Capacite sua equipe para reconhecer phishing, engenharia social e comportamentos inseguros antes que causem danos.",
+  "📁 Policy Documentation": "📁 Documentação de Políticas",
+  "Formal IT policies and procedures that protect your business and satisfy auditor and compliance requirements.": "Políticas e procedimentos formais de TI que protegem sua empresa e atendem requisitos de auditoria e compliance."
+});
+
+Object.assign(T.es, {
+  "Add-ons": "Servicios Adicionales",
+  "Expand Protection.": "Amplía la Protección.",
+  "Increase Control. Scale as You Grow_": "Aumenta el Control. Escala a Medida que Creces_",
+  "Every Teletex managed services plan can be enhanced with targeted add-ons. Build the exact layer of coverage your business needs today — and add more as your operations evolve.": "Cada plan de servicios administrados de Teletex puede ampliarse con servicios adicionales específicos. Construye la capa exacta de cobertura que tu empresa necesita hoy — y agrega más a medida que tus operaciones evolucionen.",
+  "🔄 Transform IT": "🔄 Transformación de TI",
+  "Cloud migration, collaboration modernization, network redesign, and advanced security architecture.": "Migración a la nube, modernización de colaboración, rediseño de red y arquitectura avanzada de seguridad.",
+  "💻 Endpoint Protection": "💻 Protección de Endpoints",
+  "Managed security coverage for every device connecting to your network — laptops, desktops, and mobile.": "Cobertura de seguridad administrada para todos los dispositivos conectados a tu red — laptops, desktops y móviles.",
+  "💾 Backup & Disaster Recovery": "💾 Backup y Recuperación ante Desastres",
+  "Automated, tested, and reliable backups — so your data is always recoverable when you need it most.": "Backups automatizados, probados y confiables — para que tus datos siempre puedan recuperarse cuando más los necesites.",
+  "✉️ Email Security": "✉️ Seguridad de Email",
+  "Block phishing, spam, and malicious attachments before they ever reach your team's inbox.": "Bloquea phishing, spam y adjuntos maliciosos antes de que lleguen a la bandeja de entrada de tu equipo.",
+  "🔑 Identity & Access Management": "🔑 Gestión de Identidad y Accesos",
+  "Control who accesses what — with the right permissions, at the right time, every time.": "Controla quién accede a qué — con los permisos correctos, en el momento correcto, siempre.",
+  "☁️ Microsoft 365 / Google Workspace": "☁️ Microsoft 365 / Google Workspace",
+  "Full management of your cloud productivity suite — configuration, security settings, and ongoing support.": "Gestión completa de tu suite de productividad en la nube — configuración, ajustes de seguridad y soporte continuo.",
+  "🎧 Helpdesk Support": "🎧 Soporte Help Desk",
+  "Fast, knowledgeable IT support for your team — available when problems arise.": "Soporte técnico rápido y especializado para tu equipo — disponible cuando surjan problemas.",
+  "🏢 On-Site Support": "🏢 Soporte Presencial",
+  "Hands-on technical assistance at your location for issues that require a physical presence.": "Asistencia técnica presencial en tu ubicación para problemas que requieren atención física.",
+  "⚡ VIP SLA": "⚡ SLA VIP",
+  "Priority response times and dedicated service levels for businesses where every minute of downtime counts.": "Tiempos de respuesta prioritarios y niveles de servicio dedicados para empresas donde cada minuto de inactividad cuenta.",
+  "📋 Compliance Readiness": "📋 Preparación para Compliance",
+  "Structured support for HIPAA, SOC 2, and other regulatory frameworks — critical for medical, legal, and financial businesses.": "Soporte estructurado para HIPAA, SOC 2 y otros marcos regulatorios — crítico para empresas médicas, legales y financieras.",
+  "🎓 Security Awareness Training": "🎓 Capacitación en Concientización de Seguridad",
+  "Educate your team to recognize phishing, social engineering, and unsafe behaviors before they cause harm.": "Capacita a tu equipo para reconocer phishing, ingeniería social y comportamientos inseguros antes de que causen daño.",
+  "📁 Policy Documentation": "📁 Documentación de Políticas",
+  "Formal IT policies and procedures that protect your business and satisfy auditor and compliance requirements.": "Políticas y procedimientos formales de TI que protegen tu empresa y cumplen requisitos de auditoría y compliance."
+});
+
+
+
+// Final assessment section — exact structured translations for all 6 items and closing callout
+Object.assign(T.pt, {
+  "Free risk assessment": "Avaliação gratuita de risco",
+  "Your Business Is Either": "Sua Empresa Está",
+  "Protected or It Isn't": "Protegida ou Não Está",
+  "There's No Middle Ground.": "Não Existe Meio-Termo.",
+  "Most business owners are shocked by what we find. Exposed credentials. Single points of failure. Unmonitored networks. Our free assessment gives you the full picture — in plain English, in under 15 minutes, with zero pressure.": "A maioria dos empresários se surpreende com o que encontramos. Credenciais expostas. Pontos únicos de falha. Redes sem monitoramento. Nossa avaliação gratuita mostra o cenário completo — em linguagem simples, em menos de 15 minutos e sem pressão.",
+  "Network & Infrastructure Review": "Revisão de Rede e Infraestrutura",
+  "We map your current setup and identify every gap, weakness, and vulnerability — in plain English, not IT jargon.": "Mapeamos sua estrutura atual e identificamos cada lacuna, fraqueza e vulnerabilidade — em linguagem simples, sem jargão técnico.",
+  "Internet Redundancy Check": "Verificação de Redundância de Internet",
+  "We find your single points of failure — the ones that would stop your business cold if one provider went down.": "Identificamos seus pontos únicos de falha — aqueles que poderiam parar sua empresa completamente se um provedor saísse do ar.",
+  "Security Gap Analysis": "Análise de Lacunas de Segurança",
+  "We identify the unprotected areas attackers look for first — before they find them.": "Identificamos as áreas desprotegidas que os atacantes procuram primeiro — antes que eles encontrem.",
+  "Visibility & Monitoring Audit": "Auditoria de Visibilidade e Monitoramento",
+  "We show you what's happening on your network right now that you can't see — and what it would look like if you could.": "Mostramos o que está acontecendo na sua rede agora e que você não consegue ver — e como seria ter essa visibilidade.",
+  "External Exposure Scan": "Varredura de Exposição Externa",
+  "We check if your credentials, domains, or brand are already exposed online — right now, before this call ends.": "Verificamos se suas credenciais, domínios ou marca já estão expostos online — agora, antes mesmo da chamada terminar.",
+  "Your Custom Protection Plan": "Seu Plano de Proteção Personalizado",
+  "You get a clear, no-jargon action plan — exactly what you need, nothing you don't. No pressure. No sales pitch.": "Você recebe um plano de ação claro, sem jargão técnico — exatamente o que precisa, nada além disso. Sem pressão. Sem discurso de venda.",
+  "⚡  Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "⚡  A maioria das avaliações leva 15 minutos. Muitos clientes se surpreendem com o que encontramos. Todos saem com uma visão mais clara do risco — e um plano para corrigir.",
+  "Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "A maioria das avaliações leva 15 minutos. Muitos clientes se surpreendem com o que encontramos. Todos saem com uma visão mais clara do risco — e um plano para corrigir."
+});
+
+Object.assign(T.es, {
+  "Free risk assessment": "Evaluación gratuita de riesgo",
+  "Your Business Is Either": "Tu Empresa Está",
+  "Protected or It Isn't": "Protegida o No lo Está",
+  "There's No Middle Ground.": "No Hay Punto Medio.",
+  "Most business owners are shocked by what we find. Exposed credentials. Single points of failure. Unmonitored networks. Our free assessment gives you the full picture — in plain English, in under 15 minutes, with zero pressure.": "La mayoría de los dueños de negocio se sorprende con lo que encontramos. Credenciales expuestas. Puntos únicos de falla. Redes sin monitoreo. Nuestra evaluación gratuita te da la visión completa — en lenguaje claro, en menos de 15 minutos y sin presión.",
+  "Network & Infrastructure Review": "Revisión de Red e Infraestructura",
+  "We map your current setup and identify every gap, weakness, and vulnerability — in plain English, not IT jargon.": "Mapeamos tu estructura actual e identificamos cada brecha, debilidad y vulnerabilidad — en lenguaje claro, sin jerga técnica.",
+  "Internet Redundancy Check": "Verificación de Redundancia de Internet",
+  "We find your single points of failure — the ones that would stop your business cold if one provider went down.": "Identificamos tus puntos únicos de falla — los que podrían detener por completo tu negocio si un proveedor se cae.",
+  "Security Gap Analysis": "Análisis de Brechas de Seguridad",
+  "We identify the unprotected areas attackers look for first — before they find them.": "Identificamos las áreas desprotegidas que los atacantes buscan primero — antes de que ellos las encuentren.",
+  "Visibility & Monitoring Audit": "Auditoría de Visibilidad y Monitoreo",
+  "We show you what's happening on your network right now that you can't see — and what it would look like if you could.": "Te mostramos qué está ocurriendo ahora mismo en tu red y que no puedes ver — y cómo sería tener esa visibilidad.",
+  "External Exposure Scan": "Escaneo de Exposición Externa",
+  "We check if your credentials, domains, or brand are already exposed online — right now, before this call ends.": "Verificamos si tus credenciales, dominios o marca ya están expuestos online — ahora mismo, antes de que termine esta llamada.",
+  "Your Custom Protection Plan": "Tu Plan de Protección Personalizado",
+  "You get a clear, no-jargon action plan — exactly what you need, nothing you don't. No pressure. No sales pitch.": "Recibes un plan de acción claro, sin jerga técnica — exactamente lo que necesitas, nada más. Sin presión. Sin discurso de ventas.",
+  "⚡  Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "⚡  La mayoría de las evaluaciones toma 15 minutos. Muchos clientes se sorprenden con lo que encontramos. Todos salen con una visión más clara de su riesgo — y un plan para corregirlo.",
+  "Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "La mayoría de las evaluaciones toma 15 minutos. Muchos clientes se sorprenden con lo que encontramos. Todos salen con una visión más clara de su riesgo — y un plan para corregirlo."
+});
+
+
+// Downtime section — final exact translations for all visible text, including quote and CTA.
+Object.assign(T.pt, {
+  "Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.": "A Teletex incorpora failover automático, redundância e monitoramento 24/7 à sua infraestrutura — para que a indisponibilidade seja um problema dos seus concorrentes, não seu.",
+  "\"Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.\"": "\"A Teletex incorpora failover automático, redundância e monitoramento 24/7 à sua infraestrutura — para que a indisponibilidade seja um problema dos seus concorrentes, não seu.\"",
+  "See How We Keep You Online →": "Veja Como Mantemos Você Online →",
+  "Payments Stop Instantly": "Pagamentos Param Imediatamente",
+  "Phones Go Dead": "Telefones Ficam Mudos",
+  "Cloud Apps Lock Up": "Aplicativos em Nuvem Travam",
+  "Security Goes Blind": "A Segurança Fica Cega",
+  "Remote Teams Freeze": "Equipes Remotas Param",
+  "Operations Grind to a Halt": "Operações Param por Completo",
+  "The real cost of downtime": "O custo real da paralisação",
+  "When Your Network Fails,": "Quando sua Rede Falha,",
+  "Everything Fails": "Tudo Falha",
+  "Average cost per hour of downtime · Small business": "Custo médio por hora de paralisação · Pequena empresa",
+  "Is your business prepared for even 30 minutes?": "Sua empresa está preparada até mesmo para 30 minutos?",
+  "Source: Gartner / ITIC, 2024": "Fonte: Gartner / ITIC, 2024"
+});
+Object.assign(T.es, {
+  "Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.": "Teletex incorpora conmutación por error automática, redundancia y monitoreo 24/7 en tu infraestructura — para que la inactividad sea un problema de tus competidores, no tuyo.",
+  "\"Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.\"": "\"Teletex incorpora conmutación por error automática, redundancia y monitoreo 24/7 en tu infraestructura — para que la inactividad sea un problema de tus competidores, no tuyo.\"",
+  "See How We Keep You Online →": "Ver Cómo Te Mantenemos Online →",
+  "Payments Stop Instantly": "Los Pagos se Detienen al Instante",
+  "Phones Go Dead": "Los Teléfonos Quedan Inactivos",
+  "Cloud Apps Lock Up": "Las Apps en la Nube se Bloquean",
+  "Security Goes Blind": "La Seguridad Queda a Ciegas",
+  "Remote Teams Freeze": "Los Equipos Remotos se Detienen",
+  "Operations Grind to a Halt": "Las Operaciones se Detienen por Completo",
+  "The real cost of downtime": "El costo real de la inactividad",
+  "When Your Network Fails,": "Cuando Tu Red Falla,",
+  "Everything Fails": "Todo Falla",
+  "Average cost per hour of downtime · Small business": "Costo promedio por hora de inactividad · Pequeña empresa",
+  "Is your business prepared for even 30 minutes?": "¿Tu empresa está preparada incluso para 30 minutos?",
+  "Source: Gartner / ITIC, 2024": "Fuente: Gartner / ITIC, 2024"
+});
+
+  function canonicalizeText(s){
     const key = norm(s);
-    return (T[lang] && T[lang][key]) || (T.pt && T.pt[key] && lang==='es' ? null : null) || null;
+    if(!key) return s;
+
+    // Already an English source key in dictionaries/patches
+    for(const dictName of ['pt','es']){
+      const dict = T[dictName] || {};
+      for(const en of Object.keys(dict)){
+        if(norm(en) === key) return en;
+      }
+    }
+    if(typeof FINAL_PATCHES !== 'undefined'){
+      for(const langKey of ['pt','es']){
+        const patches = FINAL_PATCHES[langKey] || {};
+        for(const en of Object.keys(patches)){
+          if(norm(en) === key) return en;
+        }
+      }
+    }
+
+    // Reverse lookup: PT/ES -> English
+    for(const src of ['pt','es']){
+      const dict = T[src] || {};
+      for(const [en, translated] of Object.entries(dict)){
+        if(norm(translated) === key) return en;
+      }
+    }
+    if(typeof FINAL_PATCHES !== 'undefined'){
+      for(const src of ['pt','es']){
+        const patches = FINAL_PATCHES[src] || {};
+        for(const [en, translated] of Object.entries(patches)){
+          if(norm(translated) === key) return en;
+        }
+      }
+    }
+    return s;
   }
+
+  function lookupExact(dict, key){
+    if(!dict) return null;
+    if(Object.prototype.hasOwnProperty.call(dict, key)) return dict[key];
+    for(const [en, translated] of Object.entries(dict)){
+      if(norm(en) === key) return translated;
+    }
+    return null;
+  }
+
+  function translateString(s, lang){
+    const canonical = canonicalizeText(s);
+    const key = norm(canonical);
+    if(!key) return null;
+    if(lang === 'en') return canonical;
+    const fromMain = lookupExact(T[lang], key);
+    if(fromMain) return fromMain;
+    if(typeof FINAL_PATCHES !== 'undefined'){
+      const fromPatch = lookupExact(FINAL_PATCHES[lang], key);
+      if(fromPatch) return fromPatch;
+    }
+    return canonical !== s ? canonical : null;
+  }
+
+  function applyPartialTranslations(text, lang){
+    let out = text;
+    const pairs = [];
+    const addPairs = (dict, direction) => {
+      Object.entries(dict || {}).forEach(([en,tr])=>{
+        // Only allow partial replacements for meaningful phrases.
+        // This prevents corruptions like support -> supparat, before -> beparae, for -> para.
+        const fromText = direction === 'to-en' ? tr : en;
+        if(!fromText || String(fromText).trim().length < 12 || !String(fromText).trim().includes(' ')) return;
+        if(direction === 'to-en') pairs.push([tr,en]);
+        else pairs.push([en,tr]);
+      });
+    };
+    if(lang === 'en'){
+      ['pt','es'].forEach(src=>{
+        addPairs(T[src], 'to-en');
+        if(typeof FINAL_PATCHES !== 'undefined') addPairs(FINAL_PATCHES[src], 'to-en');
+      });
+    } else {
+      addPairs(T[lang], 'to-lang');
+      if(typeof FINAL_PATCHES !== 'undefined') addPairs(FINAL_PATCHES[lang], 'to-lang');
+      // If the current visible text is another translated language, return it to English first, then translate.
+      ['pt','es'].filter(x=>x!==lang).forEach(src=>{
+        Object.entries(T[src] || {}).forEach(([en,tr])=>{ if(tr && String(tr).trim().length >= 12 && String(tr).trim().includes(' ') && out.includes(tr)) out = out.split(tr).join(en); });
+        if(typeof FINAL_PATCHES !== 'undefined') Object.entries(FINAL_PATCHES[src] || {}).forEach(([en,tr])=>{ if(tr && String(tr).trim().length >= 12 && String(tr).trim().includes(' ') && out.includes(tr)) out = out.split(tr).join(en); });
+      });
+    }
+    pairs.sort((a,b)=>String(b[0]).length-String(a[0]).length).forEach(([from,to])=>{
+      if(from && to && out.includes(from)) out = out.split(from).join(to);
+    });
+    return out;
+  }
+
   function walkText(root, lang){
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node){
         if(!node.nodeValue || !norm(node.nodeValue)) return NodeFilter.FILTER_REJECT;
-        let p=node.parentElement;
+        const p=node.parentElement;
         if(!p || skipTags.has(p.tagName)) return NodeFilter.FILTER_REJECT;
         if(p.closest('script,style,noscript,svg')) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
@@ -3060,176 +3515,138 @@ els.forEach(el => io.observe(el));
     });
     const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach(node=>{
-      if(!originalText.has(node)) originalText.set(node,node.nodeValue);
-      const base=originalText.get(node);
-      if(lang==='en'){ node.nodeValue=base; return; }
-      const tr=translateString(base,lang);
-      if(tr){
-        const lead=(base.match(/^\s*/)||[''])[0];
-        const trail=(base.match(/\s*$/)||[''])[0];
-        node.nodeValue=lead+tr+trail;
+      // Store the canonical text without removing the visible whitespace that separates inline elements.
+      // This prevents cases like "forProtecting" or "01Do" after language switching.
+      if(!originalText.has(node)) originalText.set(node, canonicalizeText(String(node.nodeValue).trim()));
+      let base = canonicalizeText(String(originalText.get(node) || '').trim());
+      originalText.set(node, base);
+      let out = translateString(base, lang);
+      if(!out || out === base) out = applyPartialTranslations(base, lang);
+      if(out && out !== node.nodeValue){
+        const lead=(String(node.nodeValue).match(/^\s*/)||[''])[0];
+        const trail=(String(node.nodeValue).match(/\s*$/)||[''])[0];
+        node.nodeValue = lead + String(out).trim() + trail;
       }
     });
   }
+
   function translateAttrs(lang){
     document.querySelectorAll('[title],[alt],[aria-label],[placeholder]').forEach(el=>{
       ['title','alt','aria-label','placeholder'].forEach(a=>{
         if(!el.hasAttribute(a)) return;
         let store=originalAttr.get(el); if(!store){store={}; originalAttr.set(el,store);} 
-        if(!(a in store)) store[a]=el.getAttribute(a);
-        const base=store[a];
-        if(lang==='en') el.setAttribute(a,base);
-        else { const tr=translateString(base,lang); if(tr) el.setAttribute(a,tr); }
+        if(!(a in store)) store[a]=canonicalizeText(el.getAttribute(a));
+        const base=canonicalizeText(store[a]);
+        const tr=translateString(base,lang) || applyPartialTranslations(base,lang);
+        el.setAttribute(a,tr || base);
       });
     });
   }
 
+  function localizeText(s, lang){
+    const base = canonicalizeText(s);
+    return translateString(base, lang) || applyPartialTranslations(base, lang) || base;
+  }
 
-  // Final manual review layer: handles mixed HTML text nodes, inline spans, and older hardcoded sections.
-  const FINAL_PATCHES = {
-    pt: {
-      "5 people × 2 capsules/day × $0.75/capsule × 20 workdays. Premium single-serve pods — the ones your team actually drinks.": "5 pessoas × 2 cápsulas/dia × $0,75/cápsula × 20 dias úteis. Cápsulas premium individuais — as que sua equipe realmente consome.",
-      "5 business lines on a standard carrier plan — calls, data, hotspot, device insurance.": "5 linhas corporativas em um plano padrão — ligações, dados, hotspot e seguro dos aparelhos.",
-      "Source: National Coffee Association 2024 · $0.50–$0.80/capsule avg · Office Coffee Deals": "Fonte: National Coffee Association 2024 · média de $0,50–$0,80 por cápsula · Office Coffee Deals",
-      "Source: AT&T / T-Mobile Business Plans 2024 · ~$40/line/mo": "Fonte: planos empresariais AT&T / T-Mobile 2024 · ~US$40 por linha/mês",
-      "$150/mo in premium coffee capsules": "US$150/mês em cápsulas de café premium",
-      "in premium coffee capsules": "em cápsulas de café premium",
-      "vs.": "vs.",
-      "about what your business was built on.": "em relação à base que protege sua empresa.",
-      "Organizations that don't have proper IT and cybersecurity maturity — often SMB-sized — are paying the price for their size, with ransomware present in 88% of breaches.": "Empresas sem maturidade adequada em TI e cibersegurança — muitas vezes pequenas e médias — estão pagando o preço pelo seu porte, com ransomware presente em 88% das violações.",
-      "– Craig Robinson, Research VP · Security Services · IDC · Verizon DBIR 2025 Launch": "– Craig Robinson, VP de Pesquisa · Security Services · IDC · Lançamento Verizon DBIR 2025",
-      "Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.": "A Teletex incorpora failover automático, redundância e monitoramento 24/7 à sua infraestrutura — para que a paralisação seja um problema dos seus concorrentes, não seu.",
-      "Enterprise-grade protection. Zero IT jargon. One partner who actually picks up the phone.": "Proteção de nível corporativo. Zero jargão técnico. Um parceiro que realmente atende o telefone.",
-      "Better infrastructure isn't just an IT decision — it's a business decision that pays for itself.": "Uma infraestrutura melhor não é apenas uma decisão de TI — é uma decisão de negócio que se paga.",
-      "Transform IT": "Transformação de TI",
-      "Cloud migration, collaboration modernization, network redesign, and advanced security architecture.": "Migração para nuvem, modernização de colaboração, redesenho de rede e arquitetura avançada de segurança.",
-      "Endpoint Protection": "Proteção de Endpoints",
-      "Managed security coverage for every device connecting to your network — laptops, desktops, and mobile.": "Cobertura de segurança gerenciada para cada dispositivo conectado à sua rede — notebooks, desktops e celulares.",
-      "Backup & Disaster Recovery": "Backup e Recuperação de Desastres",
-      "Automated, tested, and reliable backups — so your data is always recoverable when you need it most.": "Backups automatizados, testados e confiáveis — para que seus dados estejam recuperáveis quando você mais precisar.",
-      "Email Security": "Segurança de E-mail",
-      "Block phishing, spam, and malicious attachments before they ever reach your team's inbox.": "Bloqueie phishing, spam e anexos maliciosos antes que cheguem à caixa de entrada da sua equipe.",
-      "Identity & Access Management": "Gestão de Identidade e Acesso",
-      "Control who accesses what — with the right permissions, at the right time, every time.": "Controle quem acessa o quê — com as permissões certas, no momento certo, sempre.",
-      "Microsoft 365 / Google Workspace": "Microsoft 365 / Google Workspace",
-      "Full management of your cloud productivity suite — configuration, security settings, and ongoing support.": "Gestão completa da sua suíte de produtividade em nuvem — configuração, segurança e suporte contínuo.",
-      "Helpdesk Support": "Suporte Helpdesk",
-      "Fast, knowledgeable IT support for your team — available when problems arise.": "Suporte de TI rápido e qualificado para sua equipe — disponível quando surgirem problemas.",
-      "On-Site Support": "Suporte Presencial",
-      "Hands-on technical assistance at your location for issues that require a physical presence.": "Atendimento técnico no local para problemas que exigem presença física.",
-      "VIP SLA": "SLA VIP",
-      "Priority response times and dedicated service levels for businesses where every minute of downtime counts.": "Tempos de resposta prioritários e níveis de serviço dedicados para empresas em que cada minuto parado importa.",
-      "Compliance Readiness": "Preparação para Compliance",
-      "Structured support for HIPAA, SOC 2, and other regulatory frameworks — critical for medical, legal, and financial businesses.": "Suporte estruturado para HIPAA, SOC 2 e outros frameworks regulatórios — essencial para empresas médicas, jurídicas e financeiras.",
-      "Security Awareness Training": "Treinamento de Conscientização em Segurança",
-      "Educate your team to recognize phishing, social engineering, and unsafe behaviors before they cause harm.": "Treine sua equipe para reconhecer phishing, engenharia social e comportamentos inseguros antes que causem prejuízo.",
-      "Policy Documentation": "Documentação de Políticas",
-      "Formal IT policies and procedures that protect your business and satisfy auditor and compliance requirements.": "Políticas e procedimentos formais de TI que protegem sua empresa e atendem exigências de auditoria e compliance.",
-      "We realized we needed to give more protection to our IT infrastructure through continuous work. What motivated us to work with Teletex was the quality of services and the strong expertise in networks and security. Since the solution was implemented, not a single incident has been recorded.": "Percebemos que precisávamos dar mais proteção à nossa infraestrutura de TI por meio de um trabalho contínuo. O que nos motivou a trabalhar com a Teletex foi a qualidade dos serviços e a forte expertise em redes e segurança. Desde a implementação da solução, nenhum incidente foi registrado.",
-      "Zurich Airport partnered with Teletex for IT support, service desk, and advanced data security solutions. Airport operations are among the most demanding environments in the world — zero tolerance for downtime, zero tolerance for security gaps. Teletex delivers both.": "O Aeroporto de Zurich contou com a Teletex para suporte de TI, service desk e soluções avançadas de segurança de dados. Operações aeroportuárias estão entre os ambientes mais exigentes do mundo — tolerância zero para downtime e falhas de segurança. A Teletex entrega os dois.",
-      "The largest hospital complex in the North-Northeast region of Brazil strengthened its entire digital security posture in partnership with Teletex — protecting patient data, critical systems, and operational continuity across a complex, high-stakes environment.": "O maior complexo hospitalar do Norte-Nordeste do Brasil fortaleceu sua postura de segurança digital em parceria com a Teletex — protegendo dados de pacientes, sistemas críticos e continuidade operacional em um ambiente complexo e de alta criticidade.",
-      "Global · Security & Logistics": "Global · Segurança e Logística",
-      "76 Branches · Brazil": "76 Filiais · Brasil",
-      "Aviation · Mission-Critical": "Aviação · Missão Crítica",
-      "3-Year Partnership": "Parceria de 3 Anos",
-      "Healthcare · 1,200+ Beds": "Saúde · 1.200+ Leitos",
-      "Largest in Region": "Maior da Região",
-      "Airport Operations · Brazil · Critical Infrastructure": "Operações Aeroportuárias · Brasil · Infraestrutura Crítica",
-      "Full digital security posture transformation across hospital systems": "Transformação completa da postura de segurança digital nos sistemas hospitalares",
-      "Patient data protection in one of Brazil's most critical health environments": "Proteção de dados de pacientes em um dos ambientes de saúde mais críticos do Brasil",
-      "Continuous monitoring and incident": "Monitoramento contínuo e resposta a incidentes",
-      "We map your current setup and identify every gap, weakness, and vulnerability — in plain English, not IT jargon.": "Mapeamos sua estrutura atual e identificamos cada lacuna, fragilidade e vulnerabilidade — em linguagem simples, sem jargão técnico.",
-      "We find your single points of failure — the ones that would stop your business cold if one provider went down.": "Encontramos seus pontos únicos de falha — aqueles que poderiam parar sua empresa caso um provedor caia.",
-      "We identify the unprotected areas attackers look for first — before they find them.": "Identificamos as áreas desprotegidas que invasores procuram primeiro — antes que eles encontrem.",
-      "We show you what's happening on your network right now that you can't see — and what it would look like if you could.": "Mostramos o que está acontecendo na sua rede agora e que você não consegue ver — e como isso ficaria com visibilidade adequada.",
-      "We check if your credentials, domains, or brand are already exposed online — right now, before this call ends.": "Verificamos se suas credenciais, domínios ou marca já estão expostos online — agora, antes mesmo da ligação terminar.",
-      "You get a clear, no-jargon action plan — exactly what you need, nothing you don't. No pressure. No sales pitch.": "Você recebe um plano de ação claro, sem jargão — exatamente o que precisa, nada além disso. Sem pressão. Sem discurso de venda.",
-      "Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "A maioria das avaliações leva 15 minutos. Muitos clientes se surpreendem com o que encontramos. Todos saem com uma visão mais clara do risco — e um plano para corrigir.",
-      "Network & Infrastructure Review": "Revisão de Rede e Infraestrutura",
-      "Internet Redundancy Check": "Verificação de Redundância de Internet",
-      "Security Gap Analysis": "Análise de Lacunas de Segurança",
-      "Visibility & Monitoring Audit": "Auditoria de Visibilidade e Monitoramento",
-      "External Exposure Scan": "Varredura de Exposição Externa",
-      "Your Custom Protection Plan": "Seu Plano de Proteção Personalizado"
-    },
-    es: {
-      "5 people × 2 capsules/day × $0.75/capsule × 20 workdays. Premium single-serve pods — the ones your team actually drinks.": "5 personas × 2 cápsulas/día × $0.75/cápsula × 20 días laborales. Cápsulas premium individuales — las que tu equipo realmente consume.",
-      "5 business lines on a standard carrier plan — calls, data, hotspot, device insurance.": "5 líneas corporativas en un plan estándar — llamadas, datos, hotspot y seguro de dispositivos.",
-      "Source: National Coffee Association 2024 · $0.50–$0.80/capsule avg · Office Coffee Deals": "Fuente: National Coffee Association 2024 · promedio de $0.50–$0.80 por cápsula · Office Coffee Deals",
-      "Source: AT&T / T-Mobile Business Plans 2024 · ~$40/line/mo": "Fuente: planes empresariales AT&T / T-Mobile 2024 · ~$40 por línea/mes",
-      "$150/mo in premium coffee capsules": "$150/mes en cápsulas de café premium",
-      "about what your business was built on.": "en relación con la base que protege tu empresa.",
-      "Organizations that don't have proper IT and cybersecurity maturity — often SMB-sized — are paying the price for their size, with ransomware present in 88% of breaches.": "Las empresas sin madurez adecuada en TI y ciberseguridad — muchas veces pequeñas y medianas — están pagando el precio de su tamaño, con ransomware presente en el 88% de las brechas.",
-      "Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.": "Teletex incorpora failover automático, redundancia y monitoreo 24/7 en tu infraestructura — para que el downtime sea un problema de tus competidores, no tuyo.",
-      "Enterprise-grade protection. Zero IT jargon. One partner who actually picks up the phone.": "Protección de nivel empresarial. Cero jerga técnica. Un socio que realmente contesta el teléfono.",
-      "Better infrastructure isn't just an IT decision — it's a business decision that pays for itself.": "Una mejor infraestructura no es solo una decisión de TI — es una decisión de negocio que se paga sola.",
-      "Transform IT": "Transformar TI",
-      "Cloud migration, collaboration modernization, network redesign, and advanced security architecture.": "Migración a la nube, modernización de colaboración, rediseño de red y arquitectura avanzada de seguridad.",
-      "Endpoint Protection": "Protección de Endpoints",
-      "Backup & Disaster Recovery": "Backup y Recuperación ante Desastres",
-      "Email Security": "Seguridad de Email",
-      "Identity & Access Management": "Gestión de Identidad y Acceso",
-      "Helpdesk Support": "Soporte Helpdesk",
-      "On-Site Support": "Soporte Presencial",
-      "Policy Documentation": "Documentación de Políticas",
-      "Network & Infrastructure Review": "Revisión de Red e Infraestructura",
-      "Internet Redundancy Check": "Verificación de Redundancia de Internet",
-      "Security Gap Analysis": "Análisis de Brechas de Seguridad",
-      "Visibility & Monitoring Audit": "Auditoría de Visibilidad y Monitoreo",
-      "External Exposure Scan": "Escaneo de Exposición Externa",
-      "Your Custom Protection Plan": "Tu Plan de Protección Personalizado",
-      "Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "La mayoría de las evaluaciones toma 15 minutos. Muchos clientes se sorprenden con lo que encontramos. Todos salen con una visión más clara de su riesgo — y un plan para corregirlo."
-    }
-  };
-  function applyFinalPatches(lang){
-    const patches = FINAL_PATCHES[lang];
-    if(!patches) return;
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-      acceptNode(node){
-        if(!node.nodeValue || !norm(node.nodeValue)) return NodeFilter.FILTER_REJECT;
-        const p=node.parentElement;
-        if(!p || p.closest('script,style,noscript,svg')) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
+  function renderComparisonTableLocalized(lang){
+    const tb = document.getElementById('compare-body');
+    if(!tb || typeof tableData === 'undefined') return;
+    const colBg = [
+      "background:#0f0f0f",
+      "background:#0f0f0f",
+      "background:rgba(0,0,208,0.08)",
+      "background:#0f0f0f",
+      "background:#0f0f0f",
+    ];
+    const vc = v => v==="✓" ? "#22C55E" : v==="+" ? "#3CD2F0" : "#2d2d2d";
+    const vw = v => v==="✓" ? "700" : "400";
+    let html = "";
+    let lastCat = "";
+    let rowIdx = 0;
+    tableData.forEach(([cat, feat, explain, ...vals]) => {
+      const catTxt = localizeText(cat, lang);
+      const featTxt = localizeText(feat, lang);
+      const explainTxt = localizeText(explain, lang);
+      if(cat !== lastCat) {
+        lastCat = cat;
+        html += `<tr class="cat-header" data-cat="${cat}">
+          <td colspan="6" style="padding:9px 16px 5px;background:#050505;border-top:1px solid rgba(255,255,255,0.07);border-bottom:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3CD2F0">${catTxt}</td>
+        </tr>`;
       }
-    });
-    const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(node=>{
-      if(!originalText.has(node)) originalText.set(node,node.nodeValue);
-      const base = originalText.get(node);
-      if(lang==='en'){ node.nodeValue=base; return; }
-      let out = base;
-      const direct = patches[norm(base)] || translateString(base,lang);
-      if(direct){
-        const lead=(base.match(/^\s*/)||[''])[0], trail=(base.match(/\s*$/)||[''])[0];
-        node.nodeValue = lead + direct + trail;
-        return;
-      }
-      Object.entries(patches).sort((a,b)=>b[0].length-a[0].length).forEach(([en,tr])=>{
-        if(out.includes(en)) out = out.split(en).join(tr);
+      const rid = `r${rowIdx}`;
+      const eid = `e${rowIdx}`;
+      rowIdx++;
+      html += `<tr class="cmp-row" data-cat="${cat}" data-rid="${rid}" onclick="toggleExplain('${eid}','${rid}')">
+        <td style="padding:10px 16px;border-top:1px solid rgba(255,255,255,0.05);background:#0c0c0c;color:#C8C8C8;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.4">
+          <span style="display:flex;align-items:center;gap:8px">
+            <span class="row-toggle" id="${rid}-icon" style="color:var(--c-amber);font-size:13px;flex-shrink:0;transition:transform .2s">▾</span>
+            ${featTxt}
+          </span>
+        </td>`;
+      vals.forEach((v,i) => {
+        html += `<td style="text-align:center;padding:10px 6px;border-top:1px solid rgba(255,255,255,0.05);${colBg[i]};color:${vc(v)};font-size:${v==="✓"?"17px":"13px"};font-weight:${vw(v)}">${v}</td>`;
       });
-      if(out!==base) node.nodeValue=out;
+      html += `</tr>`;
+      html += `<tr class="cmp-explain" id="${eid}" data-cat="${cat}" style="display:none">
+        <td colspan="6" style="padding:0 16px 16px 44px;background:#080808;border-bottom:1px solid rgba(60,210,240,0.1)">
+          <div style="border-left:2px solid var(--c-amber);padding:10px 16px;background:var(--c-amber-dim);border-radius:0 4px 4px 0">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c-amber);margin-bottom:6px">${localizeText('What this means for your business', lang)}</div>
+            <div style="font-size:13px;color:#D0D0D0;line-height:1.7">${explainTxt}</div>
+          </div>
+        </td>
+      </tr>`;
     });
+    tb.innerHTML = html;
+    if(typeof filterCat === 'function') filterCat(activeCat || 'ALL');
+  }
+
+  function fixSpacingAfterTranslation(){
+    // Defensive visual fixes for inline spans and FAQ numbers in every language.
+    document.querySelectorAll('.hero-h1 .hl').forEach(el=>{
+      const prev = el.previousSibling;
+      if(prev && prev.nodeType === Node.TEXT_NODE && prev.nodeValue && !/\s$/.test(prev.nodeValue)){
+        prev.nodeValue += ' ';
+      }
+    });
+    document.querySelectorAll('.faq-num').forEach(el=>{
+      el.style.marginRight = '10px';
+    });
+  }
+
+  function applyFinalPatches(lang){
+    // Kept as a compatibility layer; walkText now handles both direct and reverse translations.
+    walkText(document.body, lang);
   }
 
   function applyLang(lang){
+    if(!['en','pt','es'].includes(lang)) lang = 'en';
+    window.__teletexLangApplying = true;
     localStorage.setItem('teletex_lang',lang);
-    document.documentElement.lang = lang==='pt' ? 'pt-BR' : (lang==='es' ? 'es' : 'en');
+    document.documentElement.lang = lang==='pt' ? 'pt-BR' : (lang==='es' ? 'es' : 'en-US');
+    renderComparisonTableLocalized(lang);
     walkText(document.body,lang);
+    fixSpacingAfterTranslation();
     translateAttrs(lang);
-    applyFinalPatches(lang);
     document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
     if(lang==='pt') document.title='teletex US — Flórida Central | Fique Online. Fique Seguro. Não Importa o Que Aconteça.';
     if(lang==='es') document.title='teletex US — Florida Central | Mantente Online. Mantente Seguro. Pase lo que Pase.';
     if(lang==='en') document.title='teletex US — Central Florida | Stay Online. Stay Secure. No Matter What.';
+    if(typeof updateCalculator === 'function') updateCalculator();
+    setTimeout(()=>{ window.__teletexLangApplying = false; },0);
   }
+
   window.TeletexSetLang = applyLang;
   document.addEventListener('DOMContentLoaded',()=>{
-    document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
-    const saved=localStorage.getItem('teletex_lang')||'en';
-    setTimeout(()=>applyLang(saved),80);
+    document.querySelectorAll('.lang-btn').forEach(b=>{
+      b.onclick = (ev)=>{ ev.preventDefault(); ev.stopPropagation(); applyLang(b.dataset.lang); return false; };
+    });
+    const requestedLang = new URLSearchParams(window.location.search).get('lang');
+    const initial = ['en','pt','es'].includes(requestedLang) ? requestedLang : 'en';
+    setTimeout(()=>applyLang(initial),100);
     const obs=new MutationObserver(()=>{
+      if(window.__teletexLangApplying) return;
       const lang=localStorage.getItem('teletex_lang')||'en';
-      if(lang!=='en') setTimeout(()=>applyLang(lang),10);
+      setTimeout(()=>applyLang(lang),20);
     });
     obs.observe(document.body,{childList:true,subtree:true});
   });
