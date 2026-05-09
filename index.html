@@ -875,6 +875,14 @@ footer {
   .sticky-cta { padding: 12px 16px; }
   .sticky-cta-text { font-size: 12px; }
 }
+
+/* ── LANGUAGE SWITCHER ───────────────────────────────── */
+.lang-switcher{display:flex;align-items:center;gap:6px;margin-left:12px}
+.lang-btn{background:rgba(255,255,255,.04);border:1px solid var(--border-strong);color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:6px 8px;border-radius:4px;cursor:pointer;transition:all .2s;line-height:1}
+.lang-btn:hover,.lang-btn.active{border-color:var(--vivid-sky);color:#fff;background:rgba(60,210,240,.12)}
+.lang-btn span{font-size:15px;margin-right:4px}
+@media(max-width:768px){.lang-switcher{gap:4px;margin-left:auto}.lang-btn{font-size:0;padding:7px}.lang-btn span{font-size:16px;margin-right:0}}
+
 </style>
 </head>
 <body>
@@ -909,6 +917,11 @@ footer {
         <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.22 2.84 2 2 0 012.22.66h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
         +1 (833) 783-5383
       </a>
+      <div class="lang-switcher" aria-label="Language selector">
+        <button class="lang-btn active" type="button" data-lang="en" aria-label="English"><span>🇺🇸</span>EN</button>
+        <button class="lang-btn" type="button" data-lang="pt" aria-label="Português do Brasil"><span>🇧🇷</span>PT</button>
+        <button class="lang-btn" type="button" data-lang="es" aria-label="Español"><span>🇪🇸</span>ES</button>
+      </div>
 
       <a href="#assessment" class="btn-primary" style="font-size:13px;padding:10px 20px">Free Assessment</a>
     </div>
@@ -2494,6 +2507,733 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 els.forEach(el => io.observe(el));
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// MULTI-LANGUAGE SUPPORT — EN / PT-BR / ES
+// Keeps layout unchanged and translates static HTML + JS-generated content
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  const T = {
+    pt: {
+      "teletex US — Central Florida | Stay Online. Stay Secure. No Matter What.": "teletex US — Flórida Central | Fique Online. Fique Seguro. Não Importa o Que Aconteça.",
+      "Find out if your business is exposed —": "Descubra se sua empresa está exposta —",
+      "free assessment, 15 min, no pressure.": "avaliação gratuita, 15 min, sem pressão.",
+      "Get Free Assessment →": "Solicitar Avaliação Gratuita →",
+      "Free Assessment": "Avaliação Gratuita",
+      "Serving Central Florida — Orlando & Region": "Atendendo a Flórida Central — Orlando e Região",
+      "You Pay More": "Você Paga Mais",
+      "for Coffee Than": "em Café do que",
+      "for": "para",
+      "Protecting": "Proteger",
+      "Your Business": "Sua Empresa",
+      "Let's fix that. Full network security, managed IT, and cyber protection for Central Florida businesses — starting at": "Vamos corrigir isso. Segurança de rede completa, TI gerenciada e proteção cibernética para empresas da Flórida Central — a partir de",
+      "$297/month.": "$297/mês.",
+      "No IT jargon. No surprises. Just results.": "Sem jargão técnico. Sem surpresas. Apenas resultados.",
+      "Get My Free Risk Assessment": "Quero Minha Avaliação Gratuita de Risco",
+      "See Protection Plans": "Ver Planos de Proteção",
+      "Free · No obligation": "Gratuito · Sem obrigação",
+      "15-min assessment": "Avaliação de 15 min",
+      "Plans from $297/mo": "Planos a partir de $297/mês",
+      "5,000+ clients globally": "Mais de 5.000 clientes globalmente",
+      "Local team · Orlando, FL": "Equipe local · Orlando, FL",
+      "The numbers that change everything": "Os números que mudam tudo",
+      "Your Team's Premium Coffee": "O Café Premium da Sua Equipe",
+      "Costs More Than Protecting": "Custa Mais do que Proteger",
+      "Your Entire Business": "Toda a Sua Empresa",
+      "For a team of 20 people, here's what you're already spending every month — and what you're probably not spending nearly enough on.": "Para uma equipe de 20 pessoas, veja o que você já gasta todo mês — e onde provavelmente não está investindo o suficiente.",
+      "Interactive calculator": "Calculadora interativa",
+      "🆕 Adjust your team size to see real costs": "🆕 Ajuste o tamanho da equipe para ver os custos reais",
+      "employees": "colaboradores",
+      "Slide to match your team size and see how premium capsule coffee compares to Teletex protection.": "Ajuste conforme o tamanho da sua equipe e veja como o café premium em cápsulas se compara à proteção da Teletex.",
+      "Premium capsule coffee ·": "Café premium em cápsulas ·",
+      "people": "pessoas",
+      "lines": "linhas",
+      "Business cell phones ·": "Celulares corporativos ·",
+      "Full IT & cybersecurity ·": "TI completa e cibersegurança ·",
+      "users": "usuários",
+      "/mo": "/mês",
+      "Managed network, security firewall, 24/7 monitoring, IT support & monthly health report. Everything included. No surprises.": "Rede gerenciada, firewall de segurança, monitoramento 24/7, suporte de TI e relatório mensal de saúde. Tudo incluído. Sem surpresas.",
+      "Teletex START Plan · Central Florida · No setup fees · No contracts": "Plano START Teletex · Flórida Central · Sem taxa de implantação · Sem contratos",
+      "The knockout punch comparison": "A comparação decisiva",
+      "Your team's premium coffee costs": "O café premium da sua equipe custa",
+      "more than your full IT protection.": "mais do que sua proteção completa de TI.",
+      "$640/mo in coffee capsules": "$640/mês em cápsulas de café",
+      "vs.": "vs.",
+      "$297/mo in full network security & managed IT.": "$297/mês em segurança de rede completa e TI gerenciada.",
+      "One protects your team's morning routine. The other protects everything your business is built on.": "Um protege a rotina da manhã da sua equipe. O outro protege tudo sobre o que sua empresa foi construída.",
+      "Risk vs protection split": "Comparação risco vs. proteção",
+      "Cost of one cyber attack": "Custo de um ataque cibernético",
+      "Legal fees, data recovery, downtime, lost clients, reputation damage. Most small businesses never recover.": "Honorários legais, recuperação de dados, paralisação, perda de clientes e dano à reputação. Muitas pequenas empresas nunca se recuperam.",
+      "Teletex START · per year": "Teletex START · por ano",
+      "That's": "Isso equivale a",
+      "33 years of Teletex": "33 anos de Teletex",
+      "for the cost of one bad day. Full protection — starting today.": "pelo custo de um único dia ruim. Proteção completa — começando hoje.",
+      "No contracts · No setup fees · Cancel anytime": "Sem contratos · Sem taxa de implantação · Cancele quando quiser",
+      "Verified intelligence · 2024–2025": "Inteligência verificada · 2024–2025",
+      "The Numbers Every SMB Owner": "Os Números que Todo Dono de SMB",
+      "in Central Florida Needs to See": "na Flórida Central Precisa Ver",
+      "Data from the world's most authoritative cybersecurity research — confirmed incidents, real losses, real businesses like yours.": "Dados das pesquisas de cibersegurança mais confiáveis do mundo — incidentes confirmados, perdas reais e empresas como a sua.",
+      "Average cost of a data breach for US businesses — the highest of any country in the world. For small businesses, a single incident is often fatal.": "Custo médio de uma violação de dados para empresas dos EUA — o mais alto do mundo. Para pequenas empresas, um único incidente pode ser fatal.",
+      "of all SMB data breaches now involve ransomware — compared to just 39% at large enterprises. Small businesses are 2.3× more exposed.": "das violações de dados em SMBs agora envolvem ransomware — contra apenas 39% em grandes empresas. Pequenas empresas estão 2,3× mais expostas.",
+      "in total cybercrime losses reported to the FBI in 2024 — a 33% jump from 2023. That's $2,000+ stolen from a US business every single minute.": "em perdas totais por crimes cibernéticos reportadas ao FBI em 2024 — alta de 33% em relação a 2023. São mais de $2.000 roubados de empresas nos EUA a cada minuto.",
+      "average time to identify and contain a breach. Most businesses don't even know they were hit for over 8 months — while attackers stay inside.": "tempo médio para identificar e conter uma violação. Muitas empresas nem sabem que foram atingidas por mais de 8 meses — enquanto invasores permanecem dentro da rede.",
+      "of breaches involve a human element — phishing, stolen passwords, or employee error. Your team is the #1 attack surface.": "das violações envolvem fator humano — phishing, senhas roubadas ou erro de colaborador. Sua equipe é a superfície de ataque nº 1.",
+      "lost to Business Email Compromise (BEC) in 2024 alone. A fake email. A rushed wire transfer. Funds gone — with little chance of recovery.": "perdidos com Business Email Compromise (BEC) somente em 2024. Um e-mail falso. Uma transferência apressada. O dinheiro some — com pouca chance de recuperação.",
+      "of all data breaches globally now involve ransomware — a 37% jump year over year. It's no longer a question of if, but when.": "das violações de dados globais agora envolvem ransomware — alta de 37% ano contra ano. Não é mais questão de se vai acontecer, mas quando.",
+      "average cost per compromised record — up 11% from prior year. A 1,000-customer data leak costs your business $173,000 in damages alone.": "custo médio por registro comprometido — alta de 11% vs. ano anterior. Um vazamento de 1.000 clientes pode custar $173.000 somente em danos.",
+      "Florida ranks among the top 3 states in total cybercrime losses reported to the FBI — with businesses in Orlando, Tampa and Miami among the most targeted in the Southeast.": "A Flórida está entre os 3 estados com maiores perdas por crimes cibernéticos reportadas ao FBI — com empresas em Orlando, Tampa e Miami entre os principais alvos do Sudeste.",
+      "State · Cybercrime": "Estado · Crime cibernético",
+      "Losses 2024": "Perdas 2024",
+      "Don't Be the Next Statistic — Get a Free Assessment": "Não Seja a Próxima Estatística — Solicite uma Avaliação Gratuita",
+      "The shift": "A mudança",
+      "Most Businesses Wait Until Something Breaks.": "A Maioria das Empresas Espera Algo Quebrar.",
+      "The Smart Ones Don't": "As Inteligentes Não Esperam",
+      "WITHOUT TELETEX": "SEM TELETEX",
+      "IT problems discovered after they've already cost you money and downtime": "Problemas de TI descobertos depois de já terem causado custo e paralisação",
+      "Your internet goes down — your business stops completely, no backup plan": "Sua internet cai — sua empresa para completamente, sem plano de backup",
+      "No one knows what's happening on your network right now": "Ninguém sabe o que está acontecendo na sua rede agora",
+      "Paying someone to fix things only after they break": "Pagar alguém para consertar apenas depois que algo quebra",
+      "One employee clicking a bad email brings everything down": "Um colaborador clicando em um e-mail malicioso pode derrubar tudo",
+      "No idea if your passwords or data are already exposed online": "Sem saber se suas senhas ou dados já estão expostos online",
+      "Surprise IT bills with no predictable monthly cost": "Contas inesperadas de TI, sem custo mensal previsível",
+      "WITH TELETEX": "COM TELETEX",
+      "Problems caught and resolved before your team ever notices them": "Problemas identificados e resolvidos antes que sua equipe perceba",
+      "If your internet goes down, automatic backup kicks in — you stay online": "Se sua internet cair, o backup automático entra em ação — você continua online",
+      "Full real-time visibility — nothing hidden, nothing assumed": "Visibilidade total em tempo real — nada escondido, nada presumido",
+      "Proactive management — we prevent, not just repair": "Gestão proativa — prevenimos, não apenas consertamos",
+      "Your team is protected even when they make human mistakes": "Sua equipe fica protegida mesmo quando comete erros humanos",
+      "We monitor the internet for your exposed credentials 24/7": "Monitoramos a internet 24/7 em busca de credenciais expostas",
+      "One flat monthly fee — no surprises, no emergency invoices": "Uma mensalidade fixa — sem surpresas, sem faturas emergenciais",
+      "Protection plans": "Planos de proteção",
+      "Choose the Level Your": "Escolha o Nível que sua",
+      "Business Actually Needs": "Empresa Realmente Precisa",
+      "Start with what you need today. Add more as you grow. No rip-and-replace, no lock-in.": "Comece com o que precisa hoje. Adicione mais conforme cresce. Sem troca completa, sem aprisionamento.",
+      "Your business network, professionally managed and secured. No more guessing.": "A rede da sua empresa gerenciada e protegida profissionalmente. Sem achismos.",
+      "Managed business network — wired & Wi-Fi": "Rede corporativa gerenciada — cabeada e Wi-Fi",
+      "Security firewall — stops threats before they enter": "Firewall de segurança — bloqueia ameaças antes que entrem",
+      "Remote IT support — fast resolution": "Suporte remoto de TI — resolução rápida",
+      "Monthly health report in plain English": "Relatório mensal de saúde em linguagem simples",
+      "Best for: 1–20 employees": "Ideal para: 1–20 colaboradores",
+      "GET STARTED": "COMEÇAR",
+      "Everything in START, plus internet backup so one outage doesn't stop your business.": "Tudo do START, mais backup de internet para que uma queda não pare sua empresa.",
+      "Everything in START": "Tudo do START",
+      "Automatic internet failover — stay online if your provider goes down": "Failover automático de internet — continue online se seu provedor cair",
+      "Advanced firewall and content filtering": "Firewall avançado e filtragem de conteúdo",
+      "Guest Wi-Fi isolated from your business data": "Wi-Fi de visitantes isolado dos dados da empresa",
+      "Best for: 20–40 employees": "Ideal para: 20–40 colaboradores",
+      "⭐ MOST POPULAR": "⭐ MAIS POPULAR",
+      "See everything happening inside your network before problems affect your team.": "Veja tudo que acontece dentro da sua rede antes que problemas afetem sua equipe.",
+      "Everything in CONTROL": "Tudo do CONTROL",
+      "Real-time network monitoring — we see issues before you do": "Monitoramento de rede em tempo real — vemos problemas antes de você",
+      "Performance alerts — slow systems caught early": "Alertas de performance — lentidão identificada cedo",
+      "Monthly executive report in plain English": "Relatório executivo mensal em linguagem simples",
+      "Proactive support — we call you": "Suporte proativo — nós ligamos para você",
+      "Best for: 40–60 employees": "Ideal para: 40–60 colaboradores",
+      "Monitor what attackers see about your business from the outside — before they use it.": "Monitore o que invasores veem da sua empresa pelo lado externo — antes que usem isso.",
+      "Dark web monitoring — alerts if your passwords are breached": "Monitoramento da dark web — alertas se suas senhas vazarem",
+      "Phishing detection targeting your business": "Detecção de phishing direcionado à sua empresa",
+      "Fake website alerts — fraudulent sites impersonating your brand": "Alertas de sites falsos — páginas fraudulentas imitando sua marca",
+      "Brand protection monitoring 24/7": "Monitoramento de proteção de marca 24/7",
+      "Best for: 60–100 employees": "Ideal para: 60–100 colaboradores",
+      "Complete, fully managed protection inside and outside. Zero blind spots.": "Proteção completa e totalmente gerenciada por dentro e por fora. Zero pontos cegos.",
+      "Everything in INSIGHT + DEFEND": "Tudo do INSIGHT + DEFEND",
+      "24/7 security operations team": "Equipe de operações de segurança 24/7",
+      "Incident response — we act, not just alert": "Resposta a incidentes — agimos, não apenas alertamos",
+      "Compliance-ready reporting": "Relatórios prontos para compliance",
+      "Dedicated account manager": "Gerente de conta dedicado",
+      "Best for: 100+ employees": "Ideal para: 100+ colaboradores",
+      "SCHEDULE CONSULTATION": "AGENDAR CONSULTA",
+      "← Prev": "← Anterior",
+      "Next →": "Próximo →",
+      "Not sure which plan fits? Our free assessment tells you exactly what you need — no upsell, no pressure.": "Não sabe qual plano se encaixa? Nossa avaliação gratuita mostra exatamente o que você precisa — sem upsell, sem pressão.",
+      "Talk to a human · Central Florida": "Fale com uma pessoa · Flórida Central",
+      "Business Development Representative · Teletex US Inc.": "Representante de Desenvolvimento de Negócios · Teletex US Inc.",
+      "Get My Free Assessment →": "Solicitar Minha Avaliação Gratuita →",
+      "Plan comparison · What each bundle actually delivers": "Comparação dos planos · O que cada pacote realmente entrega",
+      "Everything Side by Side": "Tudo Lado a Lado",
+      "Click any row to see a plain-English explanation of what that feature actually means for your business — no IT jargon.": "Clique em qualquer linha para ver uma explicação simples do que esse recurso significa para sua empresa — sem jargão técnico.",
+      "All": "Todos", "Network": "Rede", "Managed Services": "Serviços Gerenciados", "Visibility": "Visibilidade", "Cybersecurity": "Cibersegurança", "External Threats": "Ameaças Externas", "SOC / Response": "SOC / Resposta", "Add-Ons": "Adicionais", "Feature": "Recurso", "▾ click for explanation": "▾ clique para explicação", "Included": "Incluído", "Not included": "Não incluído", "Add-on available": "Adicional disponível",
+      "What this means for your business": "O que isso significa para sua empresa",
+      "The reality check": "A checagem da realidade",
+      "Most Small Businesses Are More Exposed": "A Maioria das Pequenas Empresas Está Mais Exposta",
+      "Than They Think": "do que Imagina",
+      "You don't need to be a large corporation to be a target. 43% of all cyber attacks target small businesses specifically — because attackers know you're less protected.": "Você não precisa ser uma grande corporação para ser alvo. 43% dos ataques cibernéticos miram especificamente pequenas empresas — porque invasores sabem que elas são menos protegidas.",
+      "Unstructured or Outdated Infrastructure": "Infraestrutura Desorganizada ou Desatualizada",
+      "Aging equipment and poor network design create invisible vulnerabilities that grow more dangerous every day.": "Equipamentos antigos e desenho de rede ruim criam vulnerabilidades invisíveis que ficam mais perigosas a cada dia.",
+      "No Network Segmentation or Access Control": "Sem Segmentação de Rede ou Controle de Acesso",
+      "Your guest Wi-Fi and business systems sharing the same network — attackers can move freely between them.": "Seu Wi-Fi de visitantes e sistemas corporativos na mesma rede — invasores podem se mover livremente entre eles.",
+      "No Internet Redundancy": "Sem Redundância de Internet",
+      "One provider goes down and your entire operation stops cold. No backup. No warning. No revenue.": "Um provedor cai e toda sua operação para. Sem backup. Sem aviso. Sem receita.",
+      "No Internal Visibility": "Sem Visibilidade Interna",
+      "Performance issues, anomalies, and early-stage threats build quietly — until they become expensive emergencies.": "Problemas de performance, anomalias e ameaças iniciais crescem em silêncio — até virarem emergências caras.",
+      "No External Threat Awareness": "Sem Consciência de Ameaças Externas",
+      "Your passwords, your brand, your domain — exposed online right now, and you'd have no way of knowing.": "Suas senhas, sua marca, seu domínio — podem estar expostos online agora, e você não saberia.",
+      "No Dedicated IT Oversight": "Sem Supervisão Dedicada de TI",
+      "Without structured management, every one of these risks compounds. The cost of inaction grows every single day.": "Sem gestão estruturada, todos esses riscos se acumulam. O custo da inação cresce todos os dias.",
+      "You cannot protect what you cannot see — inside or outside your business.": "Você não pode proteger o que não consegue ver — dentro ou fora da sua empresa.",
+      "The real cost of downtime": "O custo real da paralisação",
+      "When Your Network Fails,": "Quando sua Rede Falha,",
+      "Everything Fails": "Tudo Falha",
+      "It's not just inconvenient. It's expensive. Here's what actually stops the moment your internet or network goes down — and what it costs your business every single minute.": "Não é apenas inconveniente. É caro. Veja o que realmente para no momento em que sua internet ou rede cai — e quanto isso custa a cada minuto.",
+      "Average cost per hour of downtime · Small business": "Custo médio por hora de paralisação · Pequena empresa",
+      "Is your business prepared for even 30 minutes?": "Sua empresa está preparada até mesmo para 30 minutos?",
+      "Payments Stop Instantly": "Pagamentos Param Imediatamente",
+      "Card readers, POS systems, and payment processing go offline. You can't take a single transaction. Every minute is direct revenue loss.": "Leitoras de cartão, POS e processamento de pagamentos ficam offline. Você não consegue fazer uma única venda. Cada minuto é perda direta de receita.",
+      "Phones Go Dead": "Telefones Param",
+      "VoIP phones, call centers, and client lines fail completely. Customers can't reach you. Deals die in silence.": "Telefones VoIP, centrais e linhas de clientes falham completamente. Clientes não conseguem falar com você. Negócios morrem em silêncio.",
+      "Cloud Apps Lock Up": "Aplicativos em Nuvem Travam",
+      "Microsoft 365, your CRM, ERP, scheduling tools — all inaccessible. Your team sits idle. Deadlines get missed.": "Microsoft 365, CRM, ERP e ferramentas de agenda — tudo inacessível. Sua equipe fica parada. Prazos são perdidos.",
+      "Security Goes Blind": "A Segurança Fica Cega",
+      "Cameras, access control, and surveillance lose connectivity. You have no visibility into what's happening at your location.": "Câmeras, controle de acesso e vigilância perdem conectividade. Você não tem visibilidade do que acontece no local.",
+      "Remote Teams Freeze": "Equipes Remotas Param",
+      "VPN access drops. Remote workers can't connect. Productivity across your entire distributed team hits zero — instantly.": "O acesso VPN cai. Trabalhadores remotos não conectam. A produtividade da equipe distribuída vai a zero — instantaneamente.",
+      "Operations Grind to a Halt": "Operações Param por Completo",
+      "Inventory, logistics, scheduling, reporting — all down. And every hour it stays down, the damage compounds.": "Estoque, logística, agendamento e relatórios — tudo fora do ar. E a cada hora parada, o dano aumenta.",
+      "See How We Keep You Online →": "Veja Como Mantemos Você Online →",
+      "Why teletex": "Por que a teletex",
+      "The Strategic IT Partner Built": "O Parceiro Estratégico de TI Criado",
+      "for Modern Business": "para Empresas Modernas",
+      "We're not a break-fix IT shop that shows up after something breaks. Teletex US is your managed services and cybersecurity partner — built to protect, stabilize, and scale your business with 40+ years of enterprise-grade discipline and zero IT jargon. 5,000+ clients served. 2,000+ projects delivered. 280+ professionals. One mission: keep your business running.": "Não somos uma empresa de TI reativa que aparece depois que algo quebra. A Teletex US é sua parceira de serviços gerenciados e cibersegurança — criada para proteger, estabilizar e escalar sua empresa com mais de 40 anos de disciplina corporativa e zero jargão técnico. Mais de 5.000 clientes atendidos. Mais de 2.000 projetos entregues. 280+ profissionais. Uma missão: manter sua empresa funcionando.",
+      "Cybersecurity-First Approach": "Abordagem com Cibersegurança em Primeiro Lugar",
+      "Every service we deliver is designed with security at its core — not bolted on as an afterthought when something goes wrong.": "Todo serviço que entregamos nasce com segurança no centro — não como algo adicionado depois que um problema acontece.",
+      "Proactive, Not Reactive": "Proativo, Não Reativo",
+      "We monitor, alert, and resolve issues before they impact your team. We call you — you don't call us.": "Monitoramos, alertamos e resolvemos problemas antes que afetem sua equipe. Nós ligamos para você — você não precisa nos acionar.",
+      "Business Continuity by Design": "Continuidade de Negócios por Design",
+      "Redundancy, failover, and resilience are built into every layer of our platform — so one bad day doesn't stop your business.": "Redundância, failover e resiliência são incorporados em cada camada da plataforma — para que um dia ruim não pare sua empresa.",
+      "Full Visibility — Inside & Out": "Visibilidade Total — Por Dentro e Por Fora",
+      "Scalable Architecture": "Arquitetura Escalável",
+      "Strategic IT Partnership": "Parceria Estratégica de TI",
+      "What we manage": "O que gerenciamos",
+      "We Manage Your Infrastructure.": "Nós Gerenciamos Sua Infraestrutura.",
+      "You Run Your Business": "Você Toca Sua Empresa",
+      "Teletex takes full ownership of your network, security, and connectivity — so your team never has to think about it. Here's what's covered under every managed services plan.": "A Teletex assume a responsabilidade pela sua rede, segurança e conectividade — para que sua equipe não precise se preocupar com isso. Veja o que está incluído em cada plano de serviços gerenciados.",
+      "Managed Firewall": "Firewall Gerenciado", "Business Wi-Fi": "Wi‑Fi Corporativo", "VPN & Secure Remote Access": "VPN e Acesso Remoto Seguro", "Internet Failover": "Failover de Internet", "Network Switching": "Switching de Rede", "Endpoint Protection": "Proteção de Endpoints", "DNS Security": "Segurança DNS", "Performance Monitoring": "Monitoramento de Performance", "Cloud Connectivity": "Conectividade em Nuvem", "Threat Monitoring": "Monitoramento de Ameaças",
+      "Everything above is delivered as a": "Tudo acima é entregue como um",
+      "fully managed monthly service": "serviço mensal totalmente gerenciado",
+      "— no hardware to buy, no vendors to manage, no IT team required.": "— sem hardware para comprar, sem fornecedores para gerenciar e sem necessidade de equipe interna de TI.",
+      "Business outcomes": "Resultados de negócio",
+      "What Changes When You": "O Que Muda Quando Você",
+      "Work With Teletex": "Trabalha com a Teletex",
+      "Our clients don't just get better IT — they get better business outcomes. Here's what a properly managed, protected, and monitored infrastructure actually delivers.": "Nossos clientes não recebem apenas uma TI melhor — recebem melhores resultados de negócio. Veja o que uma infraestrutura gerenciada, protegida e monitorada entrega de verdade.",
+      "↓ Downtime": "↓ Paralisação", "↑ Visibility": "↑ Visibilidade", "↑ Resilience": "↑ Resiliência", "↓ Risk": "↓ Risco", "↑ Response": "↑ Resposta", "↑ Reputation": "↑ Reputação", "↓ Complexity": "↓ Complexidade", "↑ Growth": "↑ Crescimento",
+      "Who we serve": "Quem atendemos",
+      "Built for Businesses That": "Criado para Empresas que",
+      "Can't Afford to Stop": "Não Podem Parar",
+      "Teletex US serves industries where downtime isn't just inconvenient — it's costly, dangerous, or legally problematic.": "A Teletex US atende setores onde a paralisação não é apenas inconveniente — é cara, perigosa ou legalmente problemática.",
+      "Medical Clinics & Healthcare": "Clínicas Médicas e Saúde", "Law Firms & Legal Services": "Escritórios de Advocacia e Serviços Jurídicos", "Accounting & Financial Services": "Contabilidade e Serviços Financeiros", "Multi-Site Businesses": "Empresas com Múltiplas Unidades", "Retail Operations": "Operações de Varejo", "Hospitality": "Hotelaria", "Professional Services": "Serviços Profissionais", "Growing SMBs": "SMBs em Crescimento",
+      "Serving": "Atendendo",
+      ", and all of Central Florida.": ", e toda a Flórida Central.",
+      "Schedule Free Assessment →": "Agendar Avaliação Gratuita →",
+      "Add-ons": "Adicionais",
+      "Expand Protection.": "Expanda a Proteção.",
+      "Increase Control. Scale as You Grow": "Aumente o Controle. Escale Conforme Cresce",
+      "Every Teletex managed services plan can be enhanced with targeted add-ons. Build the exact layer of coverage your business needs today — and add more as your operations evolve.": "Todo plano de serviços gerenciados da Teletex pode ser ampliado com adicionais específicos. Monte a camada exata de cobertura que sua empresa precisa hoje — e adicione mais conforme evolui.",
+      "FAQ": "FAQ",
+      "Questions We Hear From": "Perguntas que Ouvimos de",
+      "Business Owners Every Day": "Empresários Todos os Dias",
+      "No jargon. No runaround. Here are straight answers to the questions we get most often — before anyone even schedules a call.": "Sem jargão. Sem enrolação. Aqui estão respostas diretas para as perguntas que mais recebemos — antes mesmo de alguém agendar uma ligação.",
+      "Still have questions?": "Ainda tem dúvidas?",
+      "Schedule a free 15-minute call": "Agende uma chamada gratuita de 15 minutos",
+      "with our team — no sales pitch, just answers.": "com nossa equipe — sem discurso de venda, apenas respostas.",
+      "Proven results · Global track record": "Resultados comprovados · Histórico global",
+      "The Same Expertise That Protects": "A Mesma Expertise que Protege",
+      "Global Enterprises — Now in Central Florida": "Empresas Globais — Agora na Flórida Central",
+      "For nearly 40 years, Teletex has delivered mission-critical IT and cybersecurity to some of the world's most demanding organizations. The same team. The same discipline. Now available to your business in Orlando.": "Há quase 40 anos, a Teletex entrega TI e cibersegurança de missão crítica para algumas das organizações mais exigentes do mundo. A mesma equipe. A mesma disciplina. Agora disponível para sua empresa em Orlando.",
+      "Results delivered": "Resultados entregues", "Read full case study": "Ler estudo de caso completo",
+      "Central Florida · Coming soon": "Flórida Central · Em breve",
+      "Your Business Could Be Next": "Sua Empresa Pode Ser a Próxima",
+      "We're building our Central Florida client success stories. If you're a local business owner who wants to protect your operations — and be featured as one of our first success stories in the region — get in touch.": "Estamos construindo nossos cases de sucesso na Flórida Central. Se você é empresário local e quer proteger suas operações — e aparecer como um dos nossos primeiros cases na região — fale conosco.",
+      "About teletex": "Sobre a teletex",
+      "International Experience.": "Experiência Internacional.",
+      "Local Commitment": "Compromisso Local",
+      "Teletex is not a startup. We bring 40+ years of global IT expertise to your Central Florida business — with local presence, local team, and local accountability.": "A Teletex não é uma startup. Levamos mais de 40 anos de expertise global em TI para sua empresa na Flórida Central — com presença local, equipe local e responsabilidade local.",
+      "Now we bring that enterprise-grade capability to SMBs in Orlando — in a simple, predictable monthly model.": "Agora levamos essa capacidade de nível corporativo para SMBs em Orlando — em um modelo mensal simples e previsível.",
+      "Learn About teletex Global": "Conheça a teletex Global",
+      "Years of experience": "Anos de experiência", "Clients served": "Clientes atendidos", "Projects delivered": "Projetos entregues", "Active certifications": "Certificações ativas", "Professionals": "Profissionais", "Countries": "Países", "Serving Central Florida": "Atendendo a Flórida Central",
+      "Free risk assessment": "Avaliação gratuita de risco",
+      "Your Business Is Either": "Sua Empresa Está",
+      "Protected or It Isn't": "Protegida ou Não Está",
+      "There's No Middle Ground.": "Não Existe Meio-Termo.",
+      "Most business owners are shocked by what we find. Exposed credentials. Single points of failure. Unmonitored networks. Our free assessment gives you the full picture — in plain English, in under 15 minutes, with zero pressure.": "A maioria dos empresários se surpreende com o que encontramos. Credenciais expostas. Pontos únicos de falha. Redes sem monitoramento. Nossa avaliação gratuita mostra o quadro completo — em linguagem simples, em menos de 15 minutos, sem pressão.",
+      "Network & Infrastructure Review": "Revisão de Rede e Infraestrutura", "Internet Redundancy Check": "Verificação de Redundância de Internet", "Security Gap Analysis": "Análise de Lacunas de Segurança", "Visibility & Monitoring Audit": "Auditoria de Visibilidade e Monitoramento", "External Exposure Scan": "Varredura de Exposição Externa", "Your Custom Protection Plan": "Seu Plano de Proteção Personalizado",
+      "Get My Free Risk Assessment": "Solicitar Minha Avaliação Gratuita de Risco",
+      "Call: +1 (833) 783-5383": "Ligue: +1 (833) 783-5383",
+      "Prefer email?": "Prefere e-mail?",
+      "Stay Online. Stay Secure. No Matter What.": "Fique Online. Fique Seguro. Não Importa o Que Aconteça.",
+      "Company": "Empresa", "Global Website": "Site Global", "Solutions": "Soluções", "Contact": "Contato", "Address": "Endereço", "All rights reserved.": "Todos os direitos reservados.",
+      "Orlando, Florida · United States": "Orlando, Flórida · Estados Unidos",
+      "Do I need to buy new equipment?": "Preciso comprar novos equipamentos?",
+      "Can you support multiple locations?": "Vocês atendem múltiplas unidades?",
+      "What happens if my internet goes down?": "O que acontece se minha internet cair?",
+      "Do you provide monitoring? Who watches my network?": "Vocês oferecem monitoramento? Quem acompanha minha rede?",
+      "Can you work with my current internet provider?": "Vocês trabalham com meu provedor atual de internet?",
+      "Do I need an internal IT team to work with Teletex?": "Preciso ter equipe interna de TI para trabalhar com a Teletex?",
+      "Is this fully managed? What does that mean?": "Isso é totalmente gerenciado? O que significa?",
+      "How long does it take to get started?": "Quanto tempo leva para começar?"
+    },
+    es: {
+      "Find out if your business is exposed —": "Descubre si tu empresa está expuesta —",
+      "free assessment, 15 min, no pressure.": "evaluación gratuita, 15 min, sin presión.",
+      "Get Free Assessment →": "Solicitar Evaluación Gratuita →",
+      "Free Assessment": "Evaluación Gratuita",
+      "Serving Central Florida — Orlando & Region": "Atendiendo Florida Central — Orlando y Región",
+      "You Pay More": "Pagas Más",
+      "for Coffee Than": "por Café que",
+      "for": "por",
+      "Protecting": "Proteger",
+      "Your Business": "Tu Empresa",
+      "Let's fix that. Full network security, managed IT, and cyber protection for Central Florida businesses — starting at": "Vamos a corregir eso. Seguridad de red completa, TI administrada y protección cibernética para empresas de Florida Central — desde",
+      "$297/month.": "$297/mes.",
+      "No IT jargon. No surprises. Just results.": "Sin jerga técnica. Sin sorpresas. Solo resultados.",
+      "Get My Free Risk Assessment": "Quiero Mi Evaluación Gratuita de Riesgo",
+      "See Protection Plans": "Ver Planes de Protección",
+      "Free · No obligation": "Gratis · Sin compromiso",
+      "15-min assessment": "Evaluación de 15 min",
+      "Plans from $297/mo": "Planes desde $297/mes",
+      "5,000+ clients globally": "Más de 5.000 clientes globales",
+      "Local team · Orlando, FL": "Equipo local · Orlando, FL",
+      "The numbers that change everything": "Los números que lo cambian todo",
+      "Your Team's Premium Coffee": "El Café Premium de Tu Equipo",
+      "Costs More Than Protecting": "Cuesta Más que Proteger",
+      "Your Entire Business": "Toda Tu Empresa",
+      "For a team of 20 people, here's what you're already spending every month — and what you're probably not spending nearly enough on.": "Para un equipo de 20 personas, esto es lo que ya gastas cada mes — y donde probablemente no estás invirtiendo lo suficiente.",
+      "Interactive calculator": "Calculadora interactiva",
+      "🆕 Adjust your team size to see real costs": "🆕 Ajusta el tamaño del equipo para ver costos reales",
+      "employees": "empleados",
+      "people": "personas", "lines": "líneas", "users": "usuarios", "/mo": "/mes",
+      "Premium capsule coffee ·": "Café premium en cápsulas ·", "Business cell phones ·": "Celulares corporativos ·", "Full IT & cybersecurity ·": "TI completa y ciberseguridad ·",
+      "The knockout punch comparison": "La comparación decisiva",
+      "Your team's premium coffee costs": "El café premium de tu equipo cuesta",
+      "more than your full IT protection.": "más que tu protección completa de TI.",
+      "One protects your team's morning routine. The other protects everything your business is built on.": "Uno protege la rutina matutina de tu equipo. El otro protege todo lo que sostiene tu empresa.",
+      "Cost of one cyber attack": "Costo de un ataque cibernético",
+      "No contracts · No setup fees · Cancel anytime": "Sin contratos · Sin cargos de instalación · Cancela cuando quieras",
+      "Verified intelligence · 2024–2025": "Inteligencia verificada · 2024–2025",
+      "The Numbers Every SMB Owner": "Los Números que Todo Dueño de SMB",
+      "in Central Florida Needs to See": "en Florida Central Debe Ver",
+      "Don't Be the Next Statistic — Get a Free Assessment": "No Seas la Próxima Estadística — Solicita una Evaluación Gratuita",
+      "The shift": "El cambio",
+      "Most Businesses Wait Until Something Breaks.": "La Mayoría de las Empresas Espera a que Algo Falle.",
+      "The Smart Ones Don't": "Las Inteligentes No Esperan",
+      "WITHOUT TELETEX": "SIN TELETEX", "WITH TELETEX": "CON TELETEX",
+      "Protection plans": "Planes de protección",
+      "Choose the Level Your": "Elige el Nivel que tu",
+      "Business Actually Needs": "Empresa Realmente Necesita",
+      "Start with what you need today. Add more as you grow. No rip-and-replace, no lock-in.": "Empieza con lo que necesitas hoy. Agrega más a medida que creces. Sin reemplazos completos, sin ataduras.",
+      "GET STARTED": "COMENZAR", "⭐ MOST POPULAR": "⭐ MÁS POPULAR", "SCHEDULE CONSULTATION": "AGENDAR CONSULTA", "← Prev": "← Anterior", "Next →": "Siguiente →",
+      "All": "Todos", "Network": "Red", "Managed Services": "Servicios Administrados", "Visibility": "Visibilidad", "Cybersecurity": "Ciberseguridad", "External Threats": "Amenazas Externas", "SOC / Response": "SOC / Respuesta", "Add-Ons": "Adicionales", "Feature": "Recurso", "Included": "Incluido", "Not included": "No incluido", "Add-on available": "Adicional disponible", "What this means for your business": "Qué significa esto para tu empresa",
+      "The reality check": "La verificación de realidad", "Most Small Businesses Are More Exposed": "La Mayoría de las Pequeñas Empresas Está Más Expuesta", "Than They Think": "de lo que Cree",
+      "The real cost of downtime": "El costo real del tiempo de inactividad", "When Your Network Fails,": "Cuando Tu Red Falla,", "Everything Fails": "Todo Falla",
+      "Why teletex": "Por qué teletex", "The Strategic IT Partner Built": "El Socio Estratégico de TI Creado", "for Modern Business": "para Empresas Modernas",
+      "What we manage": "Qué administramos", "We Manage Your Infrastructure.": "Administramos Tu Infraestructura.", "You Run Your Business": "Tú Diriges Tu Empresa",
+      "Managed Firewall": "Firewall Administrado", "Business Wi-Fi": "Wi‑Fi Empresarial", "VPN & Secure Remote Access": "VPN y Acceso Remoto Seguro", "Internet Failover": "Failover de Internet", "Endpoint Protection": "Protección de Endpoints", "DNS Security": "Seguridad DNS", "Performance Monitoring": "Monitoreo de Rendimiento", "Cloud Connectivity": "Conectividad en la Nube", "Threat Monitoring": "Monitoreo de Amenazas",
+      "Business outcomes": "Resultados de negocio", "What Changes When You": "Qué Cambia Cuando", "Work With Teletex": "Trabajas con Teletex",
+      "Who we serve": "A quién servimos", "Built for Businesses That": "Creado para Empresas que", "Can't Afford to Stop": "No Pueden Detenerse",
+      "Medical Clinics & Healthcare": "Clínicas Médicas y Salud", "Law Firms & Legal Services": "Firmas Legales y Servicios Jurídicos", "Accounting & Financial Services": "Contabilidad y Servicios Financieros", "Multi-Site Businesses": "Empresas con Múltiples Ubicaciones", "Retail Operations": "Operaciones Minoristas", "Hospitality": "Hospitalidad", "Professional Services": "Servicios Profesionales", "Growing SMBs": "SMBs en Crecimiento",
+      "Schedule Free Assessment →": "Agendar Evaluación Gratuita →", "Add-ons": "Adicionales", "Expand Protection.": "Amplía la Protección.", "Increase Control. Scale as You Grow": "Aumenta el Control. Escala al Crecer",
+      "FAQ": "FAQ", "Questions We Hear From": "Preguntas que Escuchamos de", "Business Owners Every Day": "Empresarios Todos los Días", "Still have questions?": "¿Aún tienes preguntas?", "Schedule a free 15-minute call": "Agenda una llamada gratuita de 15 minutos", "with our team — no sales pitch, just answers.": "con nuestro equipo — sin discurso de ventas, solo respuestas.",
+      "Proven results · Global track record": "Resultados comprobados · Trayectoria global", "The Same Expertise That Protects": "La Misma Experiencia que Protege", "Global Enterprises — Now in Central Florida": "Empresas Globales — Ahora en Florida Central", "Results delivered": "Resultados entregados", "Read full case study": "Leer caso de estudio completo",
+      "Central Florida · Coming soon": "Florida Central · Próximamente", "Your Business Could Be Next": "Tu Empresa Podría Ser la Próxima", "About teletex": "Acerca de teletex", "International Experience.": "Experiencia Internacional.", "Local Commitment": "Compromiso Local",
+      "Learn About teletex Global": "Conoce teletex Global", "Years of experience": "Años de experiencia", "Clients served": "Clientes atendidos", "Projects delivered": "Proyectos entregados", "Active certifications": "Certificaciones activas", "Professionals": "Profesionales", "Countries": "Países", "Serving Central Florida": "Atendiendo Florida Central",
+      "Free risk assessment": "Evaluación gratuita de riesgo", "Your Business Is Either": "Tu Empresa Está", "Protected or It Isn't": "Protegida o No lo Está", "There's No Middle Ground.": "No Hay Punto Medio.",
+      "Network & Infrastructure Review": "Revisión de Red e Infraestructura", "Internet Redundancy Check": "Verificación de Redundancia de Internet", "Security Gap Analysis": "Análisis de Brechas de Seguridad", "Visibility & Monitoring Audit": "Auditoría de Visibilidad y Monitoreo", "External Exposure Scan": "Escaneo de Exposición Externa", "Your Custom Protection Plan": "Tu Plan de Protección Personalizado",
+      "Call: +1 (833) 783-5383": "Llama: +1 (833) 783-5383", "Prefer email?": "¿Prefieres email?", "Stay Online. Stay Secure. No Matter What.": "Mantente Online. Mantente Seguro. Pase lo que Pase.", "Company": "Empresa", "Global Website": "Sitio Global", "Solutions": "Soluciones", "Contact": "Contacto", "Address": "Dirección", "Orlando, Florida · United States": "Orlando, Florida · Estados Unidos",
+      "Do I need to buy new equipment?": "¿Necesito comprar equipos nuevos?", "Can you support multiple locations?": "¿Pueden apoyar varias ubicaciones?", "What happens if my internet goes down?": "¿Qué pasa si se cae mi internet?", "Do you provide monitoring? Who watches my network?": "¿Ofrecen monitoreo? ¿Quién vigila mi red?", "Can you work with my current internet provider?": "¿Pueden trabajar con mi proveedor actual de internet?", "Do I need an internal IT team to work with Teletex?": "¿Necesito un equipo interno de TI para trabajar con Teletex?", "Is this fully managed? What does that mean?": "¿Esto es totalmente administrado? ¿Qué significa?", "How long does it take to get started?": "¿Cuánto tiempo toma comenzar?"
+    }
+  };
+
+
+  Object.assign(T.pt, {"Organizations that don't have proper IT and cybersecurity maturity — often SMB-sized — are paying the price for their size, with ransomware present in 88% of breaches.": "Empresas que não têm maturidade adequada em TI e cibersegurança — muitas vezes SMBs — estão pagando o preço pelo seu porte, com ransomware presente em 88% das violações.", "– Craig Robinson, Research VP · Security Services · IDC · Verizon DBIR 2025 Launch": "– Craig Robinson, VP de Pesquisa · Serviços de Segurança · IDC · Lançamento Verizon DBIR 2025", "Managed wired & Wi-Fi network": "Rede cabeada e Wi‑Fi gerenciada", "We handle all the cables, routers and wireless access points in your office. Your internet stays fast, organized and stable — without you needing to think about it.": "Cuidamos de cabos, roteadores e pontos de acesso Wi‑Fi do seu escritório. Sua internet fica rápida, organizada e estável — sem você precisar se preocupar com isso.", "Security firewall": "Firewall de segurança", "Guest Wi-Fi — isolated from business data": "Wi‑Fi de visitantes — isolado dos dados da empresa", "Automatic internet failover": "Failover automático de internet", "SD-WAN / multi-link optimization": "SD‑WAN / otimização multi-link", "Remote VPN access": "Acesso VPN remoto", "Managed help desk / N2 support": "Help desk gerenciado / suporte N2", "Monthly health report": "Relatório mensal de saúde", "Business Review / roadmap": "Revisão executiva / roadmap", "Internal network monitoring": "Monitoramento interno da rede", "Performance & anomaly monitoring": "Monitoramento de performance e anomalias", "External exposure monitoring": "Monitoramento de exposição externa", "Dark web credential monitoring": "Monitoramento de credenciais na dark web", "Phishing / brand impersonation monitoring": "Monitoramento de phishing / impersonação de marca", "Security incident response guidance": "Orientação de resposta a incidentes de segurança", "SOC analyst response": "Resposta de analista SOC", "Endpoint protection / EDR": "Proteção de endpoints / EDR", "Email security / advanced anti-phishing": "Segurança de e-mail / anti-phishing avançado", "MFA / identity protection": "MFA / proteção de identidade", "Managed cloud backup": "Backup em nuvem gerenciado", "Compliance documentation support": "Suporte à documentação de compliance", "We install and manage a business-grade firewall that filters traffic, blocks basic threats, and gives your company a stronger security perimeter.": "Instalamos e gerenciamos um firewall corporativo que filtra tráfego, bloqueia ameaças básicas e fortalece o perímetro de segurança da sua empresa.", "Your guest Wi‑Fi is separated from business systems. Visitors can get online without putting your files, computers or payment systems at risk.": "O Wi‑Fi de visitantes fica separado dos sistemas da empresa. Visitantes acessam a internet sem colocar arquivos, computadores ou pagamentos em risco.", "If your main internet provider goes down, a backup connection takes over automatically so your team can keep working.": "Se o provedor principal cair, uma conexão de backup assume automaticamente para sua equipe continuar trabalhando.", "We optimize multiple internet links so business apps, phones and cloud systems stay stable and use the best available connection.": "Otimizamos múltiplos links de internet para que aplicativos, telefones e sistemas em nuvem permaneçam estáveis usando a melhor conexão disponível.", "Your team can connect securely from home, remote offices or while traveling — without exposing the business network.": "Sua equipe pode se conectar com segurança de casa, filiais ou em viagem — sem expor a rede da empresa.", "Your team gets a professional support path for common issues, troubleshooting and escalation — instead of relying on whoever is available.": "Sua equipe tem um caminho profissional de suporte para problemas comuns, troubleshooting e escalonamento — sem depender de quem estiver disponível.", "You receive a simple monthly summary of what happened, what was fixed, and what needs attention — in business language.": "Você recebe um resumo mensal simples do que aconteceu, o que foi corrigido e o que precisa de atenção — em linguagem de negócio.", "We help you plan the next steps for your infrastructure so IT decisions are proactive, not last-minute emergencies.": "Ajudamos a planejar os próximos passos da infraestrutura para que decisões de TI sejam proativas, não emergências de última hora.", "We watch the health of your network — uptime, device status, bottlenecks and issues — before they turn into outages.": "Monitoramos a saúde da sua rede — disponibilidade, status dos dispositivos, gargalos e problemas — antes que virem paralisações.", "We detect unusual patterns, slow systems and early signs of trouble inside your environment so problems are caught earlier.": "Detectamos padrões incomuns, lentidão e sinais iniciais de problemas dentro do ambiente para agir mais cedo.", "We monitor what is exposed about your company online — domains, credentials, leaked data and digital risks outside your office.": "Monitoramos o que está exposto sobre sua empresa online — domínios, credenciais, dados vazados e riscos digitais fora do escritório.", "We look for employee credentials and business data appearing in dark web sources so you can react before attackers use them.": "Buscamos credenciais de colaboradores e dados da empresa em fontes da dark web para agir antes que invasores usem essas informações.", "We monitor for fake domains, phishing pages and brand impersonation attempts that could target your customers or staff.": "Monitoramos domínios falsos, páginas de phishing e tentativas de impersonação da marca que possam atingir clientes ou equipe.", "You get structured guidance when something suspicious happens — what to isolate, what to check, and how to respond safely.": "Você recebe orientação estruturada quando algo suspeito acontece — o que isolar, o que verificar e como responder com segurança.", "A security analyst can review alerts and help coordinate response for higher-risk events that require expert attention.": "Um analista de segurança pode revisar alertas e ajudar a coordenar a resposta em eventos de maior risco.", "Adds stronger protection on laptops, desktops and servers — detecting malware, suspicious behavior and advanced attacks.": "Adiciona proteção mais forte em notebooks, desktops e servidores — detectando malware, comportamentos suspeitos e ataques avançados.", "Improves protection against phishing, malicious attachments and fake emails before they reach your employees.": "Melhora a proteção contra phishing, anexos maliciosos e e-mails falsos antes que cheguem aos colaboradores.", "Adds stronger login protection so stolen passwords alone are not enough to access your systems.": "Adiciona proteção de login para que senhas roubadas, sozinhas, não sejam suficientes para acessar seus sistemas.", "Protects critical business files and systems with managed cloud backup options for recovery after mistakes or attacks.": "Protege arquivos e sistemas críticos com opções de backup em nuvem gerenciado para recuperação após erros ou ataques.", "Helps organize the reports, evidence and security documentation needed for audits, insurance or regulated industries.": "Ajuda a organizar relatórios, evidências e documentação de segurança exigidos para auditorias, seguros ou setores regulados.", "Enterprise-grade protection. Zero IT jargon. One partner who actually picks up the phone.": "Proteção de nível corporativo. Zero jargão técnico. Um parceiro que realmente atende o telefone.", "Managed Firewall": "Firewall Gerenciado", "Enterprise-grade perimeter protection — blocking threats before they reach your network.": "Proteção de perímetro de nível corporativo — bloqueando ameaças antes que cheguem à sua rede.", "Business Wi-Fi": "Wi‑Fi Corporativo", "Secure, high-performance wireless for your team — with guest isolation built in.": "Wi‑Fi seguro e de alta performance para sua equipe — com isolamento para visitantes incluído.", "VPN & Secure Remote Access": "VPN e Acesso Remoto Seguro", "Encrypted remote connectivity for your team — wherever they work.": "Conectividade remota criptografada para sua equipe — onde quer que trabalhem.", "Internet Failover": "Failover de Internet", "Automatic backup internet — your business stays online even when your primary provider fails.": "Internet de backup automática — sua empresa continua online mesmo quando o provedor principal falha.", "Network Switching": "Switching de Rede", "Structured, segmented network infrastructure — organized, fast, and secure.": "Infraestrutura de rede estruturada e segmentada — organizada, rápida e segura.", "Endpoint Protection": "Proteção de Endpoints", "Security coverage for every device connecting to your network — laptops, desktops, and mobile.": "Cobertura de segurança para cada dispositivo conectado à rede — notebooks, desktops e celulares.", "DNS Security": "Segurança DNS", "Block malicious websites and phishing domains before they ever load on your network.": "Bloqueie sites maliciosos e domínios de phishing antes mesmo que carreguem na rede.", "Performance Monitoring": "Monitoramento de Performance", "Real-time visibility into your network health — we catch issues before your team notices them.": "Visibilidade em tempo real da saúde da rede — identificamos problemas antes que sua equipe perceba.", "Cloud Connectivity": "Conectividade em Nuvem", "Optimized, secure access to your cloud platforms — Microsoft 365, Google Workspace, and more.": "Acesso otimizado e seguro às plataformas em nuvem — Microsoft 365, Google Workspace e mais.", "Threat Monitoring": "Monitoramento de Ameaças", "Continuous monitoring for anomalies, intrusions, and suspicious activity across your environment.": "Monitoramento contínuo de anomalias, invasões e atividades suspeitas em todo o ambiente.", "↓ Downtime": "↓ Paralisação", "Unplanned outages become rare — not routine. Proactive monitoring and redundant infrastructure keep your business running.": "Paradas não planejadas se tornam raras — não rotina. Monitoramento proativo e infraestrutura redundante mantêm sua empresa funcionando.", "↑ Visibility": "↑ Visibilidade", "You see everything happening inside and outside your network — in real time, in plain English.": "Você enxerga tudo que acontece dentro e fora da sua rede — em tempo real e em linguagem simples.", "↑ Resilience": "↑ Resiliência", "Your infrastructure is built to absorb disruption and keep operating — even when things go wrong.": "Sua infraestrutura é construída para absorver interrupções e continuar operando — mesmo quando algo dá errado.", "↓ Risk": "↓ Risco", "Your cybersecurity posture improves continuously — reducing your exposure to threats inside and outside your business.": "Sua postura de cibersegurança melhora continuamente — reduzindo a exposição a ameaças dentro e fora da empresa.", "↑ Response": "↑ Resposta", "Threats are detected and contained faster — before they escalate into the kind of incident that costs $120,000+.": "Ameaças são detectadas e contidas mais rápido — antes que escalem para incidentes de $120.000+.", "↑ Reputation": "↑ Reputação", "Your brand, your clients' trust, and your digital identity are actively protected — not just hoped for.": "Sua marca, a confiança dos clientes e sua identidade digital são protegidas ativamente — não apenas na esperança.", "↓ Complexity": "↓ Complexidade", "One partner. One monthly investment. No vendor juggling, no surprise bills, no IT firefighting.": "Um parceiro. Um investimento mensal. Sem vários fornecedores, sem cobranças surpresa, sem apagar incêndios de TI.", "↑ Growth": "↑ Crescimento", "Your leadership team focuses on growing the business — not managing IT problems that should never have happened.": "Sua liderança foca em crescer o negócio — não em gerenciar problemas de TI que nunca deveriam ter acontecido.", "Better infrastructure isn't just an IT decision — it's a business decision that pays for itself.": "Infraestrutura melhor não é apenas uma decisão de TI — é uma decisão de negócio que se paga.", "Medical Clinics & Healthcare": "Clínicas Médicas e Saúde", "A network failure during patient care is a liability. A breach of patient records is a crisis. We keep your systems HIPAA-aligned, always online, and protected.": "Uma falha de rede durante o atendimento ao paciente é um risco legal. Um vazamento de prontuários é uma crise. Mantemos seus sistemas alinhados à HIPAA, sempre online e protegidos.", "Law Firms & Legal Services": "Escritórios de Advocacia e Serviços Jurídicos", "Client confidentiality isn't optional — it's your license. One breach of privileged communications can end careers. We protect what your clients trust you with.": "Confidencialidade do cliente não é opcional — é sua licença. Uma violação de comunicações privilegiadas pode encerrar carreiras. Protegemos aquilo que seus clientes confiam a você.", "Accounting & Financial Services": "Contabilidade e Serviços Financeiros", "Tax season doesn't pause for outages. Client financial data doesn't forgive breaches. We keep your systems secure, compliant, and always accessible.": "A temporada de impostos não espera a internet voltar. Dados financeiros de clientes não perdoam vazamentos. Mantemos seus sistemas seguros, em conformidade e sempre acessíveis.", "Multi-Site Businesses": "Empresas com Múltiplas Unidades", "Managing IT across multiple locations without a unified system is a security disaster waiting to happen. We give you one partner, one standard, one monthly bill.": "Gerenciar TI em várias unidades sem um sistema unificado é um desastre de segurança esperando acontecer. Entregamos um parceiro, um padrão e uma cobrança mensal.", "Retail Operations": "Operações de Varejo", "Every minute your POS is down, you're losing sales. Every unsecured transaction is a liability. We keep your payments running and customer data protected.": "Cada minuto que seu POS fica fora do ar é venda perdida. Cada transação insegura é um risco. Mantemos seus pagamentos funcionando e os dados dos clientes protegidos.", "Hospitality": "Hotelaria", "Guests expect fast Wi-Fi, seamless check-ins, and secure payments. One network failure during peak hours costs you reviews, revenue, and repeat business.": "Hóspedes esperam Wi‑Fi rápido, check-in sem atrito e pagamentos seguros. Uma falha de rede no horário de pico custa avaliações, receita e clientes recorrentes.", "Professional Services": "Serviços Profissionais", "Your reputation is your business. A ransomware attack or data leak can destroy client trust overnight. We protect the infrastructure your reputation depends on.": "Sua reputação é o seu negócio. Um ataque de ransomware ou vazamento de dados pode destruir a confiança dos clientes em uma noite. Protegemos a infraestrutura da qual sua reputação depende.", "Growing SMBs": "SMBs em Crescimento", "You're scaling fast — but your infrastructure isn't keeping up. We build the foundation that lets you grow without outgrowing your security.": "Você está crescendo rápido — mas sua infraestrutura não acompanha. Construímos a base para crescer sem ultrapassar sua segurança.", "Do I need to buy new equipment?": "Preciso comprar novos equipamentos?", "Not necessarily. We assess your current setup first. In many cases, we can manage and improve what you already have. If new equipment is needed, we'll tell you exactly why — and what it costs — before anything happens.": "Não necessariamente. Primeiro avaliamos sua estrutura atual. Em muitos casos, conseguimos gerenciar e melhorar o que você já tem. Se for necessário novo equipamento, explicamos exatamente o motivo — e o custo — antes de qualquer decisão.", "Can you support multiple locations?": "Vocês atendem múltiplas unidades?", "Yes. Multi-site management is one of our core strengths. We deploy consistent security policies, unified monitoring, and centralized visibility across every location — from one partner, one invoice.": "Sim. Gestão multiunidade é uma das nossas principais forças. Implantamos políticas de segurança consistentes, monitoramento unificado e visibilidade centralizada em todas as unidades — com um único parceiro e uma única fatura.", "What happens if my internet goes down?": "O que acontece se minha internet cair?", "With our CONTROL plan and above, you get automatic internet failover — a backup connection that kicks in instantly when your primary provider fails. Your team keeps working. Your customers keep reaching you.": "A partir do plano CONTROL, você tem failover automático de internet — uma conexão de backup que entra em ação quando o provedor principal falha. Sua equipe continua trabalhando e seus clientes continuam conseguindo contato.", "Do you provide monitoring? Who watches my network?": "Vocês oferecem monitoramento? Quem acompanha minha rede?", "Yes. Depending on your plan, we provide continuous network monitoring, performance alerting, and proactive support. We identify and resolve issues before your team ever notices them.": "Sim. Dependendo do plano, fornecemos monitoramento contínuo da rede, alertas de performance e suporte proativo. Identificamos e resolvemos problemas antes que sua equipe perceba.", "Can you work with my current internet provider?": "Vocês trabalham com meu provedor atual?", "Absolutely. We work with any ISP. We manage the infrastructure on your side — the routers, firewalls, switches, and Wi-Fi — regardless of who provides your internet connection.": "Com certeza. Trabalhamos com qualquer provedor. Gerenciamos a infraestrutura do seu lado — roteadores, firewalls, switches e Wi‑Fi — independentemente de quem fornece a internet.", "Do I need an internal IT team to work with Teletex?": "Preciso ter uma equipe interna de TI para trabalhar com a Teletex?", "No. That's the point. Teletex is your IT team. We handle everything — monitoring, management, support, and security — so you don't need to hire, train, or manage internal IT staff.": "Não. Esse é o objetivo. A Teletex é sua equipe de TI. Cuidamos de tudo — monitoramento, gestão, suporte e segurança — para que você não precise contratar, treinar ou gerenciar equipe interna.", "Is this fully managed? What does that mean?": "Isso é totalmente gerenciado? O que significa?", "Fully managed means we own the outcome. We monitor, maintain, update, and support your infrastructure proactively — not just when something breaks. You pay one predictable monthly fee. We handle everything else.": "Totalmente gerenciado significa que assumimos a responsabilidade pelo resultado. Monitoramos, mantemos, atualizamos e damos suporte à infraestrutura de forma proativa — não apenas quando algo quebra. Você paga uma mensalidade previsível e nós cuidamos do restante.", "How long does it take to get started?": "Quanto tempo leva para começar?", "We start with a free assessment — typically 15 minutes. From there, most deployments are completed within days, not months. We work around your schedule to minimize disruption.": "Começamos com uma avaliação gratuita — normalmente 15 minutos. A partir daí, a maioria das implantações é concluída em dias, não meses. Trabalhamos conforme sua agenda para minimizar interrupções.", "Infrastructure & Information Security Manager · Brink's Brazil": "Gerente de Infraestrutura e Segurança da Informação · Brink's Brasil", "RESULTS DELIVERED": "RESULTADOS ENTREGUES", "Managed SOC & NOC 24×7 — zero security incidents since deployment": "SOC & NOC gerenciados 24×7 — zero incidentes de segurança desde a implantação", "System blocks hundreds of attack attempts continuously": "Sistema bloqueia centenas de tentativas de ataque continuamente", "Significant reduction in operational costs": "Redução significativa de custos operacionais", "Aviation · Mission-critical 3-year partnership": "Aviação · Parceria crítica de 3 anos", "Airport Operations · Brazil · Critical Infrastructure": "Operações Aeroportuárias · Brasil · Infraestrutura Crítica", "17-person dedicated team — L1 to L3 — supporting critical airport operations": "Equipe dedicada de 17 pessoas — L1 a L3 — apoiando operações críticas aeroportuárias", "Full data security stack deployed across airport infrastructure": "Stack completo de segurança de dados implantado na infraestrutura aeroportuária", "Healthcare · 1,200+ beds largest in region": "Saúde · 1.200+ leitos, maior da região", "Largest Hospital Complex · North-Northeast Brazil": "Maior Complexo Hospitalar · Norte-Nordeste do Brasil", "Full digital security posture transformation across hospital systems": "Transformação completa da postura de segurança digital nos sistemas hospitalares", "Patient data protection in one of Brazil's most critical health environments": "Proteção de dados de pacientes em um dos ambientes de saúde mais críticos do Brasil", "Continuous monitoring and incident": "Monitoramento contínuo e resposta a incidentes", "We realized we needed to give more protection to our IT infrastructure through continuous work. What motivated us to work with Teletex was the quality of services and the strong expertise in networks and security. Since the solution was implemented, not a single incident has been recorded.": "Percebemos que precisávamos dar mais proteção à nossa infraestrutura de TI por meio de um trabalho contínuo. O que nos motivou a trabalhar com a Teletex foi a qualidade dos serviços e a forte expertise em redes e segurança. Desde que a solução foi implantada, nenhum incidente foi registrado.", "Zurich Airport partnered with Teletex for IT support, service desk, and advanced data security solutions. Airport operations are among the most demanding environments in the world — zero tolerance for downtime, zero tolerance for security gaps. Teletex delivers both.": "O Zurich Airport firmou parceria com a Teletex para suporte de TI, service desk e soluções avançadas de segurança de dados. Operações aeroportuárias estão entre os ambientes mais exigentes do mundo — tolerância zero para indisponibilidade e falhas de segurança. A Teletex entrega os dois.", "The largest hospital complex in the North-Northeast region of Brazil strengthened its entire digital security posture in partnership with Teletex — protecting patient data, critical systems, and operational continuity across a complex, high-stakes environment.": "O maior complexo hospitalar das regiões Norte e Nordeste do Brasil fortaleceu toda sua postura de segurança digital em parceria com a Teletex — protegendo dados de pacientes, sistemas críticos e continuidade operacional em um ambiente complexo e de alta responsabilidade.", "We specialize in IT infrastructure, cybersecurity, networking, and managed services. Our 280+ professionals hold 300+ active certifications. With 5,000+ clients served across 15+ countries and 2,000+ projects delivered, we've built the infrastructure for banks, airports, hospitals, and major retailers across Latin America and the United States.": "Somos especializados em infraestrutura de TI, cibersegurança, redes e serviços gerenciados. Nossos mais de 280 profissionais possuem mais de 300 certificações ativas. Com mais de 5.000 clientes atendidos em 15+ países e 2.000+ projetos entregues, construímos infraestrutura para bancos, aeroportos, hospitais e grandes varejistas na América Latina e nos Estados Unidos.", "5,000+ Clients · 2,000+ Projects · 15+ Countries": "5.000+ Clientes · 2.000+ Projetos · 15+ Países", "Curitiba · São Paulo · Brasília · Porto Alegre · Orlando, Florida": "Curitiba · São Paulo · Brasília · Porto Alegre · Orlando, Flórida"});
+  Object.assign(T.es, {"Organizations that don't have proper IT and cybersecurity maturity — often SMB-sized — are paying the price for their size, with ransomware present in 88% of breaches.": "Las organizaciones que no tienen madurez adecuada en TI y ciberseguridad — muchas veces SMBs — están pagando el precio por su tamaño, con ransomware presente en el 88% de las brechas.", "Managed wired & Wi-Fi network": "Red cableada y Wi‑Fi administrada", "We handle all the cables, routers and wireless access points in your office. Your internet stays fast, organized and stable — without you needing to think about it.": "Nos encargamos de cables, routers y puntos de acceso Wi‑Fi de tu oficina. Tu internet se mantiene rápido, organizado y estable — sin que tengas que preocuparte.", "Security firewall": "Firewall de seguridad", "Guest Wi-Fi — isolated from business data": "Wi‑Fi de invitados — aislado de los datos del negocio", "Automatic internet failover": "Failover automático de internet", "SD-WAN / multi-link optimization": "SD‑WAN / optimización multi-link", "Remote VPN access": "Acceso VPN remoto", "Enterprise-grade protection. Zero IT jargon. One partner who actually picks up the phone.": "Protección de nivel empresarial. Cero jerga técnica. Un socio que realmente contesta el teléfono.", "Managed Firewall": "Firewall Administrado", "Enterprise-grade perimeter protection — blocking threats before they reach your network.": "Protección perimetral de nivel empresarial — bloqueando amenazas antes de que lleguen a tu red.", "Business Wi-Fi": "Wi‑Fi Empresarial", "Secure, high-performance wireless for your team — with guest isolation built in.": "Wi‑Fi seguro y de alto rendimiento para tu equipo — con aislamiento de invitados incluido.", "VPN & Secure Remote Access": "VPN y Acceso Remoto Seguro", "Encrypted remote connectivity for your team — wherever they work.": "Conectividad remota cifrada para tu equipo — donde sea que trabajen.", "Internet Failover": "Failover de Internet", "Automatic backup internet — your business stays online even when your primary provider fails.": "Internet de respaldo automático — tu empresa sigue online incluso cuando falla el proveedor principal.", "Network Switching": "Switching de Red", "Structured, segmented network infrastructure — organized, fast, and secure.": "Infraestructura de red estructurada y segmentada — organizada, rápida y segura.", "Endpoint Protection": "Protección de Endpoints", "Security coverage for every device connecting to your network — laptops, desktops, and mobile.": "Cobertura de seguridad para cada dispositivo conectado a tu red — laptops, desktops y móviles.", "DNS Security": "Seguridad DNS", "Block malicious websites and phishing domains before they ever load on your network.": "Bloquea sitios maliciosos y dominios de phishing antes de que carguen en tu red.", "Performance Monitoring": "Monitoreo de Rendimiento", "Real-time visibility into your network health — we catch issues before your team notices them.": "Visibilidad en tiempo real de la salud de tu red — detectamos problemas antes de que tu equipo los note.", "Cloud Connectivity": "Conectividad en la Nube", "Optimized, secure access to your cloud platforms — Microsoft 365, Google Workspace, and more.": "Acceso optimizado y seguro a tus plataformas cloud — Microsoft 365, Google Workspace y más.", "Threat Monitoring": "Monitoreo de Amenazas", "Continuous monitoring for anomalies, intrusions, and suspicious activity across your environment.": "Monitoreo continuo de anomalías, intrusiones y actividad sospechosa en todo tu entorno.", "↓ Downtime": "↓ Inactividad", "Unplanned outages become rare — not routine. Proactive monitoring and redundant infrastructure keep your business running.": "Las interrupciones no planificadas se vuelven raras — no rutinarias. El monitoreo proactivo y la infraestructura redundante mantienen tu empresa funcionando.", "↑ Visibility": "↑ Visibilidad", "You see everything happening inside and outside your network — in real time, in plain English.": "Ves todo lo que ocurre dentro y fuera de tu red — en tiempo real y en lenguaje simple.", "↑ Resilience": "↑ Resiliencia", "Your infrastructure is built to absorb disruption and keep operating — even when things go wrong.": "Tu infraestructura está diseñada para absorber interrupciones y seguir operando — incluso cuando algo falla.", "↓ Risk": "↓ Riesgo", "Your cybersecurity posture improves continuously — reducing your exposure to threats inside and outside your business.": "Tu postura de ciberseguridad mejora continuamente — reduciendo la exposición a amenazas dentro y fuera del negocio.", "↑ Response": "↑ Respuesta", "Threats are detected and contained faster — before they escalate into the kind of incident that costs $120,000+.": "Las amenazas se detectan y contienen más rápido — antes de convertirse en incidentes de más de $120,000.", "↑ Reputation": "↑ Reputación", "Your brand, your clients' trust, and your digital identity are actively protected — not just hoped for.": "Tu marca, la confianza de tus clientes y tu identidad digital se protegen activamente — no solo se esperan.", "↓ Complexity": "↓ Complejidad", "One partner. One monthly investment. No vendor juggling, no surprise bills, no IT firefighting.": "Un socio. Una inversión mensual. Sin manejar múltiples proveedores, sin facturas sorpresa, sin apagar incendios de TI.", "↑ Growth": "↑ Crecimiento", "Your leadership team focuses on growing the business — not managing IT problems that should never have happened.": "Tu equipo directivo se enfoca en crecer el negocio — no en gestionar problemas de TI que nunca debieron ocurrir.", "Better infrastructure isn't just an IT decision — it's a business decision that pays for itself.": "Una mejor infraestructura no es solo una decisión de TI — es una decisión de negocio que se paga sola.", "Medical Clinics & Healthcare": "Clínicas Médicas y Salud", "A network failure during patient care is a liability. A breach of patient records is a crisis. We keep your systems HIPAA-aligned, always online, and protected.": "Una falla de red durante la atención al paciente es un riesgo legal. Una brecha de registros médicos es una crisis. Mantenemos tus sistemas alineados con HIPAA, siempre online y protegidos.", "Law Firms & Legal Services": "Firmas Legales y Servicios Jurídicos", "Client confidentiality isn't optional — it's your license. One breach of privileged communications can end careers. We protect what your clients trust you with.": "La confidencialidad del cliente no es opcional — es tu licencia. Una brecha en comunicaciones privilegiadas puede terminar carreras. Protegemos lo que tus clientes te confían.", "Accounting & Financial Services": "Contabilidad y Servicios Financieros", "Tax season doesn't pause for outages. Client financial data doesn't forgive breaches. We keep your systems secure, compliant, and always accessible.": "La temporada fiscal no espera a que vuelva internet. Los datos financieros no perdonan brechas. Mantenemos tus sistemas seguros, conformes y siempre accesibles.", "Multi-Site Businesses": "Empresas con Múltiples Ubicaciones", "Retail Operations": "Operaciones de Retail", "Hospitality": "Hotelería", "Professional Services": "Servicios Profesionales", "Growing SMBs": "SMBs en Crecimiento", "Do I need to buy new equipment?": "¿Necesito comprar equipos nuevos?", "Not necessarily. We assess your current setup first. In many cases, we can manage and improve what you already have. If new equipment is needed, we'll tell you exactly why — and what it costs — before anything happens.": "No necesariamente. Primero evaluamos tu estructura actual. En muchos casos podemos administrar y mejorar lo que ya tienes. Si se necesita equipo nuevo, te diremos exactamente por qué — y cuánto cuesta — antes de avanzar.", "Can you support multiple locations?": "¿Pueden atender múltiples ubicaciones?", "Yes. Multi-site management is one of our core strengths. We deploy consistent security policies, unified monitoring, and centralized visibility across every location — from one partner, one invoice.": "Sí. La gestión multi-sitio es una de nuestras fortalezas. Implementamos políticas consistentes, monitoreo unificado y visibilidad centralizada en cada ubicación — con un socio y una factura.", "What happens if my internet goes down?": "¿Qué pasa si se cae mi internet?", "With our CONTROL plan and above, you get automatic internet failover — a backup connection that kicks in instantly when your primary provider fails. Your team keeps working. Your customers keep reaching you.": "Con el plan CONTROL o superior, tienes failover automático de internet — una conexión de respaldo que entra cuando falla el proveedor principal. Tu equipo sigue trabajando y tus clientes siguen contactándote.", "Do you provide monitoring? Who watches my network?": "¿Ofrecen monitoreo? ¿Quién vigila mi red?", "Can you work with my current internet provider?": "¿Pueden trabajar con mi proveedor actual?", "Do I need an internal IT team to work with Teletex?": "¿Necesito un equipo interno de TI?", "Is this fully managed? What does that mean?": "¿Es totalmente administrado? ¿Qué significa?", "How long does it take to get started?": "¿Cuánto tiempo toma comenzar?", "Infrastructure & Information Security Manager · Brink's Brazil": "Gerente de Infraestructura y Seguridad de la Información · Brink's Brasil", "RESULTS DELIVERED": "RESULTADOS ENTREGADOS", "We specialize in IT infrastructure, cybersecurity, networking, and managed services. Our 280+ professionals hold 300+ active certifications. With 5,000+ clients served across 15+ countries and 2,000+ projects delivered, we've built the infrastructure for banks, airports, hospitals, and major retailers across Latin America and the United States.": "Nos especializamos en infraestructura de TI, ciberseguridad, redes y servicios administrados. Nuestros más de 280 profesionales cuentan con más de 300 certificaciones activas. Con más de 5,000 clientes en 15+ países y 2,000+ proyectos entregados, construimos infraestructura para bancos, aeropuertos, hospitales y grandes retailers en América Latina y Estados Unidos.", "5,000+ Clients · 2,000+ Projects · 15+ Countries": "5,000+ Clientes · 2,000+ Proyectos · 15+ Países", "Curitiba · São Paulo · Brasília · Porto Alegre · Orlando, Florida": "Curitiba · São Paulo · Brasília · Porto Alegre · Orlando, Florida"});
+
+  // Additional full-page review translations — comparison matrix, FAQ answers, industry cards.
+  Object.assign(T.pt, {
+  "NETWORK": "REDE",
+  "MANAGED SERVICES": "SERVIÇOS GERENCIADOS",
+  "INTERNAL VISIBILITY": "VISIBILIDADE INTERNA",
+  "CYBERSECURITY": "CIBERSEGURANÇA",
+  "EXTERNAL THREATS": "AMEAÇAS EXTERNAS",
+  "SOC / RESPONSE": "SOC / RESPOSTA",
+  "ADD-ONS AVAILABLE": "ADICIONAIS DISPONÍVEIS",
+  "ALL": "TODOS",
+  "Network": "Rede",
+  "Managed Services": "Serviços Gerenciados",
+  "Visibility": "Visibilidade",
+  "Cybersecurity": "Cibersegurança",
+  "External Threats": "Ameaças Externas",
+  "SOC / Response": "SOC / Resposta",
+  "Add-ons": "Adicionais",
+  "What this means for your business": "O que isso significa para sua empresa",
+  "Feature": "Recurso",
+  "Click for explanation": "Clique para explicação",
+  "Managed wired & Wi-Fi network": "Rede cabeada e Wi‑Fi gerenciada",
+  "We handle all the cables, routers and wireless access points in your office. Your internet stays fast, organized and stable — without you needing to think about it.": "Cuidamos dos cabos, roteadores e pontos de acesso Wi‑Fi do seu escritório. Sua internet fica rápida, organizada e estável — sem você precisar se preocupar com isso.",
+  "Security firewall": "Firewall de segurança",
+  "Think of it as a bouncer at the door of your network. It checks every piece of data trying to enter and blocks anything suspicious — before it ever reaches your computers.": "Pense nele como um segurança na porta da sua rede. Ele verifica cada dado que tenta entrar e bloqueia qualquer coisa suspeita — antes que chegue aos seus computadores.",
+  "Guest Wi-Fi — isolated from business data": "Wi‑Fi de visitantes — isolado dos dados da empresa",
+  "When clients or visitors use your Wi-Fi, they get internet access but cannot see your files, printers or internal systems. Keeps your business data safe from outsiders.": "Quando clientes ou visitantes usam seu Wi‑Fi, eles acessam a internet, mas não enxergam seus arquivos, impressoras ou sistemas internos. Isso mantém os dados da empresa protegidos de pessoas externas.",
+  "Automatic internet failover": "Failover automático de internet",
+  "If your internet provider goes down, a backup connection kicks in automatically within seconds. Your team keeps working, payments keep processing — no one even notices.": "Se o provedor principal de internet cair, uma conexão de backup entra automaticamente em segundos. Sua equipe continua trabalhando, os pagamentos continuam processando — e quase ninguém percebe.",
+  "SD-WAN / multi-link optimization": "SD‑WAN / otimização multi-link",
+  "A smart system that uses multiple internet connections at once and always routes your traffic through the fastest, most reliable path — like a GPS that avoids traffic jams.": "Um sistema inteligente que usa múltiplas conexões de internet e direciona o tráfego pelo caminho mais rápido e confiável — como um GPS que evita congestionamentos.",
+  "Remote VPN access": "Acesso VPN remoto",
+  "Employees working from home or traveling can connect securely to your office network, as if they were sitting at their desk. Encrypted, safe and easy to use.": "Colaboradores em home office ou em viagem podem se conectar com segurança à rede do escritório, como se estivessem na mesa de trabalho. Criptografado, seguro e fácil de usar.",
+  "Remote IT support": "Suporte remoto de TI",
+  "When something breaks or a computer acts up, our team fixes it remotely — usually within minutes. No need to wait for a technician to drive to your location.": "Quando algo para de funcionar ou um computador apresenta problema, nossa equipe corrige remotamente — normalmente em minutos. Não é preciso esperar um técnico se deslocar até o local.",
+  "Proactive network management": "Gerenciamento proativo da rede",
+  "Instead of waiting for things to break, we constantly check your systems for signs of trouble and fix small issues before they become expensive problems.": "Em vez de esperar algo quebrar, monitoramos continuamente seus sistemas em busca de sinais de problema e corrigimos pequenas falhas antes que se tornem custos altos.",
+  "Monthly health report": "Relatório mensal de saúde",
+  "Every month you receive a simple, plain-English summary of what happened on your network — no tech jargon, just clear facts about the health of your IT environment.": "Todos os meses você recebe um resumo simples, em linguagem clara, sobre o que aconteceu na sua rede — sem jargão técnico, apenas fatos objetivos sobre a saúde do seu ambiente de TI.",
+  "24×7 NOC monitoring": "Monitoramento NOC 24×7",
+  "A dedicated team watches your network around the clock, 365 days a year. If anything unusual happens at 3am on a Sunday, we catch it — not you.": "Uma equipe dedicada acompanha sua rede 24 horas por dia, 365 dias por ano. Se algo incomum acontecer às 3h da manhã de domingo, nós identificamos — não você.",
+  "Dedicated account manager": "Gerente de conta dedicado",
+  "One person who knows your business, your team and your history. You call them directly — no ticket queues, no starting from scratch every time.": "Uma pessoa que conhece sua empresa, sua equipe e seu histórico. Você fala diretamente com ela — sem fila de chamados e sem explicar tudo do zero a cada contato.",
+  "Real-time network monitoring": "Monitoramento de rede em tempo real",
+  "We watch everything moving through your network live. Slow computers, unusual activity, overloaded connections — we see them the moment they appear, not after they cause damage.": "Acompanhamos em tempo real o que acontece na sua rede. Computadores lentos, atividades incomuns e conexões sobrecarregadas são vistos no momento em que aparecem — não depois de causarem impacto.",
+  "Performance alerts": "Alertas de performance",
+  "If any part of your network starts slowing down or acting abnormally, we get an automatic alert and investigate immediately — before your team even notices a problem.": "Se qualquer parte da rede começar a ficar lenta ou agir de forma anormal, recebemos um alerta automático e investigamos imediatamente — antes mesmo que sua equipe perceba o problema.",
+  "Anomaly detection": "Detecção de anomalias",
+  "Our system learns what 'normal' looks like for your business. When something unusual happens — like data being sent at odd hours — it flags it for our team to review.": "Nosso sistema aprende o que é ‘normal’ para sua empresa. Quando algo incomum acontece — como envio de dados fora do horário — ele sinaliza para nossa equipe revisar.",
+  "Monthly executive report": "Relatório executivo mensal",
+  "A business-level summary written for owners and managers — not IT people. Shows what was protected, what was fixed and what improved, all in clear language.": "Um resumo executivo feito para donos e gestores — não para técnicos. Mostra o que foi protegido, corrigido e melhorado, tudo em linguagem clara.",
+  "Advanced content filtering": "Filtragem avançada de conteúdo",
+  "Blocks dangerous, inappropriate or time-wasting websites from loading on your network. Protects your team from accidentally visiting sites that could infect your systems.": "Bloqueia sites perigosos, inadequados ou improdutivos na sua rede. Protege sua equipe contra acessos acidentais a páginas que podem infectar seus sistemas.",
+  "Threat prevention / edge protection": "Prevenção de ameaças / proteção de borda",
+  "A layer of protection at the entrance of your network that stops known attack patterns, malware downloads and suspicious traffic before they even get inside.": "Uma camada de proteção na entrada da rede que bloqueia padrões conhecidos de ataque, downloads maliciosos e tráfego suspeito antes que entrem no ambiente.",
+  "Endpoint protection (EDR)": "Proteção de endpoints (EDR)",
+  "Advanced antivirus for every computer and laptop in your business. Unlike basic antivirus, it watches for behavior — catching new threats that standard tools miss.": "Antivírus avançado para computadores e notebooks da empresa. Diferente de um antivírus básico, ele analisa comportamento — identificando ameaças novas que ferramentas comuns deixam passar.",
+  "Email security": "Segurança de e-mail",
+  "Scans every incoming email for phishing links, dangerous attachments and impersonation attempts before they reach your team's inbox. Stops the #1 way hackers get in.": "Analisa e-mails recebidos em busca de links de phishing, anexos perigosos e tentativas de impersonação antes que cheguem à caixa de entrada. Bloqueia a principal porta de entrada dos hackers.",
+  "Dark web credential monitoring": "Monitoramento de credenciais na dark web",
+  "We continuously scan criminal forums and dark web markets. If your company's passwords or employee credentials appear in a known breach, we alert you immediately — before attackers use them.": "Monitoramos continuamente fóruns criminosos e mercados da dark web. Se senhas ou credenciais da sua empresa aparecerem em vazamentos conhecidos, avisamos imediatamente — antes que invasores usem essas informações.",
+  "Phishing campaign detection": "Detecção de campanhas de phishing",
+  "We monitor for emails and websites designed to trick your employees or clients into giving up passwords or money. The #1 attack method against small businesses.": "Monitoramos e-mails e sites criados para enganar colaboradores ou clientes e roubar senhas ou dinheiro. É o método de ataque número 1 contra pequenas empresas.",
+  "Fake domain / website detection": "Detecção de domínios / sites falsos",
+  "Criminals sometimes create websites that look exactly like yours to deceive your clients. We detect these fake sites and alert you so you can take them down fast.": "Criminosos podem criar sites parecidos com o seu para enganar clientes. Detectamos esses sites falsos e alertamos sua empresa para agir rapidamente.",
+  "Brand & digital identity protection": "Proteção de marca e identidade digital",
+  "We monitor the internet for unauthorized use of your company name, logo or identity — protecting your reputation and your clients from being deceived by imposters.": "Monitoramos o uso não autorizado do nome, logo ou identidade da sua empresa na internet — protegendo sua reputação e seus clientes contra golpistas.",
+  "SOC 24×7 operations": "Operação SOC 24×7",
+  "A full Security Operations Center — a dedicated team of cybersecurity experts watching your environment around the clock, correlating threat data and hunting for intrusions.": "Um Security Operations Center completo — uma equipe dedicada de especialistas em cibersegurança monitorando seu ambiente 24/7, correlacionando dados de ameaça e buscando invasões.",
+  "Active incident response": "Resposta ativa a incidentes",
+  "When a real attack happens, we don't just send you an alert — we act. Our team immediately contains the threat, isolates affected systems and stops the damage from spreading.": "Quando um ataque real acontece, não apenas enviamos um alerta — nós agimos. Nossa equipe contém a ameaça, isola sistemas afetados e impede que o dano se espalhe.",
+  "Threat intelligence correlation": "Correlação com inteligência de ameaças",
+  "We match what's happening inside your network with global threat intelligence data. This lets us detect attacks that have never been seen before — not just known ones.": "Comparamos o que acontece na sua rede com dados globais de inteligência de ameaças. Isso permite detectar ataques novos — não apenas ameaças conhecidas.",
+  "Compliance-ready reporting": "Relatórios prontos para compliance",
+  "Detailed documentation of your security posture for auditors, regulators and insurers. Critical for businesses in healthcare (HIPAA), finance or legal — where compliance is mandatory.": "Documentação detalhada da sua postura de segurança para auditores, reguladores e seguradoras. Essencial para saúde, finanças e jurídico — onde compliance é obrigatório.",
+  "Backup & recovery": "Backup e recuperação",
+  "Automatic daily backups of your critical data, tested regularly. If ransomware hits or hardware fails, your files can be restored quickly — often within hours.": "Backups automáticos diários dos dados críticos, testados regularmente. Se houver ransomware ou falha de hardware, seus arquivos podem ser restaurados rapidamente — muitas vezes em horas.",
+  "Microsoft 365 / Google Workspace": "Microsoft 365 / Google Workspace",
+  "Full management of your cloud email and productivity apps — security settings, user accounts, permissions and ongoing support so your team always has what they need.": "Gerenciamento completo dos e-mails e aplicativos de produtividade em nuvem — configurações de segurança, contas, permissões e suporte contínuo para sua equipe trabalhar sem interrupções.",
+  "Security awareness training": "Treinamento de conscientização em segurança",
+  "Interactive training that teaches your team to recognize phishing emails, suspicious links and social engineering attempts. The human firewall is your last line of defense.": "Treinamento interativo para sua equipe reconhecer e-mails de phishing, links suspeitos e tentativas de engenharia social. O firewall humano é sua última linha de defesa.",
+  "On-site support": "Suporte presencial",
+  "When a problem requires physical hands — installing equipment, replacing hardware or setting up a new office — our team comes to your location.": "Quando um problema exige presença física — instalar equipamentos, substituir hardware ou configurar um novo escritório — nossa equipe vai até o local.",
+  "Compliance readiness (HIPAA/SOC2)": "Preparação para compliance (HIPAA/SOC2)",
+  "Structured help to meet regulatory requirements for your industry. We document your security controls, identify gaps and help you satisfy auditors — without the legal headache.": "Apoio estruturado para atender requisitos regulatórios do seu setor. Documentamos controles de segurança, identificamos lacunas e ajudamos em auditorias — sem dor de cabeça.",
+  "Managing IT across multiple locations without a unified system is a security disaster waiting to happen. We give you one partner, one standard, one monthly bill.": "Gerenciar TI em várias unidades sem um sistema unificado é um risco de segurança esperando para acontecer. Entregamos um parceiro, um padrão e uma mensalidade.",
+  "Every minute your POS is down, you're losing sales. Every unsecured transaction is a liability. We keep your payments running and customer data protected.": "Cada minuto com o POS fora do ar representa perda de vendas. Cada transação insegura é um risco. Mantemos seus pagamentos funcionando e os dados dos clientes protegidos.",
+  "Guests expect fast Wi-Fi, seamless check-ins, and secure payments. One network failure during peak hours costs you reviews, revenue, and repeat business.": "Hóspedes esperam Wi‑Fi rápido, check-in sem atrito e pagamentos seguros. Uma falha de rede no horário de pico custa avaliações, receita e clientes recorrentes.",
+  "Your reputation is your business. A ransomware attack or data leak can destroy client trust overnight. We protect the infrastructure your reputation depends on.": "Sua reputação é o seu negócio. Um ataque de ransomware ou vazamento de dados pode destruir a confiança dos clientes da noite para o dia. Protegemos a infraestrutura da qual sua reputação depende.",
+  "You're scaling fast — but your infrastructure isn't keeping up. We build the foundation that lets you grow without outgrowing your security.": "Sua empresa está crescendo rápido — mas a infraestrutura pode não acompanhar. Construímos a base para você crescer sem ultrapassar os limites da sua segurança.",
+  "Yes. Depending on your plan, we provide continuous network monitoring, performance alerting, and proactive support. We identify and resolve issues before your team ever notices them.": "Sim. Dependendo do plano, oferecemos monitoramento contínuo da rede, alertas de performance e suporte proativo. Identificamos e resolvemos problemas antes que sua equipe perceba.",
+  "Yes. We work with your current internet provider and can add a secondary provider for redundancy when needed. You do not need to change providers unless there is a clear business reason.": "Sim. Trabalhamos com seu provedor atual e podemos adicionar um segundo provedor para redundância quando necessário. Você não precisa trocar de provedor sem uma razão clara de negócio.",
+  "No. We can operate as your outsourced IT partner, or we can support your existing internal IT team with monitoring, security, escalation and documentation.": "Não. Podemos atuar como seu parceiro de TI terceirizado ou apoiar sua equipe interna com monitoramento, segurança, escalonamento e documentação.",
+  "Fully managed means we design, deploy, monitor, maintain and support the solution for you. You get business outcomes — not just a box, a license or a login.": "Totalmente gerenciado significa que desenhamos, implantamos, monitoramos, mantemos e damos suporte à solução para você. Você recebe resultados de negócio — não apenas um equipamento, licença ou login.",
+  "Most assessments can be completed in 15 minutes. Implementation timing depends on your current environment, but small offices can often be onboarded quickly once scope is approved.": "A maioria das avaliações pode ser concluída em 15 minutos. O prazo de implantação depende do ambiente atual, mas pequenos escritórios geralmente podem iniciar rapidamente após aprovação do escopo."
+});
+  Object.assign(T.es, {
+  "NETWORK": "RED",
+  "MANAGED SERVICES": "SERVICIOS ADMINISTRADOS",
+  "INTERNAL VISIBILITY": "VISIBILIDAD INTERNA",
+  "CYBERSECURITY": "CIBERSEGURIDAD",
+  "EXTERNAL THREATS": "AMENAZAS EXTERNAS",
+  "SOC / RESPONSE": "SOC / RESPUESTA",
+  "ADD-ONS AVAILABLE": "ADICIONALES DISPONIBLES",
+  "ALL": "TODOS",
+  "Network": "Red",
+  "Managed Services": "Servicios Administrados",
+  "Visibility": "Visibilidad",
+  "Cybersecurity": "Ciberseguridad",
+  "External Threats": "Amenazas Externas",
+  "SOC / Response": "SOC / Respuesta",
+  "Add-ons": "Adicionales",
+  "What this means for your business": "Qué significa esto para tu empresa",
+  "Feature": "Recurso",
+  "Click for explanation": "Haz clic para ver la explicación",
+  "Managed wired & Wi-Fi network": "Red cableada y Wi‑Fi administrada",
+  "We handle all the cables, routers and wireless access points in your office. Your internet stays fast, organized and stable — without you needing to think about it.": "Nos encargamos de los cables, routers y puntos de acceso Wi‑Fi de tu oficina. Tu internet se mantiene rápido, organizado y estable — sin que tengas que preocuparte.",
+  "Security firewall": "Firewall de seguridad",
+  "Think of it as a bouncer at the door of your network. It checks every piece of data trying to enter and blocks anything suspicious — before it ever reaches your computers.": "Piensa en él como un guardia en la puerta de tu red. Revisa cada dato que intenta entrar y bloquea cualquier cosa sospechosa antes de que llegue a tus computadoras.",
+  "Guest Wi-Fi — isolated from business data": "Wi‑Fi de invitados — aislado de los datos del negocio",
+  "When clients or visitors use your Wi-Fi, they get internet access but cannot see your files, printers or internal systems. Keeps your business data safe from outsiders.": "Cuando clientes o visitantes usan tu Wi‑Fi, tienen internet pero no pueden ver tus archivos, impresoras o sistemas internos. Mantiene los datos del negocio protegidos de personas externas.",
+  "Automatic internet failover": "Failover automático de internet",
+  "If your internet provider goes down, a backup connection kicks in automatically within seconds. Your team keeps working, payments keep processing — no one even notices.": "Si tu proveedor principal falla, una conexión de respaldo entra automáticamente en segundos. Tu equipo sigue trabajando, los pagos siguen procesándose y casi nadie lo nota.",
+  "SD-WAN / multi-link optimization": "SD‑WAN / optimización multi-link",
+  "A smart system that uses multiple internet connections at once and always routes your traffic through the fastest, most reliable path — like a GPS that avoids traffic jams.": "Un sistema inteligente que usa varias conexiones de internet y dirige el tráfico por la ruta más rápida y confiable — como un GPS que evita el tráfico.",
+  "Remote VPN access": "Acceso VPN remoto",
+  "Employees working from home or traveling can connect securely to your office network, as if they were sitting at their desk. Encrypted, safe and easy to use.": "Los empleados que trabajan desde casa o viajan pueden conectarse de forma segura a la red de la oficina, como si estuvieran en su escritorio. Cifrado, seguro y fácil de usar.",
+  "Remote IT support": "Soporte remoto de TI",
+  "When something breaks or a computer acts up, our team fixes it remotely — usually within minutes. No need to wait for a technician to drive to your location.": "Cuando algo falla o una computadora presenta problemas, nuestro equipo lo corrige remotamente — normalmente en minutos. No necesitas esperar a un técnico presencial.",
+  "Proactive network management": "Gestión proactiva de red",
+  "Instead of waiting for things to break, we constantly check your systems for signs of trouble and fix small issues before they become expensive problems.": "En lugar de esperar a que algo falle, revisamos constantemente tus sistemas y corregimos problemas pequeños antes de que se vuelvan costosos.",
+  "Monthly health report": "Reporte mensual de salud",
+  "Every month you receive a simple, plain-English summary of what happened on your network — no tech jargon, just clear facts about the health of your IT environment.": "Cada mes recibes un resumen simple y claro de lo ocurrido en tu red — sin jerga técnica, solo datos concretos sobre la salud de tu entorno de TI.",
+  "24×7 NOC monitoring": "Monitoreo NOC 24×7",
+  "A dedicated team watches your network around the clock, 365 days a year. If anything unusual happens at 3am on a Sunday, we catch it — not you.": "Un equipo dedicado vigila tu red las 24 horas, los 365 días del año. Si algo extraño ocurre a las 3 a.m. de un domingo, lo detectamos nosotros — no tú.",
+  "Dedicated account manager": "Gerente de cuenta dedicado",
+  "One person who knows your business, your team and your history. You call them directly — no ticket queues, no starting from scratch every time.": "Una persona que conoce tu empresa, tu equipo y tu historial. Puedes contactarla directamente — sin filas de tickets ni empezar de cero cada vez.",
+  "Real-time network monitoring": "Monitoreo de red en tiempo real",
+  "We watch everything moving through your network live. Slow computers, unusual activity, overloaded connections — we see them the moment they appear, not after they cause damage.": "Observamos en tiempo real lo que ocurre en tu red. Computadoras lentas, actividad inusual o conexiones saturadas se detectan en el momento — no después del daño.",
+  "Performance alerts": "Alertas de rendimiento",
+  "If any part of your network starts slowing down or acting abnormally, we get an automatic alert and investigate immediately — before your team even notices a problem.": "Si alguna parte de tu red comienza a fallar o comportarse de forma anormal, recibimos una alerta automática e investigamos de inmediato — antes de que tu equipo lo note.",
+  "Anomaly detection": "Detección de anomalías",
+  "Our system learns what 'normal' looks like for your business. When something unusual happens — like data being sent at odd hours — it flags it for our team to review.": "Nuestro sistema aprende qué es ‘normal’ para tu negocio. Cuando ocurre algo inusual — como envío de datos fuera de horario — lo marca para revisión.",
+  "Monthly executive report": "Reporte ejecutivo mensual",
+  "A business-level summary written for owners and managers — not IT people. Shows what was protected, what was fixed and what improved, all in clear language.": "Un resumen de negocio para dueños y gerentes — no para técnicos. Muestra qué se protegió, qué se corrigió y qué mejoró, todo en lenguaje claro.",
+  "Advanced content filtering": "Filtrado avanzado de contenido",
+  "Blocks dangerous, inappropriate or time-wasting websites from loading on your network. Protects your team from accidentally visiting sites that could infect your systems.": "Bloquea sitios peligrosos, inapropiados o improductivos en tu red. Protege a tu equipo de visitar accidentalmente páginas que podrían infectar sistemas.",
+  "Threat prevention / edge protection": "Prevención de amenazas / protección perimetral",
+  "A layer of protection at the entrance of your network that stops known attack patterns, malware downloads and suspicious traffic before they even get inside.": "Una capa de protección en la entrada de la red que bloquea patrones de ataque, descargas maliciosas y tráfico sospechoso antes de que entren.",
+  "Endpoint protection (EDR)": "Protección de endpoints (EDR)",
+  "Advanced antivirus for every computer and laptop in your business. Unlike basic antivirus, it watches for behavior — catching new threats that standard tools miss.": "Antivirus avanzado para computadoras y laptops del negocio. A diferencia de un antivirus básico, analiza comportamiento y detecta amenazas que herramientas comunes no ven.",
+  "Email security": "Seguridad de correo electrónico",
+  "Scans every incoming email for phishing links, dangerous attachments and impersonation attempts before they reach your team's inbox. Stops the #1 way hackers get in.": "Analiza cada correo entrante buscando phishing, adjuntos peligrosos e intentos de suplantación antes de llegar a la bandeja de entrada. Bloquea la principal puerta de entrada de atacantes.",
+  "Dark web credential monitoring": "Monitoreo de credenciales en dark web",
+  "We continuously scan criminal forums and dark web markets. If your company's passwords or employee credentials appear in a known breach, we alert you immediately — before attackers use them.": "Escaneamos continuamente foros criminales y mercados de dark web. Si contraseñas o credenciales aparecen en filtraciones conocidas, te alertamos antes de que atacantes las usen.",
+  "Phishing campaign detection": "Detección de campañas de phishing",
+  "We monitor for emails and websites designed to trick your employees or clients into giving up passwords or money. The #1 attack method against small businesses.": "Monitoreamos correos y sitios diseñados para engañar a empleados o clientes y robar contraseñas o dinero. El método de ataque número 1 contra pequeñas empresas.",
+  "Fake domain / website detection": "Detección de dominios / sitios falsos",
+  "Criminals sometimes create websites that look exactly like yours to deceive your clients. We detect these fake sites and alert you so you can take them down fast.": "Los criminales pueden crear sitios parecidos al tuyo para engañar clientes. Detectamos estos sitios falsos y te alertamos para actuar rápido.",
+  "Brand & digital identity protection": "Protección de marca e identidad digital",
+  "We monitor the internet for unauthorized use of your company name, logo or identity — protecting your reputation and your clients from being deceived by imposters.": "Monitoreamos el uso no autorizado del nombre, logo o identidad de tu empresa en internet — protegiendo tu reputación y a tus clientes de impostores.",
+  "SOC 24×7 operations": "Operaciones SOC 24×7",
+  "A full Security Operations Center — a dedicated team of cybersecurity experts watching your environment around the clock, correlating threat data and hunting for intrusions.": "Un Security Operations Center completo — un equipo dedicado de expertos monitoreando tu entorno 24/7, correlacionando datos de amenazas y buscando intrusiones.",
+  "Active incident response": "Respuesta activa a incidentes",
+  "When a real attack happens, we don't just send you an alert — we act. Our team immediately contains the threat, isolates affected systems and stops the damage from spreading.": "Cuando ocurre un ataque real, no solo enviamos una alerta — actuamos. Nuestro equipo contiene la amenaza, aísla sistemas afectados y evita que el daño se propague.",
+  "Threat intelligence correlation": "Correlación con inteligencia de amenazas",
+  "We match what's happening inside your network with global threat intelligence data. This lets us detect attacks that have never been seen before — not just known ones.": "Comparamos lo que ocurre en tu red con inteligencia global de amenazas. Esto permite detectar ataques nuevos, no solo amenazas conocidas.",
+  "Compliance-ready reporting": "Reportes listos para compliance",
+  "Detailed documentation of your security posture for auditors, regulators and insurers. Critical for businesses in healthcare (HIPAA), finance or legal — where compliance is mandatory.": "Documentación detallada de tu postura de seguridad para auditores, reguladores y aseguradoras. Crítico para salud, finanzas o legal, donde el compliance es obligatorio.",
+  "Backup & recovery": "Backup y recuperación",
+  "Automatic daily backups of your critical data, tested regularly. If ransomware hits or hardware fails, your files can be restored quickly — often within hours.": "Backups diarios automáticos de datos críticos, probados regularmente. Si hay ransomware o falla de hardware, los archivos pueden restaurarse rápido — a menudo en horas.",
+  "Microsoft 365 / Google Workspace": "Microsoft 365 / Google Workspace",
+  "Full management of your cloud email and productivity apps — security settings, user accounts, permissions and ongoing support so your team always has what they need.": "Gestión completa de correo y apps de productividad en la nube — seguridad, usuarios, permisos y soporte continuo para que tu equipo siempre tenga lo necesario.",
+  "Security awareness training": "Capacitación de concientización en seguridad",
+  "Interactive training that teaches your team to recognize phishing emails, suspicious links and social engineering attempts. The human firewall is your last line of defense.": "Capacitación interactiva para que tu equipo reconozca phishing, enlaces sospechosos e ingeniería social. El firewall humano es la última línea de defensa.",
+  "On-site support": "Soporte presencial",
+  "When a problem requires physical hands — installing equipment, replacing hardware or setting up a new office — our team comes to your location.": "Cuando un problema requiere presencia física — instalar equipos, reemplazar hardware o configurar una nueva oficina — nuestro equipo va a tu ubicación.",
+  "Compliance readiness (HIPAA/SOC2)": "Preparación para compliance (HIPAA/SOC2)",
+  "Structured help to meet regulatory requirements for your industry. We document your security controls, identify gaps and help you satisfy auditors — without the legal headache.": "Ayuda estructurada para cumplir requisitos regulatorios. Documentamos controles, identificamos brechas y apoyamos auditorías — sin dolores de cabeza legales.",
+  "Managing IT across multiple locations without a unified system is a security disaster waiting to happen. We give you one partner, one standard, one monthly bill.": "Gestionar TI en múltiples ubicaciones sin un sistema unificado es un riesgo de seguridad. Te damos un socio, un estándar y una factura mensual.",
+  "Every minute your POS is down, you're losing sales. Every unsecured transaction is a liability. We keep your payments running and customer data protected.": "Cada minuto con el POS caído significa pérdida de ventas. Cada transacción insegura es una responsabilidad. Mantenemos tus pagos funcionando y los datos protegidos.",
+  "Guests expect fast Wi-Fi, seamless check-ins, and secure payments. One network failure during peak hours costs you reviews, revenue, and repeat business.": "Los huéspedes esperan Wi‑Fi rápido, check-ins fluidos y pagos seguros. Una falla de red en horas pico cuesta reseñas, ingresos y clientes recurrentes.",
+  "Your reputation is your business. A ransomware attack or data leak can destroy client trust overnight. We protect the infrastructure your reputation depends on.": "Tu reputación es tu negocio. Un ataque de ransomware o fuga de datos puede destruir la confianza en una noche. Protegemos la infraestructura de la que depende tu reputación.",
+  "You're scaling fast — but your infrastructure isn't keeping up. We build the foundation that lets you grow without outgrowing your security.": "Estás creciendo rápido, pero tu infraestructura puede no acompañar. Construimos la base para crecer sin superar tu seguridad.",
+  "Yes. Depending on your plan, we provide continuous network monitoring, performance alerting, and proactive support. We identify and resolve issues before your team ever notices them.": "Sí. Según el plan, ofrecemos monitoreo continuo de red, alertas de rendimiento y soporte proactivo. Identificamos y resolvemos problemas antes de que tu equipo los note.",
+  "Yes. We work with your current internet provider and can add a secondary provider for redundancy when needed. You do not need to change providers unless there is a clear business reason.": "Sí. Trabajamos con tu proveedor actual y podemos agregar un segundo proveedor para redundancia cuando sea necesario. No necesitas cambiar de proveedor sin una razón clara de negocio.",
+  "No. We can operate as your outsourced IT partner, or we can support your existing internal IT team with monitoring, security, escalation and documentation.": "No. Podemos operar como tu socio de TI tercerizado o apoyar a tu equipo interno con monitoreo, seguridad, escalamiento y documentación.",
+  "Fully managed means we design, deploy, monitor, maintain and support the solution for you. You get business outcomes — not just a box, a license or a login.": "Totalmente administrado significa que diseñamos, implementamos, monitoreamos, mantenemos y damos soporte a la solución. Recibes resultados de negocio, no solo un equipo, licencia o acceso.",
+  "Most assessments can be completed in 15 minutes. Implementation timing depends on your current environment, but small offices can often be onboarded quickly once scope is approved.": "La mayoría de las evaluaciones se completa en 15 minutos. El tiempo de implementación depende del entorno actual, pero oficinas pequeñas suelen iniciar rápido tras aprobar el alcance."
+});
+
+  // Translation runtime: preserves original EN text and applies PT-BR/ES dictionaries to static and JS-generated content.
+  const originalText = new WeakMap();
+  const originalAttr = new WeakMap();
+  const skipTags = new Set(['SCRIPT','STYLE','NOSCRIPT','SVG']);
+
+  function norm(s){ return String(s).replace(/\s+/g,' ').trim(); }
+  function translateString(s, lang){
+    if(lang === 'en') return s;
+    const key = norm(s);
+    return (T[lang] && T[lang][key]) || (T.pt && T.pt[key] && lang==='es' ? null : null) || null;
+  }
+  function walkText(root, lang){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        if(!node.nodeValue || !norm(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+        let p=node.parentElement;
+        if(!p || skipTags.has(p.tagName)) return NodeFilter.FILTER_REJECT;
+        if(p.closest('script,style,noscript,svg')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      if(!originalText.has(node)) originalText.set(node,node.nodeValue);
+      const base=originalText.get(node);
+      if(lang==='en'){ node.nodeValue=base; return; }
+      const tr=translateString(base,lang);
+      if(tr){
+        const lead=(base.match(/^\s*/)||[''])[0];
+        const trail=(base.match(/\s*$/)||[''])[0];
+        node.nodeValue=lead+tr+trail;
+      }
+    });
+  }
+  function translateAttrs(lang){
+    document.querySelectorAll('[title],[alt],[aria-label],[placeholder]').forEach(el=>{
+      ['title','alt','aria-label','placeholder'].forEach(a=>{
+        if(!el.hasAttribute(a)) return;
+        let store=originalAttr.get(el); if(!store){store={}; originalAttr.set(el,store);} 
+        if(!(a in store)) store[a]=el.getAttribute(a);
+        const base=store[a];
+        if(lang==='en') el.setAttribute(a,base);
+        else { const tr=translateString(base,lang); if(tr) el.setAttribute(a,tr); }
+      });
+    });
+  }
+
+
+  // Final manual review layer: handles mixed HTML text nodes, inline spans, and older hardcoded sections.
+  const FINAL_PATCHES = {
+    pt: {
+      "5 people × 2 capsules/day × $0.75/capsule × 20 workdays. Premium single-serve pods — the ones your team actually drinks.": "5 pessoas × 2 cápsulas/dia × $0,75/cápsula × 20 dias úteis. Cápsulas premium individuais — as que sua equipe realmente consome.",
+      "5 business lines on a standard carrier plan — calls, data, hotspot, device insurance.": "5 linhas corporativas em um plano padrão — ligações, dados, hotspot e seguro dos aparelhos.",
+      "Source: National Coffee Association 2024 · $0.50–$0.80/capsule avg · Office Coffee Deals": "Fonte: National Coffee Association 2024 · média de $0,50–$0,80 por cápsula · Office Coffee Deals",
+      "Source: AT&T / T-Mobile Business Plans 2024 · ~$40/line/mo": "Fonte: planos empresariais AT&T / T-Mobile 2024 · ~US$40 por linha/mês",
+      "$150/mo in premium coffee capsules": "US$150/mês em cápsulas de café premium",
+      "in premium coffee capsules": "em cápsulas de café premium",
+      "vs.": "vs.",
+      "about what your business was built on.": "em relação à base que protege sua empresa.",
+      "Organizations that don't have proper IT and cybersecurity maturity — often SMB-sized — are paying the price for their size, with ransomware present in 88% of breaches.": "Empresas sem maturidade adequada em TI e cibersegurança — muitas vezes pequenas e médias — estão pagando o preço pelo seu porte, com ransomware presente em 88% das violações.",
+      "– Craig Robinson, Research VP · Security Services · IDC · Verizon DBIR 2025 Launch": "– Craig Robinson, VP de Pesquisa · Security Services · IDC · Lançamento Verizon DBIR 2025",
+      "Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.": "A Teletex incorpora failover automático, redundância e monitoramento 24/7 à sua infraestrutura — para que a paralisação seja um problema dos seus concorrentes, não seu.",
+      "Enterprise-grade protection. Zero IT jargon. One partner who actually picks up the phone.": "Proteção de nível corporativo. Zero jargão técnico. Um parceiro que realmente atende o telefone.",
+      "Better infrastructure isn't just an IT decision — it's a business decision that pays for itself.": "Uma infraestrutura melhor não é apenas uma decisão de TI — é uma decisão de negócio que se paga.",
+      "Transform IT": "Transformação de TI",
+      "Cloud migration, collaboration modernization, network redesign, and advanced security architecture.": "Migração para nuvem, modernização de colaboração, redesenho de rede e arquitetura avançada de segurança.",
+      "Endpoint Protection": "Proteção de Endpoints",
+      "Managed security coverage for every device connecting to your network — laptops, desktops, and mobile.": "Cobertura de segurança gerenciada para cada dispositivo conectado à sua rede — notebooks, desktops e celulares.",
+      "Backup & Disaster Recovery": "Backup e Recuperação de Desastres",
+      "Automated, tested, and reliable backups — so your data is always recoverable when you need it most.": "Backups automatizados, testados e confiáveis — para que seus dados estejam recuperáveis quando você mais precisar.",
+      "Email Security": "Segurança de E-mail",
+      "Block phishing, spam, and malicious attachments before they ever reach your team's inbox.": "Bloqueie phishing, spam e anexos maliciosos antes que cheguem à caixa de entrada da sua equipe.",
+      "Identity & Access Management": "Gestão de Identidade e Acesso",
+      "Control who accesses what — with the right permissions, at the right time, every time.": "Controle quem acessa o quê — com as permissões certas, no momento certo, sempre.",
+      "Microsoft 365 / Google Workspace": "Microsoft 365 / Google Workspace",
+      "Full management of your cloud productivity suite — configuration, security settings, and ongoing support.": "Gestão completa da sua suíte de produtividade em nuvem — configuração, segurança e suporte contínuo.",
+      "Helpdesk Support": "Suporte Helpdesk",
+      "Fast, knowledgeable IT support for your team — available when problems arise.": "Suporte de TI rápido e qualificado para sua equipe — disponível quando surgirem problemas.",
+      "On-Site Support": "Suporte Presencial",
+      "Hands-on technical assistance at your location for issues that require a physical presence.": "Atendimento técnico no local para problemas que exigem presença física.",
+      "VIP SLA": "SLA VIP",
+      "Priority response times and dedicated service levels for businesses where every minute of downtime counts.": "Tempos de resposta prioritários e níveis de serviço dedicados para empresas em que cada minuto parado importa.",
+      "Compliance Readiness": "Preparação para Compliance",
+      "Structured support for HIPAA, SOC 2, and other regulatory frameworks — critical for medical, legal, and financial businesses.": "Suporte estruturado para HIPAA, SOC 2 e outros frameworks regulatórios — essencial para empresas médicas, jurídicas e financeiras.",
+      "Security Awareness Training": "Treinamento de Conscientização em Segurança",
+      "Educate your team to recognize phishing, social engineering, and unsafe behaviors before they cause harm.": "Treine sua equipe para reconhecer phishing, engenharia social e comportamentos inseguros antes que causem prejuízo.",
+      "Policy Documentation": "Documentação de Políticas",
+      "Formal IT policies and procedures that protect your business and satisfy auditor and compliance requirements.": "Políticas e procedimentos formais de TI que protegem sua empresa e atendem exigências de auditoria e compliance.",
+      "We realized we needed to give more protection to our IT infrastructure through continuous work. What motivated us to work with Teletex was the quality of services and the strong expertise in networks and security. Since the solution was implemented, not a single incident has been recorded.": "Percebemos que precisávamos dar mais proteção à nossa infraestrutura de TI por meio de um trabalho contínuo. O que nos motivou a trabalhar com a Teletex foi a qualidade dos serviços e a forte expertise em redes e segurança. Desde a implementação da solução, nenhum incidente foi registrado.",
+      "Zurich Airport partnered with Teletex for IT support, service desk, and advanced data security solutions. Airport operations are among the most demanding environments in the world — zero tolerance for downtime, zero tolerance for security gaps. Teletex delivers both.": "O Aeroporto de Zurich contou com a Teletex para suporte de TI, service desk e soluções avançadas de segurança de dados. Operações aeroportuárias estão entre os ambientes mais exigentes do mundo — tolerância zero para downtime e falhas de segurança. A Teletex entrega os dois.",
+      "The largest hospital complex in the North-Northeast region of Brazil strengthened its entire digital security posture in partnership with Teletex — protecting patient data, critical systems, and operational continuity across a complex, high-stakes environment.": "O maior complexo hospitalar do Norte-Nordeste do Brasil fortaleceu sua postura de segurança digital em parceria com a Teletex — protegendo dados de pacientes, sistemas críticos e continuidade operacional em um ambiente complexo e de alta criticidade.",
+      "Global · Security & Logistics": "Global · Segurança e Logística",
+      "76 Branches · Brazil": "76 Filiais · Brasil",
+      "Aviation · Mission-Critical": "Aviação · Missão Crítica",
+      "3-Year Partnership": "Parceria de 3 Anos",
+      "Healthcare · 1,200+ Beds": "Saúde · 1.200+ Leitos",
+      "Largest in Region": "Maior da Região",
+      "Airport Operations · Brazil · Critical Infrastructure": "Operações Aeroportuárias · Brasil · Infraestrutura Crítica",
+      "Full digital security posture transformation across hospital systems": "Transformação completa da postura de segurança digital nos sistemas hospitalares",
+      "Patient data protection in one of Brazil's most critical health environments": "Proteção de dados de pacientes em um dos ambientes de saúde mais críticos do Brasil",
+      "Continuous monitoring and incident": "Monitoramento contínuo e resposta a incidentes",
+      "We map your current setup and identify every gap, weakness, and vulnerability — in plain English, not IT jargon.": "Mapeamos sua estrutura atual e identificamos cada lacuna, fragilidade e vulnerabilidade — em linguagem simples, sem jargão técnico.",
+      "We find your single points of failure — the ones that would stop your business cold if one provider went down.": "Encontramos seus pontos únicos de falha — aqueles que poderiam parar sua empresa caso um provedor caia.",
+      "We identify the unprotected areas attackers look for first — before they find them.": "Identificamos as áreas desprotegidas que invasores procuram primeiro — antes que eles encontrem.",
+      "We show you what's happening on your network right now that you can't see — and what it would look like if you could.": "Mostramos o que está acontecendo na sua rede agora e que você não consegue ver — e como isso ficaria com visibilidade adequada.",
+      "We check if your credentials, domains, or brand are already exposed online — right now, before this call ends.": "Verificamos se suas credenciais, domínios ou marca já estão expostos online — agora, antes mesmo da ligação terminar.",
+      "You get a clear, no-jargon action plan — exactly what you need, nothing you don't. No pressure. No sales pitch.": "Você recebe um plano de ação claro, sem jargão — exatamente o que precisa, nada além disso. Sem pressão. Sem discurso de venda.",
+      "Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "A maioria das avaliações leva 15 minutos. Muitos clientes se surpreendem com o que encontramos. Todos saem com uma visão mais clara do risco — e um plano para corrigir.",
+      "Network & Infrastructure Review": "Revisão de Rede e Infraestrutura",
+      "Internet Redundancy Check": "Verificação de Redundância de Internet",
+      "Security Gap Analysis": "Análise de Lacunas de Segurança",
+      "Visibility & Monitoring Audit": "Auditoria de Visibilidade e Monitoramento",
+      "External Exposure Scan": "Varredura de Exposição Externa",
+      "Your Custom Protection Plan": "Seu Plano de Proteção Personalizado"
+    },
+    es: {
+      "5 people × 2 capsules/day × $0.75/capsule × 20 workdays. Premium single-serve pods — the ones your team actually drinks.": "5 personas × 2 cápsulas/día × $0.75/cápsula × 20 días laborales. Cápsulas premium individuales — las que tu equipo realmente consume.",
+      "5 business lines on a standard carrier plan — calls, data, hotspot, device insurance.": "5 líneas corporativas en un plan estándar — llamadas, datos, hotspot y seguro de dispositivos.",
+      "Source: National Coffee Association 2024 · $0.50–$0.80/capsule avg · Office Coffee Deals": "Fuente: National Coffee Association 2024 · promedio de $0.50–$0.80 por cápsula · Office Coffee Deals",
+      "Source: AT&T / T-Mobile Business Plans 2024 · ~$40/line/mo": "Fuente: planes empresariales AT&T / T-Mobile 2024 · ~$40 por línea/mes",
+      "$150/mo in premium coffee capsules": "$150/mes en cápsulas de café premium",
+      "about what your business was built on.": "en relación con la base que protege tu empresa.",
+      "Organizations that don't have proper IT and cybersecurity maturity — often SMB-sized — are paying the price for their size, with ransomware present in 88% of breaches.": "Las empresas sin madurez adecuada en TI y ciberseguridad — muchas veces pequeñas y medianas — están pagando el precio de su tamaño, con ransomware presente en el 88% de las brechas.",
+      "Teletex builds automatic failover, redundancy, and 24/7 monitoring into your infrastructure — so downtime becomes a problem your competitors have, not you.": "Teletex incorpora failover automático, redundancia y monitoreo 24/7 en tu infraestructura — para que el downtime sea un problema de tus competidores, no tuyo.",
+      "Enterprise-grade protection. Zero IT jargon. One partner who actually picks up the phone.": "Protección de nivel empresarial. Cero jerga técnica. Un socio que realmente contesta el teléfono.",
+      "Better infrastructure isn't just an IT decision — it's a business decision that pays for itself.": "Una mejor infraestructura no es solo una decisión de TI — es una decisión de negocio que se paga sola.",
+      "Transform IT": "Transformar TI",
+      "Cloud migration, collaboration modernization, network redesign, and advanced security architecture.": "Migración a la nube, modernización de colaboración, rediseño de red y arquitectura avanzada de seguridad.",
+      "Endpoint Protection": "Protección de Endpoints",
+      "Backup & Disaster Recovery": "Backup y Recuperación ante Desastres",
+      "Email Security": "Seguridad de Email",
+      "Identity & Access Management": "Gestión de Identidad y Acceso",
+      "Helpdesk Support": "Soporte Helpdesk",
+      "On-Site Support": "Soporte Presencial",
+      "Policy Documentation": "Documentación de Políticas",
+      "Network & Infrastructure Review": "Revisión de Red e Infraestructura",
+      "Internet Redundancy Check": "Verificación de Redundancia de Internet",
+      "Security Gap Analysis": "Análisis de Brechas de Seguridad",
+      "Visibility & Monitoring Audit": "Auditoría de Visibilidad y Monitoreo",
+      "External Exposure Scan": "Escaneo de Exposición Externa",
+      "Your Custom Protection Plan": "Tu Plan de Protección Personalizado",
+      "Most assessments take 15 minutes. Most clients are surprised by what we find. All of them leave with a clearer picture of their risk — and a plan to fix it.": "La mayoría de las evaluaciones toma 15 minutos. Muchos clientes se sorprenden con lo que encontramos. Todos salen con una visión más clara de su riesgo — y un plan para corregirlo."
+    }
+  };
+  function applyFinalPatches(lang){
+    const patches = FINAL_PATCHES[lang];
+    if(!patches) return;
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        if(!node.nodeValue || !norm(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+        const p=node.parentElement;
+        if(!p || p.closest('script,style,noscript,svg')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      if(!originalText.has(node)) originalText.set(node,node.nodeValue);
+      const base = originalText.get(node);
+      if(lang==='en'){ node.nodeValue=base; return; }
+      let out = base;
+      const direct = patches[norm(base)] || translateString(base,lang);
+      if(direct){
+        const lead=(base.match(/^\s*/)||[''])[0], trail=(base.match(/\s*$/)||[''])[0];
+        node.nodeValue = lead + direct + trail;
+        return;
+      }
+      Object.entries(patches).sort((a,b)=>b[0].length-a[0].length).forEach(([en,tr])=>{
+        if(out.includes(en)) out = out.split(en).join(tr);
+      });
+      if(out!==base) node.nodeValue=out;
+    });
+  }
+
+  function applyLang(lang){
+    localStorage.setItem('teletex_lang',lang);
+    document.documentElement.lang = lang==='pt' ? 'pt-BR' : (lang==='es' ? 'es' : 'en');
+    walkText(document.body,lang);
+    translateAttrs(lang);
+    applyFinalPatches(lang);
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+    if(lang==='pt') document.title='teletex US — Flórida Central | Fique Online. Fique Seguro. Não Importa o Que Aconteça.';
+    if(lang==='es') document.title='teletex US — Florida Central | Mantente Online. Mantente Seguro. Pase lo que Pase.';
+    if(lang==='en') document.title='teletex US — Central Florida | Stay Online. Stay Secure. No Matter What.';
+  }
+  window.TeletexSetLang = applyLang;
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
+    const saved=localStorage.getItem('teletex_lang')||'en';
+    setTimeout(()=>applyLang(saved),80);
+    const obs=new MutationObserver(()=>{
+      const lang=localStorage.getItem('teletex_lang')||'en';
+      if(lang!=='en') setTimeout(()=>applyLang(lang),10);
+    });
+    obs.observe(document.body,{childList:true,subtree:true});
+  });
+})();
 </script>
 </body>
 </html>
