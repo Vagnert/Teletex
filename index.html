@@ -992,11 +992,18 @@ footer {
   [style*="flex-wrap:wrap"][style*="align-items:center"][style*="gap:20px"] {
     gap: 12px !important;
   }
-  /* prevent the text block inside from forcing width */
+  /* Force text blocks to full width so button siblings wrap below */
   [style*="flex:1;min-width:240px"],
   [style*="flex:1;min-width:200px"] {
-    min-width: 0 !important;
-    width: 100%;
+    min-width: 0    !important;
+    flex: 0 0 100%  !important;   /* full row → buttons wrap to next line */
+    width: 100%     !important;
+  }
+  /* Button siblings: also full width after wrapping */
+  [style*="flex:1;min-width:240px"] ~ div,
+  [style*="flex:1;min-width:200px"] ~ div {
+    flex: 0 0 100% !important;
+    width: 100%    !important;
   }
 }
 
