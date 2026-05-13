@@ -2611,19 +2611,26 @@ function initCarousel() {
     nav.style.display = 'flex';
     arrows.style.display = 'flex';
 
+    // Reset to first card every time carousel is (re)initialized
+    currentCard = 0;
+
     // Build nav dots
     nav.innerHTML = '';
     for(let i=0;i<TOTAL_CARDS;i++){
       nav.innerHTML += `<button onclick="goToCard(${i})" class="plan-dot ${i===0?'active':''}" title="${NAMES[i]}"></button>`;
     }
 
-    // Make sure all cards exist as block elements for layout
+    // Activate only card 0, deactivate all others
     const cards = track.querySelectorAll('.plan-card');
     cards.forEach((c,i) => {
       c.classList.toggle('card-active', i === 0);
+      c.style.opacity   = '';
+      c.style.transform = '';
     });
 
+    updateNavDots();
     updateArrows();
+    updateCounter();
   } else {
     // Desktop: reset to grid
     nav.style.display = 'none';
@@ -2710,10 +2717,7 @@ function updateCounter() {
 
 // Init on load and resize
 window.addEventListener('DOMContentLoaded', () => {
-  initCarousel();
-  // Set initial counter text
-  const counter = document.getElementById('card-counter');
-  if(counter) counter.textContent = `${NAMES[0]} · 1 of ${TOTAL_CARDS}`;
+  initCarousel(); // counter is set inside initCarousel via updateCounter()
 });
 window.addEventListener('resize', initCarousel);
 
