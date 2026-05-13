@@ -921,31 +921,50 @@ footer {
 }
 
 /* ── NAV ────────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .logo-svg { height: 24px; }
+@media (max-width: 860px) {
+  /* Logo: override inline height:42px to keep proper proportion */
+  .logo-link img { height: 30px !important; width: auto !important; }
+  .logo-svg       { height: 30px; width: auto; }
   .nav-unit-label { display: none; }
-  .nav-inner { gap: 10px; }
-  nav { padding: 14px 0; }
-  nav.scrolled { padding: 10px 0; }
+  .nav-inner      { gap: 8px; }
+  nav             { padding: 12px 0; }
+  nav.scrolled    { padding: 9px 0; }
+  /* CTA button: compact on mobile, never wraps */
+  .nav-inner > a.btn-primary {
+    font-size: 11px !important;
+    padding: 9px 14px !important;
+    min-height: 38px;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+}
+@media (max-width: 390px) {
+  .logo-link img { height: 26px !important; }
+  .nav-inner > a.btn-primary {
+    font-size: 10px !important;
+    padding: 8px 10px !important;
+    letter-spacing: .04em;
+  }
 }
 
 /* ── HERO ───────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .hero { padding: 104px 0 72px; min-height: auto; }
-  .hero-sub { max-width: 100%; margin-bottom: 36px; }
+@media (max-width: 860px) {
+  /* nav height ≈ 30px logo + 24px padding = 54px; add 32px breathing room */
+  .hero { padding: 90px 0 64px; min-height: auto; }
+  .hero-sub { max-width: 100%; margin-bottom: 32px; }
   .hero-ctas { flex-direction: column; align-items: stretch; gap: 10px; }
   .hero-ctas a,
   .hero-ctas button { justify-content: center; text-align: center; }
-  .hero-badge { margin-bottom: 28px; }
+  .hero-badge { margin-bottom: 24px; }
   .hero-trust { gap: 14px; }
   .hero-trust-item { font-size: 10px; }
   .hero-radial { width: 100vw; left: 0; transform: none; }
 }
 @media (max-width: 390px) {
-  .hero { padding: 90px 0 56px; }
+  .hero { padding: 80px 0 52px; }
   .hero-h1 { font-size: clamp(24px, 8.5vw, 34px); }
   .hero-ctas .btn-primary,
-  .hero-ctas .btn-ghost { font-size: 12px; padding: 13px 20px; }
+  .hero-ctas .btn-ghost { font-size: 12px; padding: 13px 18px; }
 }
 
 /* ── SECTION VERTICAL PADDING ───────────────────────────── */
@@ -1082,8 +1101,7 @@ footer {
 /* ── GLOBAL TOUCH TARGETS ───────────────────────────────── */
 @media (max-width: 860px) {
   .btn-primary, .btn-ghost { min-height: 48px; }
-  /* Nav phone link (hidden on mobile but keep touch target if shown) */
-  .nav-phone { min-height: 44px; display: flex; align-items: center; }
+  .plan-cta { min-height: 46px; }
 }
 
 /* ── STATS: single column on very small screens ─────────── */
