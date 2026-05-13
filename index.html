@@ -3848,9 +3848,9 @@ Object.assign(T.es, {
     fixSpacingAfterTranslation();
     translateAttrs(lang);
     document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-    if(lang==='pt') document.title='teletex US — Flórida Central | Fique Online. Fique Seguro. Não Importa o Que Aconteça.';
-    if(lang==='es') document.title='teletex US — Florida Central | Mantente Online. Mantente Seguro. Pase lo que Pase.';
-    if(lang==='en') document.title='teletex US — Central Florida | Stay Online. Stay Secure. No Matter What.';
+    if(lang==='pt') document.title='Teletex | Fique Online. Fique Seguro. Não Importa o Que Aconteça.';
+    if(lang==='es') document.title='Teletex | Mantente Online. Mantente Seguro. Pase lo que Pase.';
+    if(lang==='en') document.title='Teletex | Stay Online. Stay Secure. No Matter What';
     if(typeof updateCalculator === 'function') updateCalculator();
     setTimeout(()=>{ window.__teletexLangApplying = false; },0);
   }
